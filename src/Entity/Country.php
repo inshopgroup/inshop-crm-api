@@ -1,0 +1,193 @@
+<?php
+
+namespace App\Entity;
+
+use App\Interfaces\SearchInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use App\Traits\BlameableEntity;
+use App\Traits\SoftDeleteableEntity;
+use App\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+
+/**
+ * Country
+ *
+ * @ORM\Table(name="country")
+ * @ORM\Entity(repositoryClass="App\Repository\CountryRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Gedmo\Loggable
+ * @ApiResource(attributes={
+ *     "normalization_context"={"groups"={"country_read", "read"}},
+ *     "denormalization_context"={"groups"={"country_write"}},
+ *     "order"={"id": "DESC"}
+ * },
+ *     collectionOperations={
+ *          "get"={
+ *              "access_control"="is_granted('ROLE_COUNTRY_LIST')"
+ *          },
+ *          "post"={
+ *              "access_control"="is_granted('ROLE_COUNTRY_CREATE')"
+ *          }
+ *     },
+ *     itemOperations={
+ *          "get"={
+ *              "access_control"="is_granted('ROLE_COUNTRY_SHOW')"
+ *          },
+ *          "put"={
+ *              "access_control"="is_granted('ROLE_COUNTRY_UPDATE')"
+ *          },
+ *          "delete"={
+ *              "access_control"="is_granted('ROLE_COUNTRY_DELETE')"
+ *          }
+ *     })
+ * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "id": "exact",
+ *     "name": "ipartial",
+ * })
+ * @ApiFilter(
+ *     OrderFilter::class,
+ *     properties={
+ *          "id",
+ *          "name",
+ *          "createdAt",
+ *          "updatedAt"
+ *     }
+ * )
+ */
+class Country implements SearchInterface
+{
+    /**
+     * Hook timestampable behavior
+     * updates createdAt, updatedAt fields
+     */
+    use TimestampableEntity;
+
+    /**
+     * Hook blameable behavior
+     * updates createdBy, updatedBy fields
+     */
+    use BlameableEntity;
+
+    /**
+     * Hook SoftDeleteable behavior
+     * updates deletedAt field
+     */
+    use SoftDeleteableEntity;
+
+    /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({
+     *     "country_read",
+     *     "city_read",
+     *     "city_write",
+     *     "address_read",
+     *     "address_write",
+     *     "company_read_collection"
+     * })
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "country_read",
+     *     "country_write",
+     *     "city_read",
+     *     "address_read",
+     *     "company_read_collection"
+     * })
+     * @Assert\NotBlank()
+     */
+    private $name;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\City", mappedBy="country")
+     * @Groups({
+     *     "country_read",
+     *     "country_write",
+     *     "address_read"
+     * })
+     */
+    private $cities;
+
+    public function __construct()
+    {
+        $this->cities = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|City[]
+     */
+    public function getCities(): Collection
+    {
+        return $this->cities;
+    }
+
+    public function addCity(City $city): self
+    {
+        if (!$this->cities->contains($city)) {
+            $this->cities[] = $city;
+            $city->setCountry($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCity(City $city): self
+    {
+        if ($this->cities->contains($city)) {
+            $this->cities->removeElement($city);
+            // set the owning side to null (unless already changed)
+            if ($city->getCountry() === $this) {
+                $city->setCountry(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Search text
+     *
+     * @return string
+     */
+    public function getSearchText(): string
+    {
+        return implode(
+            ' ',
+            [
+                $this->getName(),
+            ]
+        );
+    }
+}

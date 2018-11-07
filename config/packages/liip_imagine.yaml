@@ -1,0 +1,80 @@
+liip_imagine:
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: "gd"
+
+    # define your filter sets under this option
+    filter_sets:
+
+        # an example thumbnail transformation definition
+        # https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html#create-thumbnails
+        thumbnail_200:
+            # set your image quality defaults
+            jpeg_quality:          85
+            png_compression_level: 8
+
+            # setup the filter steps to apply for this transformation
+            filters:
+
+                # auto rotate the image using EXIF metadata
+                auto_rotate: ~
+
+                # strip the image of all metadata
+                strip: ~
+
+                # scale and square the image to the given dimensions
+                thumbnail:
+                    size:          [200, 150]
+                    mode:          inset # outbound, inset
+                    allow_upscale: false
+
+                # create border by placing image on larger black background
+                background:
+                    size:     [200, 150]
+                    position: center
+                    color:    '#fff'
+
+        thumbnail_420:
+            # set your image quality defaults
+            jpeg_quality:          85
+            png_compression_level: 8
+
+            # setup the filter steps to apply for this transformation
+            filters:
+
+                # auto rotate the image using EXIF metadata
+                auto_rotate: ~
+
+                # strip the image of all metadata
+                strip: ~
+
+                # scale and square the image to the given dimensions
+                thumbnail:
+                    size:          [420, 320]
+                    mode:          inset # outbound, inset
+                    allow_upscale: false
+
+                # create border by placing image on larger black background
+                background:
+                    size:     [420, 320]
+                    position: center
+                    color:    '#fff'
+
+        thumbnail_1000:
+            # set your image quality defaults
+            jpeg_quality:          85
+            png_compression_level: 8
+
+            # setup the filter steps to apply for this transformation
+            filters:
+
+                # auto rotate the image using EXIF metadata
+                auto_rotate: ~
+
+                # strip the image of all metadata
+                strip: ~
+
+                # scale and square the image to the given dimensions
+                thumbnail:
+                    size:          [1000, 750]
+                    mode:          inset # outbound, inset
+                    allow_upscale: false

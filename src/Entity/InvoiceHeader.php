@@ -1,0 +1,479 @@
+<?php
+
+namespace App\Entity;
+
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use App\Traits\BlameableEntity;
+use App\Traits\SoftDeleteableEntity;
+use App\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+
+/**
+ * InvoiceHeader
+ *
+ * @ORM\Table(name="invoice_header")
+ * @ORM\Entity(repositoryClass="App\Repository\InvoiceHeaderRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Gedmo\Loggable
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context"={"groups"={"invoice_header_read", "read"}},
+ *         "denormalization_context"={"groups"={"invoice_header_write"}},
+ *         "order"={"id": "DESC"}
+ *     },
+ *     collectionOperations={
+ *          "get"={
+ *              "normalization_context"={
+ *                  "groups"={"invoice_header_read_collection", "read"}
+ *              },
+ *              "access_control"="is_granted('ROLE_INVOICE_HEADER_LIST')"
+ *          },
+ *          "post"={
+ *              "access_control"="is_granted('ROLE_INVOICE_HEADER_CREATE')"
+ *          }
+ *     },
+ *     itemOperations={
+ *          "get"={
+ *              "access_control"="is_granted('ROLE_INVOICE_HEADER_SHOW')"
+ *          },
+ *          "put"={
+ *              "access_control"="is_granted('ROLE_INVOICE_HEADER_UPDATE')"
+ *          },
+ *          "delete"={
+ *              "access_control"="is_granted('ROLE_INVOICE_HEADER_DELETE')"
+ *          }
+ *     }
+ * )
+ * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "id": "exact",
+ *     "name": "ipartial",
+ * })
+ * @ApiFilter(
+ *     OrderFilter::class,
+ *     properties={
+ *          "id",
+ *          "name",
+ *          "createdAt",
+ *          "updatedAt"
+ *     }
+ * )
+ */
+class InvoiceHeader
+{
+    /**
+     * Hook timestampable behavior
+     * updates createdAt, updatedAt fields
+     */
+    use TimestampableEntity;
+
+    /**
+     * Hook blameable behavior
+     * updates createdBy, updatedBy fields
+     */
+    use BlameableEntity;
+
+    /**
+     * Hook SoftDeleteable behavior
+     * updates deletedAt field
+     */
+    use SoftDeleteableEntity;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_read_collection"
+     * })
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_read_collection",
+     *     "invoice_header_write"
+     * })
+     * @Assert\NotBlank()
+     */
+    private $number;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\InvoiceStatus")
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_read_collection",
+     *     "invoice_header_write"
+     * })
+     * @Assert\NotBlank()
+     */
+    private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\InvoiceType")
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_read_collection",
+     *     "invoice_header_write"
+     * })
+     * @Assert\NotBlank()
+     */
+    private $type;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\OrderHeader")
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_write"
+     * })
+     */
+    private $orderHeader;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company")
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_read_collection",
+     *     "invoice_header_write"
+     * })
+     * @Assert\NotNull()
+     */
+    private $companyFrom;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company")
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_read_collection",
+     *     "invoice_header_write"
+     * })
+     */
+    private $companyTo;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document")
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_write"
+     * })
+     * @Assert\NotBlank()
+     */
+    private $agreement;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_write"
+     * })
+     * @Assert\NotBlank()
+     */
+    private $currency;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_write"
+     * })
+     * @Assert\NotBlank()
+     */
+    private $language;
+
+    /**
+     * @ORM\Column(type="date", nullable=false)
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_write"
+     * })
+     * @Assert\NotBlank()
+     */
+    private $dateOfInvoice;
+
+    /**
+     * @ORM\Column(type="date", nullable=false)
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_write"
+     * })
+     * @Assert\NotBlank()
+     */
+    private $dateOfSale;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Gedmo\Versioned
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_write"
+     * })
+     */
+    private $maturity;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\InvoiceLine", mappedBy="header", cascade={"persist"})
+     * @Groups({
+     *     "invoice_header_read",
+     *     "invoice_header_write"
+     * })
+     * @Assert\Valid()
+     * @ORM\OrderBy({"id" = "DESC"})
+     */
+    private $lines;
+
+    /**
+     * @var File[]
+     * @ORM\ManyToMany(targetEntity="App\Entity\File")
+     * @ORM\JoinColumn(nullable=true)
+     * @ApiProperty(iri="http://schema.org/image")
+     * @ApiSubresource()
+     * @Groups({
+     *     "document_read",
+     *     "document_write",
+     *     "project_read"
+     * })
+     * @ORM\OrderBy({"id" = "DESC"})
+     */
+    public $files;
+
+    public function __construct()
+    {
+        $this->lines = new ArrayCollection();
+        $this->files = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNumber(): ?string
+    {
+        return $this->number;
+    }
+
+    public function setNumber(string $number): self
+    {
+        $this->number = $number;
+
+        return $this;
+    }
+
+    public function getDateOfInvoice(): ?\DateTimeInterface
+    {
+        return $this->dateOfInvoice;
+    }
+
+    public function setDateOfInvoice(\DateTimeInterface $dateOfInvoice): self
+    {
+        $this->dateOfInvoice = $dateOfInvoice;
+
+        return $this;
+    }
+
+    public function getDateOfSale(): ?\DateTimeInterface
+    {
+        return $this->dateOfSale;
+    }
+
+    public function setDateOfSale(\DateTimeInterface $dateOfSale): self
+    {
+        $this->dateOfSale = $dateOfSale;
+
+        return $this;
+    }
+
+    public function getMaturity(): ?string
+    {
+        return $this->maturity;
+    }
+
+    public function setMaturity(?string $maturity): self
+    {
+        $this->maturity = $maturity;
+
+        return $this;
+    }
+
+    public function getCompanyFrom(): ?Company
+    {
+        return $this->companyFrom;
+    }
+
+    public function setCompanyFrom(?Company $companyFrom): self
+    {
+        $this->companyFrom = $companyFrom;
+
+        return $this;
+    }
+
+    public function getCompanyTo(): ?Company
+    {
+        return $this->companyTo;
+    }
+
+    public function setCompanyTo(?Company $companyTo): self
+    {
+        $this->companyTo = $companyTo;
+
+        return $this;
+    }
+
+    public function getAgreement(): ?Document
+    {
+        return $this->agreement;
+    }
+
+    public function setAgreement(?Document $agreement): self
+    {
+        $this->agreement = $agreement;
+
+        return $this;
+    }
+
+    public function getCurrency(): ?Currency
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?Currency $currency): self
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?Language $language): self
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InvoiceLine[]
+     */
+    public function getLines(): Collection
+    {
+        return $this->lines;
+    }
+
+    public function addLine(InvoiceLine $line): self
+    {
+        if (!$this->lines->contains($line)) {
+            $this->lines[] = $line;
+            $line->setHeader($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLine(InvoiceLine $line): self
+    {
+        if ($this->lines->contains($line)) {
+            $this->lines->removeElement($line);
+            // set the owning side to null (unless already changed)
+            if ($line->getHeader() === $this) {
+                $line->setHeader(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|File[]
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function addFile(File $file): self
+    {
+        if (!$this->files->contains($file)) {
+            $this->files[] = $file;
+        }
+
+        return $this;
+    }
+
+    public function removeFile(File $file): self
+    {
+        if ($this->files->contains($file)) {
+            $this->files->removeElement($file);
+        }
+
+        return $this;
+    }
+
+    public function getStatus(): ?InvoiceStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?InvoiceStatus $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getOrderHeader(): ?OrderHeader
+    {
+        return $this->orderHeader;
+    }
+
+    public function setOrderHeader(?OrderHeader $orderHeader): self
+    {
+        $this->orderHeader = $orderHeader;
+
+        return $this;
+    }
+
+    public function getType(): ?InvoiceType
+    {
+        return $this->type;
+    }
+
+    public function setType(?InvoiceType $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+}

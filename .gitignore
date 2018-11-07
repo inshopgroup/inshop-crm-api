@@ -1,0 +1,35 @@
+###> symfony/framework-bundle ###
+.env
+/public/bundles/
+/var/
+!/var/cache/.gitkeep
+!/var/log/.gitkeep
+/vendor/
+!/vendor/.gitkeep
+###< symfony/framework-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*
+!/config/jwt/.gitkeep
+###< lexik/jwt-authentication-bundle ###
+
+docker-compose.yml
+.bash_history
+.composer
+
+supervisord.log
+supervisord.pid
+
+public/images/1000/*
+public/images/420/*
+public/images/200/*
+!public/images/1000/.gitkeep
+!public/images/420/.gitkeep
+!public/images/200/.gitkeep
+
+data/backups/
+data/files/
+data/images/
+!data/backups/.gitkeep
+!data/files/.gitkeep
+!data/images/.gitkeep

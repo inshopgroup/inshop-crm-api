@@ -1,0 +1,88 @@
+version: '3.2'
+
+services:
+  php:
+    restart: unless-stopped
+    image: inshopgroup/crm-api-docker-php-fpm-prod:latest
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+    command: sh ./bin/entrypoint.sh
+    volumes:
+      - .:/var/www:rw,cached
+      - files-data:/var/www/var/files:rw
+    networks:
+      - api
+
+  nginx:
+    restart: unless-stopped
+    image: inshopgroup/crm-api-docker-nginx-prod:latest
+    depends_on:
+      - php
+    volumes:
+      - ./public:/var/www/public:ro
+    ports:
+      - ${PORT_API}:80
+    networks:
+      - api
+
+  db:
+    restart: unless-stopped
+    image: postgres:9.6-alpine
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+    ports:
+      - ${PORT_DATABASE}:5432
+    networks:
+      - api
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.1
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - api
+      - esnet
+
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.1
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data2:/usr/share/elasticsearch/data
+    networks:
+      - api
+      - esnet
+
+volumes:
+  es-data1: {}
+  es-data2: {}
+  db-data: {}
+  files-data: {}
+  images-data: {}
+
+networks:
+    esnet:
+    api:

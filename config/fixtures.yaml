@@ -1,0 +1,73 @@
+services:
+#    product.fixtures:
+#        class: App\DataFixtures\ProductFixtures
+#        tags: ['doctrine.fixture.orm']
+#        arguments:
+#            - "@faker.generator"
+
+    country.fixtures:
+        class: App\DataFixtures\CountryFixtures
+        tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@faker.generator"
+
+    address.fixtures:
+        class: App\DataFixtures\AddressFixtures
+        tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@faker.generator"
+
+    company.fixtures:
+        class: App\DataFixtures\CompanyFixtures
+        tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@faker.generator"
+
+    template.fixtures:
+        class: App\DataFixtures\TemplateFixtures
+        tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@faker.generator"
+
+    client.fixtures:
+        class: App\DataFixtures\ClientFixtures
+        tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@faker.generator"
+
+    invoice.fixtures:
+        class: App\DataFixtures\InvoiceFixtures
+        tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@faker.generator"
+
+    order.fixtures:
+        class: App\DataFixtures\OrderFixtures
+        tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@faker.generator"
+
+    backup.fixtures:
+        class: App\DataFixtures\BackupFixtures
+        tags: ['doctrine.fixture.orm']
+
+    role.fixtures:
+        class: App\DataFixtures\RoleFixtures
+        tags: ['doctrine.fixture.orm']
+
+#    catalog.fixtures:
+#        class: App\DataFixtures\CatalogFixtures
+#        tags: ['doctrine.fixture.orm']
+
+    product.fixtures:
+        class: App\DataFixtures\ProductFixtures
+        tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@faker.generator"
+
+    user.fixtures:
+        class: App\DataFixtures\UserFixtures
+        tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@security.user_password_encoder.generic"
+            - "@faker.generator"

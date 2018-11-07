@@ -1,0 +1,57 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+
+    providers:
+        db_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+
+    firewalls:
+        login:
+            pattern:  ^/login
+            user_checker: App\Security\UserChecker
+            stateless: true
+            anonymous: true
+            provider: db_provider
+            json_login:
+                check_path: /login
+                username_path: username
+                password_path: password
+                require_previous_session: false
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        frontend:
+            pattern:   ^/frontend
+            anonymous: true
+
+        docs:
+            pattern:   ^/docs
+            user_checker: App\Security\UserChecker
+            provider: db_provider
+            stateless: true
+            anonymous: false
+            http_basic: ~
+
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        api:
+            pattern:   ^/
+            user_checker: App\Security\UserChecker
+            provider: db_provider
+            stateless: true
+            anonymous: false
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
+    access_control:
+        - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/frontend, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: [ ROLE_USER ] }
