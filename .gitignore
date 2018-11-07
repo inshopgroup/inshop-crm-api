@@ -1,10 +1,11 @@
 ###> symfony/framework-bundle ###
 .env
 /public/bundles/
-/var/
+/var/log/*
+/var/cache/*
 !/var/cache/.gitkeep
 !/var/log/.gitkeep
-/vendor/
+/vendor/*
 !/vendor/.gitkeep
 ###< symfony/framework-bundle ###
 

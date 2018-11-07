@@ -1,6 +1,7 @@
 # INSHOP CRM API
 
 Inshop CRM - simple & powerful
+
 Clients management, Projects & tasks, Documents, Simple Accounting, REST API, ...
 
 https://inshopcrm.com/
