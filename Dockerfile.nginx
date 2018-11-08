@@ -1,4 +1,4 @@
-FROM inshopgroup/crm-api-docker-nginx-prod:latest
+FROM inshopgroup/docker-inshop-crm-api-nginx-prod:latest
 
 WORKDIR /var/www
 
