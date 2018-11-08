@@ -308,6 +308,9 @@
     "symfony/doctrine-bridge": {
         "version": "v4.0.3"
     },
+    "symfony/dotenv": {
+        "version": "v4.1.7"
+    },
     "symfony/event-dispatcher": {
         "version": "v4.0.3"
     },

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7bca4d3825ebabcc9e21848f9d5c93a",
+    "content-hash": "77dbb0fd308859d327e835b8d9bad030",
     "packages": [
         {
             "name": "api-platform/api-pack",
@@ -2414,7 +2414,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "Developer"
+                    "role": "developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
@@ -4999,6 +4999,17 @@
         {
             "name": "symfony/lts",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/lts.git",
+                "reference": "c1affae45b78aee036effa1759237e7fa96d4af2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/lts/zipball/c1affae45b78aee036effa1759237e7fa96d4af2",
+                "reference": "c1affae45b78aee036effa1759237e7fa96d4af2",
+                "shasum": ""
+            },
             "conflict": {
                 "symfony/asset": ">=5",
                 "symfony/browser-kit": ">=5",
@@ -5077,7 +5088,7 @@
             "description": "Enforces Long Term Supported versions of Symfony components",
             "homepage": "https://symfony.com",
             "abandoned": "symfony/flex",
-            "time": "2018-04-03T05:04:16+00:00"
+            "time": "2018-10-03T12:03:19+00:00"
         },
         {
             "name": "symfony/monolog-bridge",
@@ -7297,6 +7308,63 @@
                 "diff"
             ],
             "time": "2018-02-15T16:58:55+00:00"
+        },
+        {
+            "name": "symfony/dotenv",
+            "version": "v4.1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/dotenv.git",
+                "reference": "9f3074b55bc56627f61fb2c17d573ee7df8e1319"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/dotenv/zipball/9f3074b55bc56627f61fb2c17d573ee7df8e1319",
+                "reference": "9f3074b55bc56627f61fb2c17d573ee7df8e1319",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3"
+            },
+            "require-dev": {
+                "symfony/process": "~3.4|~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Dotenv\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Registers environment variables from a .env file",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "dotenv",
+                "env",
+                "environment"
+            ],
+            "time": "2018-10-12T12:56:03+00:00"
         },
         {
             "name": "symfony/maker-bundle",

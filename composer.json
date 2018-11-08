@@ -28,6 +28,7 @@
     },
     "require-dev": {
         "api-platform/schema-generator": "^2.1",
+        "symfony/dotenv": "^4.1",
         "symfony/maker-bundle": "^1.5",
         "symfony/profiler-pack": "^1.0"
     },

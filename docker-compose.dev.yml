@@ -54,7 +54,7 @@ services:
     volumes:
       - es-data1:/usr/share/elasticsearch/data
     ports:
-      - 9200:9200
+      - ${PORT_ELASTIC}:9200
     networks:
       - api
       - esnet
