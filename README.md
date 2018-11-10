@@ -77,7 +77,6 @@ services:
       - db
     env_file:
       - ./.env
-    command: sh ./bin/entrypoint.sh
     volumes:
       - .:/var/www
       - files-data:/var/www/data

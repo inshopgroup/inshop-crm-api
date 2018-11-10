@@ -5,3 +5,5 @@ ADD ./ /var/www
 
 RUN composer install --optimize-autoloader
 RUN chown -R www-data:www-data /var/www
+
+CMD /var/www/bin/entrypoint.sh
