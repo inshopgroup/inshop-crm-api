@@ -14,7 +14,6 @@
 !/config/jwt/.gitkeep
 ###< lexik/jwt-authentication-bundle ###
 
-docker-compose.yml
 .bash_history
 .composer
 
