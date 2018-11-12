@@ -156,6 +156,10 @@ cd ..
 docker-compose exec --user=www-data php sh ./setup.sh
 ```
 
+Enter pass phrase for config/jwt/private.pem: **!ChangeMe!**  
+
+**NOTE!** described setup is only for local use!
+
 Enjoy, after run, API will be available under [http://localhost:8888/docs](http://localhost:8888/docs)
 
 And client under [http://localhost:8080](http://localhost:8080)
