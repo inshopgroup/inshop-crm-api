@@ -56,6 +56,8 @@ PORT_CLIENT=8080
 DATABASE_NAME=api
 DATABASE_USER=api
 DATABASE_PASSWORD=!ChangeMe!
+
+COMPOSE_PROJECT_NAME=inshop-crm
 ```
 
 docker-compose.yml
@@ -75,10 +77,7 @@ services:
     image: inshopgroup/inshop-crm-api-php-fpm
     depends_on:
       - db
-    env_file:
-      - ./.env
     volumes:
-      - .:/var/www
       - files-data:/var/www/data
     networks:
       - api
@@ -151,6 +150,23 @@ yarn run dev
 cd ..
 ```
 
+## Setup database & fixtures
+
+```bash
+docker-compose exec --user=www-data php sh ./setup.sh
+```
+
 Enjoy, after run, API will be available under [http://localhost:8888/docs](http://localhost:8888/docs)
 
 And client under [http://localhost:8080](http://localhost:8080)
+
+```
+username: demo
+password: demo
+```
+
+# Elastic search settings on host machine
+
+```bash
+sudo sysctl -w vm.max_map_count=262144
+```
