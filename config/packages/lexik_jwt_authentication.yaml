@@ -1,5 +1,5 @@
 lexik_jwt_authentication:
-    private_key_path: '%kernel.project_dir%/%env(JWT_PRIVATE_KEY_PATH)%'
-    public_key_path: '%kernel.project_dir%/%env(JWT_PUBLIC_KEY_PATH)%'
-    pass_phrase: '%env(JWT_PASSPHRASE)%'
-    token_ttl: 28800
+  secret_key:       '%kernel.project_dir%/config/jwt/private.pem' # required for token creation
+  public_key:       '%kernel.project_dir%/config/jwt/public.pem'  # required for token verification
+  pass_phrase: '%env(JWT_PASSPHRASE)%'
+  token_ttl: 28800
