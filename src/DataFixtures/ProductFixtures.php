@@ -4,17 +4,26 @@ namespace App\DataFixtures;
 
 use App\Entity\Brand;
 use App\Entity\Category;
+use App\Entity\CategoryTranslation;
+use App\Entity\Channel;
+use App\Entity\Company;
+use App\Entity\CompanyProduct;
+use App\Entity\Currency;
 use App\Entity\Language;
 use App\Entity\Product;
+use App\Entity\ProductSellPrice;
 use App\Entity\ProductTranslation;
+use App\Entity\Vat;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * Class ProductFixtures
+ *
+ * Class AddressFixtures
  * @package App\DataFixtures
  */
-class ProductFixtures extends Fixture
+class ProductFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * @var \Faker\Generator
@@ -22,7 +31,7 @@ class ProductFixtures extends Fixture
     protected $faker;
 
     /**
-     * CompanyFixtures constructor.
+     * ProductFixtures constructor.
      * @param $faker
      */
     public function __construct($faker)
@@ -35,34 +44,105 @@ class ProductFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        $brand = new Brand();
-        $brand->setName('Roland');
-        $manager->persist($brand);
-
-        $categories = $manager->getRepository(Category::class)->findAll();
+        $currencies = $manager->getRepository(Currency::class)->findAll();
         $languages = $manager->getRepository(Language::class)->findAll();
 
-        foreach ($categories as $category) {
-            for ($i = 0; $i <= 50; $i++) {
-                $product = new Product();
-                $product->setCategory($category);
-                $product->setBrand($brand);
-                $product->setEan($this->faker->ean8);
+        for ($j = 0; $j < 5; $j++) {
+            $channel = new Channel();
+            $channel->setName($this->faker->name);
+            $channel->setCurrency($this->faker->randomElement($currencies));
+            $channel->setIsPublic(true);
 
-                foreach ($languages as $language) {
-                    $productTranslation = new ProductTranslation();
-                    $productTranslation->setTranslatable($product);
-                    $productTranslation->setLanguage($language);
-                    $productTranslation->setName($this->faker->title);
-                    $productTranslation->setDescription($this->faker->title);
+            $manager->persist($channel);
+        }
 
-                    $manager->persist($productTranslation);
-                }
+        for ($j = 0; $j < 5; $j++) {
+            $brand = new Brand();
+            $brand->setName($this->faker->name);
 
-                $manager->persist($product);
+            $manager->persist($brand);
+        }
+
+        for ($j = 0; $j < 20; $j++) {
+            $category = new Category();
+
+            foreach ($languages as $language) {
+                $categoryTranslation = new CategoryTranslation();
+                $categoryTranslation->setTranslatable($category);
+                $categoryTranslation->setLanguage($language);
+                $categoryTranslation->setName($this->faker->title);
+                $categoryTranslation->setDescription($this->faker->title);
+
+                $manager->persist($categoryTranslation);
             }
 
-            $manager->flush();
+            $categories[] = $category;
+
+            $manager->persist($category);
         }
+
+        $manager->flush();
+
+        $vats = $manager->getRepository(Vat::class)->findAll();
+        $channels = $manager->getRepository(Channel::class)->findAll();
+        $companies = $manager->getRepository(Company::class)->findAll();
+        $brands = $manager->getRepository(Brand::class)->findAll();
+
+        for ($j = 0; $j < 200; $j++) {
+            $product = new Product();
+            $product->setBrand($this->faker->randomElement($brands));
+            $product->setEan($this->faker->ean13);
+            $product->setCategory($this->faker->randomElement($categories));
+
+            $companyProduct = new CompanyProduct();
+            $companyProduct->setProduct($product);
+            $companyProduct->setCompany($this->faker->randomElement($companies));
+            $companyProduct->setCurrency($this->faker->randomElement($currencies));
+            $companyProduct->setAvailability($this->faker->numberBetween(0, 1));
+            $companyProduct->setPriceBuyNetto($this->faker->numberBetween(1, 500));
+
+            $manager->persist($companyProduct);
+
+            $product->addCompanyProduct($companyProduct);
+
+            for ($k = 0; $k < 5; $k++) {
+                $productSellPrice = new ProductSellPrice();
+                $productSellPrice->setProduct($product);
+                $productSellPrice->setChannel($this->faker->randomElement($channels));
+                $productSellPrice->setVat($this->faker->randomElement($vats));
+                $productSellPrice->setActiveFrom(new \DateTime());
+                $productSellPrice->setActiveTo((new \DateTime())->modify('+1 year'));
+                $productSellPrice->setPriceSellBrutto($this->faker->numberBetween(501, 1000));
+                $productSellPrice->setPriceOldSellBrutto($this->faker->numberBetween(1000, 2000));
+                $productSellPrice->setCompanyProduct($product->getCompanyProducts()->first());
+
+                $manager->persist($productSellPrice);
+            }
+
+            foreach ($languages as $language) {
+                $productTranslation = new ProductTranslation();
+                $productTranslation->setTranslatable($product);
+                $productTranslation->setLanguage($language);
+                $productTranslation->setName($this->faker->title);
+                $productTranslation->setDescription($this->faker->title);
+
+                $manager->persist($productTranslation);
+            }
+
+            $manager->persist($product);
+        }
+
+        $manager->flush();
+    }
+
+    /**
+     * @return array
+     */
+    public function getDependencies(): array
+    {
+        return array(
+            CompanyFixtures::class,
+            CountryFixtures::class,
+        );
     }
 }

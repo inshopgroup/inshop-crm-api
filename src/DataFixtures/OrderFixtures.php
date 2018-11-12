@@ -72,7 +72,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
                 $ol->setHeader($oh);
                 $ol->setStatus($this->faker->randomElement($orderLineStatuses));
                 $ol->setVat($this->faker->randomElement($vats));
-                $ol->setName($productSellPrice->getProduct()->getName());
+                $ol->setName($productSellPrice->getProduct()->getTranslations()->first()->getName());
                 $ol->setPriceSellBrutto($productSellPrice->getPriceSellBrutto());
                 $ol->setProductSellPrice($productSellPrice);
 

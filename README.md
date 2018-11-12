@@ -139,13 +139,15 @@ mkdir inshop-crm
 # api
 git clone git@github.com:inshopgroup/inshop-crm-api.git
 cd inshop-crm-api
+cd cp .env.dist .env
 docker-compose up -d
 cd ..
 
 # client
 git clone git@github.com:inshopgroup/inshop-crm-client.git
 cd inshop-crm-client
-yarn run install
+cp .env.dist .env
+yarn install
 yarn run dev
 cd ..
 ```
