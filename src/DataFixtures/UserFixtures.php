@@ -43,7 +43,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $roles = $manager->getRepository(Role::class)->findAll();
-        $languages = $manager->getRepository(Language::class)->findAll();
+        $language = $manager->getRepository(Language::class)->findOneBy(['code' => 'en']);
         $users = [];
         $groups = [];
 
@@ -59,7 +59,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $user = new User();
-        $user->setLanguage($this->faker->randomElement($languages));
+        $user->setLanguage($language);
         $user->setUsername('demo');
         $user->setName(sprintf('%s %s', $this->faker->firstName, $this->faker->lastName));
         $user->addGroup($group);
@@ -69,7 +69,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
         for ($i = 0; $i < 20; $i++) {
             $user = new User();
-            $user->setLanguage($this->faker->randomElement($languages));
+            $user->setLanguage($language);
             $user->setUsername($this->faker->email);
             $user->setName(sprintf('%s %s', $this->faker->firstName, $this->faker->lastName));
             $user->addGroup($this->faker->randomElement($groups));
