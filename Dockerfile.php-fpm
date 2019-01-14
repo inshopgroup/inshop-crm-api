@@ -1,4 +1,4 @@
-FROM inshopgroup/docker-inshop-crm-api-php-fpm-prod:latest
+FROM registry.inshop.com.ua/crm/server/docker-inshop-crm-api-php-fpm-prod:latest
 
 WORKDIR /var/www
 ADD ./ /var/www

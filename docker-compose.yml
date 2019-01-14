@@ -3,7 +3,7 @@ version: '3.2'
 services:
   php:
     restart: unless-stopped
-    image: inshopgroup/docker-inshop-crm-api-php-fpm-prod:latest
+    image: registry.inshop.com.ua/crm/server/docker-inshop-crm-api-php-fpm-prod:latest
     depends_on:
       - db
     env_file:
@@ -17,7 +17,7 @@ services:
 
   nginx:
     restart: unless-stopped
-    image: inshopgroup/docker-inshop-crm-api-nginx-prod:latest
+    image: registry.inshop.com.ua/crm/server/docker-inshop-crm-api-nginx-prod:latest
     depends_on:
       - php
     volumes:
