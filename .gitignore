@@ -16,6 +16,7 @@
 
 .bash_history
 .composer
+.rnd
 
 supervisord.log
 supervisord.pid
