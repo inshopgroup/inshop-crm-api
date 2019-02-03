@@ -144,11 +144,11 @@ abstract class ElasticaClientBase
         $query->setQuery(
             $qb->query()->bool()
                 ->addMust(
-                    $qb->query()->term(['slug' => $slug])
+                    $qb->query()->term(['translations.slug' => $slug])
                 )
-                ->addMustNot(
-                    $qb->query()->exists('field1')
-                )
+//                ->addMustNot(
+//                    $qb->query()->exists('field1')
+//                )
         );
 
         $search = $this->client->createSearch($this->getIndex());
