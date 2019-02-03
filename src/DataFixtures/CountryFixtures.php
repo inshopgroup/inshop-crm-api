@@ -32,7 +32,7 @@ class CountryFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $country = new Country();
             $country->setName($this->faker->country);
 

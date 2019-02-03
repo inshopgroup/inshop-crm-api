@@ -103,6 +103,17 @@ class CategoryTranslation
     private $id;
 
     /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(length=128)
+     * @Groups({
+     *     "product_read",
+     *     "product_write",
+     *     "product_read_frontend"
+     * })
+     */
+    private $slug;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="translations")
      * @Assert\NotBlank()
      */
@@ -203,6 +214,18 @@ class CategoryTranslation
     public function setLanguage(Language $language): self
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

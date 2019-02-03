@@ -2,8 +2,9 @@
 
 namespace App\Service\Elastica\Client;
 
-use App\Entity\City;
+use App\Entity\CategoryTranslation;
 use App\Entity\Product;
+use App\Entity\ProductTranslation;
 use App\Service\ElasticaAdapter;
 use App\Service\ElasticaPaginator;
 use Elastica\Aggregation\Nested;
@@ -43,76 +44,24 @@ class ElasticaClientProduct extends ElasticaClientBase
         $mapping->setProperties(array(
             'id'      => array('type' => 'integer'),
             'search'     => array('type' => 'text', 'analyzer' => 'index_tokenizer_analyzer', 'search_analyzer' => 'search_analyzer'),
-            'slug'     => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-//            'name'     => array('type' => 'text', 'copy_to' => 'search', 'boost' => 2),
-            'title'     => array('type' => 'text', 'copy_to' => 'search', 'boost' => 2),
-            'status'    => array(
+            'translations'    => array(
                 'type' => 'object',
                 'properties' => array(
-                    'id'      => array('type' => 'integer'),
+                    'lang'      => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
+                    'slug'      => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
                     'name'      => array('type' => 'text'),
+                    'description'      => array('type' => 'text'),
                 ),
             ),
-            'salary'     => array('type' => 'integer'),
-            'cities'    => array(
+            'categoryId'      => array('type' => 'integer'),
+            'categoryTranslations'    => array(
                 'type' => 'nested',
                 'properties' => array(
-                    'id'      => array('type' => 'integer'),
+                    'lang'      => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
+                    'slug'      => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
                     'name'      => array('type' => 'text',  'fielddata' => true, 'analyzer' => 'index_keyword_analyzer'),
                 ),
             ),
-            'skills'    => array(
-                'type' => 'nested',
-                'properties' => array(
-                    'id'      => array('type' => 'integer'),
-                    'name'      => array('type' => 'text',  'fielddata' => true, 'analyzer' => 'index_keyword_analyzer'),
-                    'level'      => array('type' => 'integer'),
-                ),
-            ),
-            'description'     => array('type' => 'text', 'copy_to' => 'search'),
-            'yearsOfExperience '     => array('type' => 'integer'),
-            'category'    => array(
-                'type' => 'nested',
-                'properties' => array(
-                    'id'      => array('type' => 'integer'),
-                    'name'      => array('type' => 'text',  'fielddata' => true, 'analyzer' => 'index_keyword_analyzer'),
-                ),
-            ),
-            'additionalCategory'    => array(
-                'type' => 'object',
-                'properties' => array(
-                    'id'      => array('type' => 'integer'),
-                    'name'      => array('type' => 'text'),
-                ),
-            ),
-            'englishLevel'    => array(
-                'type' => 'nested',
-                'properties' => array(
-                    'id'      => array('type' => 'integer'),
-                    'name'      => array('type' => 'text',  'fielddata' => true, 'analyzer' => 'index_keyword_analyzer'),
-                ),
-            ),
-            'authorizationStatus'    => array(
-                'type' => 'nested',
-                'properties' => array(
-                    'id'      => array('type' => 'integer'),
-                    'name'      => array('type' => 'text',  'fielddata' => true, 'analyzer' => 'index_keyword_analyzer'),
-                ),
-            ),
-            'readyFullTimeOffice'  => array('type' => 'boolean'),
-            'readyFreelance'  => array('type' => 'boolean'),
-            'readyRemote'  => array('type' => 'boolean'),
-            'readyRelocateUsa'  => array('type' => 'boolean'),
-            'readyRelocateState'  => array('type' => 'boolean'),
-            'readyRelocateOtherCountry'  => array('type' => 'boolean'),
-            'lookingFor'  => array('type' => 'text'),
-            'highlights'  => array('type' => 'text'),
-//            'skype'     => array('type' => 'text'),
-//            'phone'     => array('type' => 'text'),
-//            'telegram'     => array('type' => 'text'),
-//            'linkedin'     => array('type' => 'text'),
-//            'github'     => array('type' => 'text'),
-            'createdAt'  => array('type' => 'text'),
         ));
 
         // Send mapping to type
@@ -125,75 +74,34 @@ class ElasticaClientProduct extends ElasticaClientBase
      */
     public function toArray(Product $entity): array
     {
-        $_cities = [];
-        $_skills = [];
+        $categoryTranslations = [];
 
-        /** @var City $city */
-        foreach ($entity->getCities() as $city) {
-            $_cities[] = [
-                'id' => $city->getId(),
-                'name' => $city->getName(),
+        /** @var CategoryTranslation $categoryTranslation */
+        foreach ($entity->getCategory()->getTranslations() as $categoryTranslation) {
+            $categoryTranslations[] = [
+              'lang' => $categoryTranslation->getLanguage()->getCode(),
+              'slug' => $categoryTranslation->getSlug(),
+              'name' => $categoryTranslation->getName(),
             ];
         }
 
-        /** @var Skill $skill */
-        foreach ($entity->getCandidateSkills() as $candidateSkill) {
-            $_skills[] = [
-                'id' => $candidateSkill->getSkill()->getId(),
-                'name' => $candidateSkill->getSkill()->getName(),
-                'level' => $candidateSkill->getLevel(),
-            ];
-        }
+        $translations = [];
 
-        $additionalCategory = null;
-        if ($entity->getCategory()) {
-            $additionalCategory = [
-                'id' => $entity->getCategory()->getId(),
-                'name' => $entity->getCategory()->getName(),
+        /** @var ProductTranslation $translation */
+        foreach ($entity->getTranslations() as $translation) {
+            $translations[] = [
+              'lang' => $translation->getLanguage()->getCode(),
+              'slug' => $categoryTranslation->getSlug(),
+              'name' => $translation->getName(),
+              'description' => $translation->getDescription(),
             ];
         }
 
         return [
             'id' => $entity->getId(),
-            'slug' => $entity->getSlug(),
-            'title' => $entity->getTitle(),
-            'status' => [
-                'id' => $entity->getStatus()->getId(),
-                'name' => $entity->getStatus()->getName(),
-            ],
-            'salary' => $entity->getSalary(),
-            'cities' => $_cities,
-            'skills' => $_skills,
-            'description' => $entity->getDescription(),
-            'yearsOfExperience' => $entity->getYearsOfExperience(),
-            'category' => [
-                'id' => $entity->getCategory()->getId(),
-                'name' => $entity->getCategory()->getName(),
-            ],
-            'additionalCategory' => $additionalCategory,
-            'englishLevel' => [
-                'id' => $entity->getEnglishLevel()->getId(),
-                'name' => $entity->getEnglishLevel()->getName(),
-            ],
-            'authorizationStatus' => [
-                'id' => $entity->getAuthorizationStatus()->getId(),
-                'name' => $entity->getAuthorizationStatus()->getName(),
-            ],
-            'readyFullTimeOffice' => $entity->getReadyFullTimeOffice(),
-            'readyFreelance' => $entity->getReadyFreelance(),
-            'readyRemote' => $entity->getReadyRemote(),
-            'readyRelocateUsa' => $entity->getReadyRelocateUsa(),
-            'readyRelocateState' => $entity->getReadyRelocateState(),
-            'readyRelocateOtherCountry' => $entity->getReadyRelocateOtherCountry(),
-            'lookingFor' => $entity->getLookingFor(),
-            'highlights' => $entity->getHighlights(),
-//            'skype' => $entity->getSkype(),
-//            'phone' => $entity->getPhone(),
-//            'telegram' => $entity->getLinkedin(),
-//            'linkedin' => $entity->getLinkedin(),
-//            'github' => $entity->getLinkedin(),
-            'createdAt' => $entity->getCreatedAt()->format('Y-m-d H:i:s'),
-            'updateAt' => $entity->getCreatedAt()->format('Y-m-d H:i:s'),
+            'translations' => $translations,
+            'categoryId' => $entity->getCategory()->getId(),
+            'categoryTranslations' => $categoryTranslations,
         ];
     }
 

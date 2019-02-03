@@ -50,7 +50,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
         $products = $manager->getRepository(Product::class)->findAll();
         $files = $manager->getRepository(File::class)->findAll();
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             /** @var Company $company */
             $company = $this->faker->randomElement($companies);
 
@@ -70,7 +70,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
 
             $manager->persist($ih);
 
-            for ($j = 0; $j < 50; $j++) {
+            for ($j = 0; $j < 5; $j++) {
                 $il = new InvoiceLine();
                 $il->setHeader($ih);
                 $il->setProduct($this->faker->randomElement($products));

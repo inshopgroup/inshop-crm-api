@@ -20,10 +20,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Class ElasticaSearchIndexCommand
+ * Class ElasticaIndexSearchCommand
  * @package App\Command
  */
-class ElasticaSearchIndexCommand extends ContainerAwareCommand
+class ElasticaIndexSearchCommand extends ContainerAwareCommand
 {
     /**
      * @var ElasticaClientSearch
@@ -45,7 +45,7 @@ class ElasticaSearchIndexCommand extends ContainerAwareCommand
     protected function configure(): void
     {
         $this
-            ->setName('elastica:search:index')
+            ->setName('elastica:index:search')
             ->setDescription('Update search index in elasticsearch');
     }
 
@@ -105,7 +105,7 @@ class ElasticaSearchIndexCommand extends ContainerAwareCommand
 
         /** @var SearchInterface $entity */
         foreach ($entities as $entity) {
-            $objects[] = $this->search->createElasticSearchObject($entity);
+            $objects[] = $this->search->toArray($entity);
             $io->progressAdvance();
         }
 

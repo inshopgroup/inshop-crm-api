@@ -70,8 +70,8 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 $categoryTranslation = new CategoryTranslation();
                 $categoryTranslation->setTranslatable($category);
                 $categoryTranslation->setLanguage($language);
-                $categoryTranslation->setName($this->faker->title);
-                $categoryTranslation->setDescription($this->faker->title);
+                $categoryTranslation->setName($this->faker->company);
+                $categoryTranslation->setDescription($this->faker->text);
 
                 $manager->persist($categoryTranslation);
             }
@@ -123,8 +123,8 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 $productTranslation = new ProductTranslation();
                 $productTranslation->setTranslatable($product);
                 $productTranslation->setLanguage($language);
-                $productTranslation->setName($this->faker->title);
-                $productTranslation->setDescription($this->faker->title);
+                $productTranslation->setName($this->faker->company);
+                $productTranslation->setDescription($this->faker->text);
 
                 $manager->persist($productTranslation);
             }

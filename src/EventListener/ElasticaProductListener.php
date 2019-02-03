@@ -7,7 +7,7 @@ use App\Service\Elastica\Client\ElasticaClientProduct;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**
- * Class ElasticaCandidateListener
+ * Class ElasticaProductListener
  * @package App\EventListener
  */
 class ElasticaProductListener

@@ -63,3 +63,4 @@ stof_doctrine_extensions:
             softdeleteable: true
             blameable: true
             loggable: true
+            sluggable: true

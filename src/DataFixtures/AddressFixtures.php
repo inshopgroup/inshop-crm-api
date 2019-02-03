@@ -35,7 +35,7 @@ class AddressFixtures extends Fixture implements DependentFixtureInterface
     {
         $countries = $manager->getRepository(Country::class)->findAll();
 
-        for ($j = 0; $j < 200; $j++) {
+        for ($j = 0; $j < 50; $j++) {
             /** @var Country $country */
             $country = $this->faker->randomElement($countries);
 

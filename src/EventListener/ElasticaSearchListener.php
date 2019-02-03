@@ -18,6 +18,11 @@ class ElasticaSearchListener
     protected $search;
 
     /**
+     * @var bool
+     */
+    protected $enabled = true;
+
+    /**
      * ElasticaListener constructor.
      * @param ElasticaClientSearch $search
      */
@@ -35,8 +40,8 @@ class ElasticaSearchListener
     {
         $entity = $eventArgs->getObject();
 
-        if ($entity instanceof SearchInterface) {
-            $this->search->addDocument($this->search->createElasticSearchObject($entity));
+        if ($this->enabled && $entity instanceof SearchInterface) {
+            $this->search->addDocument($this->search->toArray($entity));
         }
     }
 
@@ -49,8 +54,8 @@ class ElasticaSearchListener
     {
         $entity = $eventArgs->getObject();
 
-        if ($entity instanceof SearchInterface) {
-            $this->search->addDocument($this->search->createElasticSearchObject($entity));
+        if ($this->enabled && $entity instanceof SearchInterface) {
+            $this->search->addDocument($this->search->toArray($entity));
         }
     }
 
@@ -65,8 +70,23 @@ class ElasticaSearchListener
         $entity = $eventArgs->getObject();
 
         if ($entity instanceof SearchInterface) {
-            $object = $this->search->createElasticSearchObject($entity);
-            $this->search->deleteDocument($object->getId());
+            $this->search->deleteDocument($entity->getId());
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 }

@@ -84,7 +84,7 @@ class ElasticaClient
 
     /**
      * @param string $index
-     * @param array $objects
+     * @param array $datas
      */
     public function addDocuments(string $index, array $datas): void
     {

@@ -2,6 +2,7 @@
 
 namespace App\Service\Elastica\Client;
 
+use ApiPlatform\Core\Api\IriConverterInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Elastica\Document;
 use Elastica\Query;
@@ -30,14 +31,21 @@ abstract class ElasticaClientBase
     protected $em;
 
     /**
-     * ElasticaClientRecruiter constructor.
+     * @var IriConverterInterface
+     */
+    protected $iriConverter;
+
+    /**
+     * ElasticaClientBase constructor.
      * @param ElasticaClient $client
      * @param EntityManagerInterface $em
+     * @param IriConverterInterface $iriConverter
      */
-    public function __construct(ElasticaClient $client, EntityManagerInterface $em)
+    public function __construct(ElasticaClient $client, EntityManagerInterface $em, IriConverterInterface $iriConverter)
     {
         $this->client = $client;
         $this->em = $em;
+        $this->iriConverter = $iriConverter;
     }
 
     /**

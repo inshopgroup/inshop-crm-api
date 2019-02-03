@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Entity\Product;
+use App\Repository\ProductRepository;
 use App\Service\Elastica\Client\ElasticaClientProduct;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -53,19 +55,19 @@ class ElasticaIndexProductCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $io = new SymfonyStyle($input, $output);
-        $io->note('Indexing candidates');
+        $io->note('Indexing products');
         $io->note((new \DateTime())->format('Y-m-d H:i:s'));
 
-        /** @var CandidateRepository $repository */
-        $repository = $em->getRepository(Candidate::class);
-        $entities = $repository->getActiveCandidates();
+        /** @var ProductRepository $repository */
+        $repository = $em->getRepository(Product::class);
+        $entities = $repository->findAll();
         $entitiesCount = \count($entities);
 
         $io->progressStart($entitiesCount);
 
         $objects = [];
 
-        /** @var Candidate $entity */
+        /** @var Product $entity */
         foreach ($entities as $entity) {
             $objects[] = $this->search->toArray($entity);
             $io->progressAdvance();

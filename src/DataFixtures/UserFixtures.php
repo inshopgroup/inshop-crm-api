@@ -67,7 +67,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($user);
         $manager->flush();
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $user = new User();
             $user->setLanguage($language);
             $user->setUsername($this->faker->email);

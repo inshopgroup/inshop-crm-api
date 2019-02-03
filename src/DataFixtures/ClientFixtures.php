@@ -52,7 +52,7 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
 
         $clients = [];
 
-        for ($j = 0; $j < 60; $j++) {
+        for ($j = 0; $j < 10; $j++) {
             $client = new Client();
             $client->setName(sprintf('%s %s', $this->faker->firstName, $this->faker->lastName));
             $client->setDescription($this->faker->name);
