@@ -212,6 +212,9 @@
     "ocramius/proxy-manager": {
         "version": "2.2.0"
     },
+    "pagerfanta/pagerfanta": {
+        "version": "v2.0.1"
+    },
     "php-cs-fixer/diff": {
         "version": "v1.2.0"
     },
@@ -508,6 +511,9 @@
     },
     "webmozart/assert": {
         "version": "1.2.0"
+    },
+    "white-october/pagerfanta-bundle": {
+        "version": "v1.2.3"
     },
     "willdurand/faker-bundle": {
         "version": "1.4.1"

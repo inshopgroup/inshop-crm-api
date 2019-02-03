@@ -54,7 +54,6 @@ services:
       - { name: 'doctrine.event_listener', event: 'postUpdate' }
       - { name: 'doctrine.event_listener', event: 'preRemove' }
 
-
     App\Service\Normalizer\ElasticaCollectionNormalizer:
       class: 'App\Service\Normalizer\ElasticaCollectionNormalizer'
       arguments:

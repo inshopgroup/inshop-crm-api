@@ -18,6 +18,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use App\Controller\Product\ProductFrontendGetItemAction;
 
 /**
  * Product
@@ -38,11 +39,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *          "post"={
  *              "access_control"="is_granted('ROLE_PRODUCT_CREATE')"
  *          },
- *          "frontend"={
+ *          "frontendGet"={
  *              "method"="GET",
  *              "path"="/frontend/products",
  *              "normalization_context"={
- *                  "groups"={"product_read_frontend"}
+ *                  "groups"={"Default"}
  *              },
  *          }
  *     },
@@ -56,13 +57,15 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *          "delete"={
  *              "access_control"="is_granted('ROLE_PRODUCT_DELETE')"
  *          },
- *          "frontend"={
+ *          "frontendGet"={
  *              "method"="GET",
- *              "path"="/frontend/products/{id}",
+ *              "path"="/frontend/products/{slug}",
  *              "normalization_context"={
- *                  "groups"={"product_read_frontend_item"}
+ *                  "groups"={"Default"}
  *              },
- *          }
+ *              "controller"=ProductFrontendGetItemAction::class,
+ *              "defaults"={"_api_receive"=false},
+ *          },
  *     })
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
  * @ApiFilter(SearchFilter::class, properties={

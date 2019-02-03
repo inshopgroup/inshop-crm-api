@@ -106,9 +106,9 @@ class CategoryTranslation
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=128)
      * @Groups({
-     *     "product_read",
-     *     "product_write",
-     *     "product_read_frontend"
+     *     "category_read",
+     *     "category_write",
+     *     "category_read_frontend"
      * })
      */
     private $slug;
