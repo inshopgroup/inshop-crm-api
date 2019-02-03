@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\ElasticaClientSearch;
+use App\Service\Elastica\Client\ElasticaClientSearch;
 use Elastica\ResultSet;
 use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;

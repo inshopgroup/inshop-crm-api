@@ -40,9 +40,33 @@ services:
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
 
-#    app.elastica.listener.search.index:
-#        class: 'App\EventListener\ElasticaListener'
-#        tags:
-#            - { name: 'doctrine.event_listener', event: 'postPersist' }
-#            - { name: 'doctrine.event_listener', event: 'postUpdate' }
-#            - { name: 'doctrine.event_listener', event: 'preRemove' }
+    app.elastica.listener.search.index:
+        class: 'App\EventListener\ElasticaSearchListener'
+        tags:
+            - { name: 'doctrine.event_listener', event: 'postPersist' }
+            - { name: 'doctrine.event_listener', event: 'postUpdate' }
+            - { name: 'doctrine.event_listener', event: 'preRemove' }
+
+    app.elastica.listener.product.index:
+      class: 'App\EventListener\ElasticaProductListener'
+      tags:
+      - { name: 'doctrine.event_listener', event: 'postPersist' }
+      - { name: 'doctrine.event_listener', event: 'postUpdate' }
+      - { name: 'doctrine.event_listener', event: 'preRemove' }
+
+
+    App\Service\Normalizer\ElasticaCollectionNormalizer:
+      class: 'App\Service\Normalizer\ElasticaCollectionNormalizer'
+      arguments:
+        - '@api_platform.jsonld.context_builder'
+        - '@api_platform.resource_class_resolver'
+      tags:
+        - { name: 'serializer.normalizer', priority: 17 }
+
+    App\Service\Normalizer\ElasticaItemNormalizer:
+      class: 'App\Service\Normalizer\ElasticaItemNormalizer'
+      arguments:
+        - '@api_platform.jsonld.context_builder'
+        - '@api_platform.resource_class_resolver'
+      tags:
+        - { name: 'serializer.normalizer', priority: 17 }

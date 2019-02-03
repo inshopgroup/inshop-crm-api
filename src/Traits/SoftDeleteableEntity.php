@@ -5,10 +5,8 @@ namespace App\Traits;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * SoftDeletable Trait, usable with PHP >= 5.4
- *
- * @author Wesley van Opdorp <wesley.van.opdorp@freshheads.com>
- * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * Trait SoftDeleteableEntity
+ * @package App\Traits
  */
 trait SoftDeleteableEntity
 {

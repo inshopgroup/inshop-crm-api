@@ -3,14 +3,14 @@
 namespace App\EventListener;
 
 use App\Interfaces\SearchInterface;
-use App\Service\ElasticaClientSearch;
+use App\Service\Elastica\Client\ElasticaClientSearch;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**
- * Class ElasticaListener
+ * Class ElasticaSearchListener
  * @package App\EventListener
  */
-class ElasticaListener
+class ElasticaSearchListener
 {
     /**
      * @var ElasticaClientSearch

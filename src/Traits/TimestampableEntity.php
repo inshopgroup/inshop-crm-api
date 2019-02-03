@@ -7,10 +7,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Timestampable Trait, usable with PHP >= 5.4
- *
- * @author Gediminas Morkevicius <gediminas.morkevicius@gmail.com>
- * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * Trait TimestampableEntity
+ * @package App\Traits
  */
 trait TimestampableEntity
 {

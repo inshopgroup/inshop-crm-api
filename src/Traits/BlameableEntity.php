@@ -7,10 +7,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Blameable Trait, usable with PHP >= 5.4
- *
- * @author David Buchmann <mail@davidbu.ch>
- * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * Trait BlameableEntity
+ * @package App\Traits
  */
 trait BlameableEntity
 {

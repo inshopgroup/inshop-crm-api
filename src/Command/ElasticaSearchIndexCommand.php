@@ -12,7 +12,7 @@ use App\Entity\Document;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Interfaces\SearchInterface;
-use App\Service\ElasticaClientSearch;
+use App\Service\Elastica\Client\ElasticaClientSearch;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,10 +20,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Class SearchIndexCommand
- * @package AppBundle\Command
+ * Class ElasticaSearchIndexCommand
+ * @package App\Command
  */
-class SearchIndexCommand extends ContainerAwareCommand
+class ElasticaSearchIndexCommand extends ContainerAwareCommand
 {
     /**
      * @var ElasticaClientSearch
@@ -45,7 +45,7 @@ class SearchIndexCommand extends ContainerAwareCommand
     protected function configure(): void
     {
         $this
-            ->setName('search:index')
+            ->setName('elastica:search:index')
             ->setDescription('Update search index in elasticsearch');
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Elastica\Client;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use App\Entity\ElasticSearch;
