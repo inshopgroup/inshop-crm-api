@@ -91,7 +91,7 @@ class ElasticaClientProduct extends ElasticaClientBase
         foreach ($entity->getTranslations() as $translation) {
             $translations[] = [
               'lang' => $translation->getLanguage()->getCode(),
-              'slug' => $categoryTranslation->getSlug(),
+              'slug' => $translation->getSlug(),
               'name' => $translation->getName(),
               'description' => $translation->getDescription(),
             ];
