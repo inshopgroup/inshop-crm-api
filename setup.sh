@@ -16,5 +16,5 @@ php bin/console doctrine:schema:validate
 php bin/console doctrine:migration:migrate --no-interaction
 php bin/console doctrine:fixtures:load --append
 
-#php bin/console elastica:index:search
-#php bin/console elastica:index:products
+php bin/console elastica:index:search
+php bin/console elastica:index:product
