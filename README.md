@@ -73,8 +73,14 @@ services:
   ecommerce:
     restart: always
     image: inshopgroup/inshop-crm-ecommerce
+    user: node
+    working_dir: /var/www
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
     ports:
-      - ${PORT_ECOMMERCE}:80
+      - ${PORT_ECOMMERCE}:3000
+    command: "yarn start"
 
   client:
     restart: always
