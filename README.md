@@ -1,6 +1,8 @@
-# INSHOP CRM API
+# INSHOP CRM/ERP API
 
-Inshop CRM is simple & powerful system with clients management, Projects & tasks, Documents, Simple Accounting, REST API, ...
+Inshop CRM/ERP is powerful framework which allows to build systems for business with different workflows.
+It has on board multi language support, clients management, projects & tasks, documents, simple accounting, inventory management, 
+orders & invoice management, possibilities to integrate with third party software, REST API, and many other features.
 
 https://inshopcrm.com/
 
@@ -38,13 +40,13 @@ In/out invoices management. Generate and sent invoices to client via scheduler.
  - API Platform
  - Postgres
  - Elasticsearch
- - Vue
+ - VueJs, Vuex, Nuxt
  - Bootstrap
  - Docker
  - GIT
 
 
-# Instalation
+# Installation
 
 ## Using docker-compose
 

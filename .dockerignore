@@ -1,0 +1,8 @@
+/var/log/*
+/var/cache/*
+/.composer
+/public/images/1000/*
+/public/images/420/*
+/public/images/200/*
+/data/backups/
+/data/files/
