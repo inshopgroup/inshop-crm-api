@@ -1,6 +1,6 @@
-# INSHOP CRM/ERP API
+# INSHOP CRM / ERP / ECOMMERCE
 
-Inshop CRM/ERP is powerful framework which allows to build systems for business with different workflows.
+Inshop CRM / ERP is powerful framework which allows to build systems for business with different workflows.
 It has on board multi language support, clients management, projects & tasks, documents, simple accounting, inventory management, 
 orders & invoice management, possibilities to integrate with third party software, REST API, and many other features.
 
@@ -22,24 +22,27 @@ https://demo.inshopcrm.com/signin
 
 ## Main Features
 
-#### Clients management
-Create clients manually or via REST API.
-
-#### Projects & tasks
-Create projects and assign tasks for user. Due to nice calendar, check your tasks.
-
-#### Documents
-Upload any kind of documents and templates.
-
-#### Simple Accounting
-In/out invoices management. Generate and sent invoices to client via scheduler.
+ * Multi language support
+ * Clients management
+ * Projects & tasks
+ * Calendar with events & reminders
+ * Documents & templates
+ * Multi currency support
+ * Products & categories management
+ * Prices and availability management
+ * Possibilities for fulfillment
+ * Invoice management
 
 ## Technologies
+
+### Backend
  - PHP 7.2
  - Symfony 4
  - API Platform
  - Postgres
  - Elasticsearch
+ 
+### CRM / ERP / ecommerce
  - VueJs, Vuex, Nuxt
  - Bootstrap
  - Docker
