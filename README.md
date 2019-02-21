@@ -83,7 +83,7 @@ services:
       HOST: 0.0.0.0
     ports:
       - ${PORT_ECOMMERCE}:3000
-    command: "yarn start"
+    command: "npm start"
 
   client:
     restart: always
