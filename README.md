@@ -54,6 +54,7 @@ In/out invoices management. Generate and sent invoices to client via scheduler.
 ```dotenv
 PORT_API=8888
 PORT_CLIENT=8080
+PORT_ECOMMERCE=8081
 
 DATABASE_NAME=api
 DATABASE_USER=api
@@ -68,9 +69,15 @@ docker-compose.yml
 version: '3.2'
 
 services:
+  ecommerce:
+    restart: always
+    image: inshopgroup/inshop-crm-ecommerce
+    ports:
+      - ${PORT_ECOMMERCE}:80
+
   client:
     restart: always
-    image: inshopgroup/inshop-crm-client-nginx
+    image: inshopgroup/inshop-crm-client
     ports:
       - ${PORT_CLIENT}:80
 
@@ -81,6 +88,7 @@ services:
       - db
     volumes:
       - files-data:/var/www/data
+      - images-data:/var/www/public/images
     networks:
       - api
 
@@ -91,6 +99,8 @@ services:
       - php
     ports:
       - ${PORT_API}:80
+    volumes:
+      - images-data:/var/www/images
     networks:
       - api
 
@@ -126,6 +136,7 @@ volumes:
   es-data: {}
   db-data: {}
   files-data: {}
+  images-data: {}
 
 networks:
     api:
@@ -137,6 +148,7 @@ networks:
 
 ```bash
 mkdir inshop-crm
+cd inshop-crm
 
 # api
 git clone git@github.com:inshopgroup/inshop-crm-api.git
@@ -148,6 +160,14 @@ cd ..
 # client
 git clone git@github.com:inshopgroup/inshop-crm-client.git
 cd inshop-crm-client
+cp .env.dist .env
+yarn install
+yarn run dev
+cd ..
+
+# ecommerce
+git clone git@github.com:inshopgroup/inshop-crm-ecommerce.git
+cd inshop-crm-ecommerce
 cp .env.dist .env
 yarn install
 yarn run dev
@@ -166,7 +186,8 @@ Enter pass phrase for config/jwt/private.pem: **!ChangeMe!**
 
 Enjoy, after run, API will be available under [http://localhost:8888/docs](http://localhost:8888/docs)
 
-And client under [http://localhost:8080](http://localhost:8080)
+Client - [http://localhost:8080](http://localhost:8080)
+Ecommerce [http://localhost:8081](http://localhost:8081)
 
 ```
 username: demo
