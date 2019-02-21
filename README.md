@@ -48,7 +48,7 @@ In/out invoices management. Generate and sent invoices to client via scheduler.
 
 # Installation
 
-## Using docker-compose
+## Using docker-compose for local testing
 
 .env
 ```dotenv
