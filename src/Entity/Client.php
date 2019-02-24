@@ -147,7 +147,12 @@ class Client implements ClientInterface, SearchInterface
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Address", inversedBy="clients")
      * @ORM\OrderBy({"id" = "DESC"})
+     * @Groups({
+     *     "client_read",
+     *     "client_write"
+     * })
      * @ApiSubresource()
+     * @Assert\Valid()
      */
     private $addresses;
 

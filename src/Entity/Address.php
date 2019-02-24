@@ -110,6 +110,7 @@ class Address implements SearchInterface
      * @Groups({
      *     "address_read",
      *     "company_write",
+     *     "client_read",
      *     "client_write",
      *     "company_read_collection"
      * })
@@ -122,7 +123,8 @@ class Address implements SearchInterface
      * @Groups({
      *     "address_read",
      *     "address_write",
-     *     "company_read_collection"
+     *     "company_read_collection",
+     *     "client_read"
      * })
      * @Assert\NotBlank()
      */
@@ -132,9 +134,10 @@ class Address implements SearchInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\City")
      * @Gedmo\Versioned
      * @Groups({
+     *     "client_read",
      *     "address_read",
      *     "address_write",
-     *     "company_read_collection"
+     *     "company_read_collection",
      * })
      * @Assert\NotBlank()
      */
@@ -147,7 +150,8 @@ class Address implements SearchInterface
      * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
-     *     "address_write"
+     *     "address_write",
+     *     "client_read"
      * })
      */
     private $region;
@@ -159,7 +163,8 @@ class Address implements SearchInterface
      * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
-     *     "address_write"
+     *     "address_write",
+     *     "client_read"
      * })
      */
     private $district;
@@ -172,7 +177,8 @@ class Address implements SearchInterface
      * @Groups({
      *     "address_read",
      *     "address_write",
-     *     "company_read_collection"
+     *     "company_read_collection",
+     *     "client_read"
      * })
      */
     private $postCode;
@@ -184,7 +190,8 @@ class Address implements SearchInterface
      * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
-     *     "address_write"
+     *     "address_write",
+     *     "client_read"
      * })
      * @Assert\NotBlank()
      */
@@ -197,7 +204,8 @@ class Address implements SearchInterface
      * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
-     *     "address_write"
+     *     "address_write",
+     *     "client_read"
      * })
      * @Assert\NotBlank()
      */
@@ -210,7 +218,8 @@ class Address implements SearchInterface
      * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
-     *     "address_write"
+     *     "address_write",
+     *     "client_read"
      * })
      */
     private $apartment;
@@ -222,7 +231,8 @@ class Address implements SearchInterface
      * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
-     *     "address_write"
+     *     "address_write",
+     *     "client_read"
      * })
      */
     private $comment;

@@ -94,7 +94,8 @@ class Country implements SearchInterface
      *     "city_write",
      *     "address_read",
      *     "address_write",
-     *     "company_read_collection"
+     *     "company_read_collection",
+     *     "client_read"
      * })
      */
     private $id;
@@ -107,7 +108,8 @@ class Country implements SearchInterface
      *     "country_write",
      *     "city_read",
      *     "address_read",
-     *     "company_read_collection"
+     *     "company_read_collection",
+     *     "client_read"
      * })
      * @Assert\NotBlank()
      */
