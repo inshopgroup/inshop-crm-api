@@ -91,6 +91,7 @@ class Label
      *     "label_read",
      *     "product_read",
      *     "company_read",
+     *     "company_write",
      *     "company_read_collection"
      * })
      */

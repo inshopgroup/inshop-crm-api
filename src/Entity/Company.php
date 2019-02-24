@@ -349,6 +349,7 @@ class Company implements SearchInterface
      *     "company_write",
      *     "company_read_collection"
      * })
+     * @Assert\NotBlank()
      */
     private $code;
 
