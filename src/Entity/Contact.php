@@ -99,7 +99,8 @@ class Contact implements SearchInterface
      *     "client_read_collection",
      *     "client_write",
      *     "company_write",
-     *     "company_read_collection"
+     *     "company_read_collection",
+     *     "company_read",
      * })
      */
     private $id;
@@ -115,7 +116,8 @@ class Contact implements SearchInterface
      *     "client_read",
      *     "client_read_collection",
      *     "client_write",
-     *     "company_read_collection"
+     *     "company_read_collection",
+     *     "company_read",
      * })
      * @Assert\NotBlank()
      */
@@ -130,7 +132,8 @@ class Contact implements SearchInterface
      *     "client_read",
      *     "client_read_collection",
      *     "client_write",
-     *     "company_read_collection"
+     *     "company_read_collection",
+     *     "company_read",
      * })
      * @Assert\NotNull()
      */

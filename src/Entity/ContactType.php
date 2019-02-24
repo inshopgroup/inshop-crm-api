@@ -100,7 +100,8 @@ class ContactType
      *     "client_read",
      *     "client_read_collection",
      *     "client_write",
-     *     "company_read_collection"
+     *     "company_read_collection",
+     *     "company_read",
      * })
      */
     private $id;
@@ -116,7 +117,8 @@ class ContactType
      *     "contact_read",
      *     "client_read",
      *     "client_read_collection",
-     *     "company_read_collection"
+     *     "company_read_collection",
+     *     "company_read",
      * })
      * @Assert\NotBlank()
      */

@@ -109,6 +109,7 @@ class Address implements SearchInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Groups({
      *     "address_read",
+     *     "company_read",
      *     "company_write",
      *     "client_read",
      *     "client_write",
@@ -124,7 +125,8 @@ class Address implements SearchInterface
      *     "address_read",
      *     "address_write",
      *     "company_read_collection",
-     *     "client_read"
+     *     "client_read",
+     *     "company_read",
      * })
      * @Assert\NotBlank()
      */
@@ -138,6 +140,7 @@ class Address implements SearchInterface
      *     "address_read",
      *     "address_write",
      *     "company_read_collection",
+     *     "company_read",
      * })
      * @Assert\NotBlank()
      */
@@ -151,7 +154,8 @@ class Address implements SearchInterface
      * @Groups({
      *     "address_read",
      *     "address_write",
-     *     "client_read"
+     *     "client_read",
+     *     "company_read",
      * })
      */
     private $region;
@@ -164,7 +168,8 @@ class Address implements SearchInterface
      * @Groups({
      *     "address_read",
      *     "address_write",
-     *     "client_read"
+     *     "client_read",
+     *     "company_read",
      * })
      */
     private $district;
@@ -178,7 +183,8 @@ class Address implements SearchInterface
      *     "address_read",
      *     "address_write",
      *     "company_read_collection",
-     *     "client_read"
+     *     "client_read",
+     *     "company_read",
      * })
      */
     private $postCode;
@@ -191,7 +197,8 @@ class Address implements SearchInterface
      * @Groups({
      *     "address_read",
      *     "address_write",
-     *     "client_read"
+     *     "client_read",
+     *     "company_read",
      * })
      * @Assert\NotBlank()
      */
@@ -205,7 +212,8 @@ class Address implements SearchInterface
      * @Groups({
      *     "address_read",
      *     "address_write",
-     *     "client_read"
+     *     "client_read",
+     *     "company_read",
      * })
      * @Assert\NotBlank()
      */
@@ -219,7 +227,8 @@ class Address implements SearchInterface
      * @Groups({
      *     "address_read",
      *     "address_write",
-     *     "client_read"
+     *     "client_read",
+     *     "company_read",
      * })
      */
     private $apartment;
@@ -232,7 +241,8 @@ class Address implements SearchInterface
      * @Groups({
      *     "address_read",
      *     "address_write",
-     *     "client_read"
+     *     "client_read",
+     *     "company_read",
      * })
      */
     private $comment;
@@ -290,7 +300,7 @@ class Address implements SearchInterface
     /**
      * @param Country $country
      */
-    public function setCountry(Country $country): void
+    public function setCountry(?Country $country): void
     {
         $this->country = $country;
     }
@@ -306,7 +316,7 @@ class Address implements SearchInterface
     /**
      * @param City $city
      */
-    public function setCity(City $city): void
+    public function setCity(?City $city): void
     {
         $this->city = $city;
     }

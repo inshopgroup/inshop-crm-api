@@ -264,6 +264,7 @@ class Company implements SearchInterface
      * @ApiSubresource()
      * @Groups({
      *     "company_read_collection",
+     *     "company_read",
      * })
      */
     private $addresses;
@@ -284,7 +285,7 @@ class Company implements SearchInterface
      * @Groups({
      *     "company_read",
      *     "company_read_collection",
-     *     "company_write"
+     *     "company_write",
      * })
      * @ApiSubresource()
      * @Assert\Valid()
