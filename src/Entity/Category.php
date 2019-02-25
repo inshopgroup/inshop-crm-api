@@ -102,6 +102,7 @@ class Category
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Groups({
      *     "category_read",
+     *     "product_read",
      *     "product_write",
      *     "category_read_frontend"
      * })
