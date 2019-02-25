@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class ProductFrontendGetItemAction
- * @package App\Controller\Candidate
+ * @package App\Controller\Product
  */
 class ProductFrontendGetItemAction
 {
