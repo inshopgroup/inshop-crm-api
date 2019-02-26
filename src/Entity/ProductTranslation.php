@@ -26,7 +26,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *          }
  *     )
  * })
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ProductTranslationRepository")
  * @UniqueEntity(fields={"language", "translatable"}, errorPath="language")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Gedmo\Loggable

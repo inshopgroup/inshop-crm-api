@@ -17,7 +17,8 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
-use App\Controller\CategoryAction;
+use App\Controller\Category\CategoryFrontendGetCollectionAction;
+use App\Controller\Category\CategoryFrontendGetItemAction;
 
 /**
  * Category
@@ -41,7 +42,7 @@ use App\Controller\CategoryAction;
  *          "frontend"={
  *              "method"="GET",
  *              "path"="/frontend/categories",
- *              "controller"=CategoryAction::class,
+ *              "controller"=CategoryFrontendGetCollectionAction::class,
  *              "defaults"={"_api_receive"=false},
  *              "normalization_context"={
  *                  "groups"={"category_read_frontend"}
@@ -57,6 +58,15 @@ use App\Controller\CategoryAction;
  *          },
  *          "delete"={
  *              "access_control"="is_granted('ROLE_CATEGORY_DELETE')"
+ *          },
+ *          "frontend"={
+ *              "method"="GET",
+ *              "path"="/frontend/categories/{slug}",
+ *              "controller"=CategoryFrontendGetItemAction::class,
+ *              "defaults"={"_api_receive"=false},
+ *              "normalization_context"={
+ *                  "groups"={"category_read_frontend"}
+ *              },
  *          }
  *     })
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
