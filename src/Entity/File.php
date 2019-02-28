@@ -206,7 +206,7 @@ class File
         return $this;
     }
 
-    public function getOriginalName(): ?string
+    public function getOriginalName(): string
     {
         return $this->originalName;
     }
@@ -216,5 +216,13 @@ class File
         $this->originalName = $originalName;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getOriginalName();
     }
 }
