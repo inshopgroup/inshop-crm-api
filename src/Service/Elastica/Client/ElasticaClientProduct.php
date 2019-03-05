@@ -42,24 +42,26 @@ class ElasticaClientProduct extends ElasticaClientBase
         $mapping->setType($elasticaType);
 
         $mapping->setProperties(array(
-            'id'      => array('type' => 'integer'),
-            'search'     => array('type' => 'text', 'analyzer' => 'index_tokenizer_analyzer', 'search_analyzer' => 'search_analyzer'),
-            'translations'    => array(
+            'id' => array('type' => 'integer'),
+            'slug' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
+            'search' => array('type' => 'text', 'analyzer' => 'index_tokenizer_analyzer', 'search_analyzer' => 'search_analyzer'),
+            'translations' => array(
                 'type' => 'object',
                 'properties' => array(
-                    'lang'      => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-                    'slug'      => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-                    'name'      => array('type' => 'text'),
-                    'description'      => array('type' => 'text'),
+                    'lang' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
+                    'slug' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
+                    'name' => array('type' => 'text'),
+                    'description' => array('type' => 'text'),
                 ),
             ),
-            'categoryId'      => array('type' => 'integer'),
-            'categoryTranslations'    => array(
+            'categoryId' => array('type' => 'integer'),
+            'categorySlug' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
+            'categoryTranslations' => array(
                 'type' => 'nested',
                 'properties' => array(
-                    'lang'      => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-                    'slug'      => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-                    'name'      => array('type' => 'text',  'fielddata' => true, 'analyzer' => 'index_keyword_analyzer'),
+                    'lang' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
+                    'slug' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
+                    'name' => array('type' => 'text',  'fielddata' => true, 'analyzer' => 'index_keyword_analyzer'),
                 ),
             ),
         ));
@@ -99,8 +101,10 @@ class ElasticaClientProduct extends ElasticaClientBase
 
         return [
             'id' => $entity->getId(),
+            'slug' => $entity->getSlug(),
             'translations' => $translations,
             'categoryId' => $entity->getCategory()->getId(),
+            'categorySlug' => $entity->getCategory()->getSlug(),
             'categoryTranslations' => $categoryTranslations,
         ];
     }
@@ -119,14 +123,6 @@ class ElasticaClientProduct extends ElasticaClientBase
 //        $agg->addAggregation($terms);
 //        $query->addAggregation($agg);
 //
-//        $agg = new Nested('skills', 'skills');
-//        $terms = new Terms('id');
-//        $script = new Script("doc['skills.id'].value + '|' + doc['skills.name'].value");
-//        $terms->setScript($script);
-//        $terms->setSize(30);
-//        $agg->addAggregation($terms);
-//        $query->addAggregation($agg);
-//
 //        $agg = new Nested('category', 'category');
 //        $terms = new Terms('id');
 //        $script = new Script("doc['category.id'].value + '|' + doc['category.name'].value");
@@ -135,39 +131,14 @@ class ElasticaClientProduct extends ElasticaClientBase
 //        $agg->addAggregation($terms);
 //        $query->addAggregation($agg);
 //
-//        $agg = new Nested('englishLevel', 'englishLevel');
-//        $terms = new Terms('id');
-//        $script = new Script("doc['englishLevel.id'].value + '|' + doc['englishLevel.name'].value");
-//        $terms->setScript($script);
-//        $terms->setSize(30);
-//        $agg->addAggregation($terms);
-//        $query->addAggregation($agg);
-//
-//        $agg = new Nested('authorizationStatus', 'authorizationStatus');
-//        $terms = new Terms('id');
-//        $script = new Script("doc['authorizationStatus.id'].value + '|' + doc['authorizationStatus.name'].value");
-//        $terms->setScript($script);
-//        $terms->setSize(30);
-//        $agg->addAggregation($terms);
-//        $query->addAggregation($agg);
-//
-//        $agg = new Range('salary');
-//        $agg->setField('salary');
+//        $agg = new Range('price');
+//        $agg->setField('price');
 //        $agg->addRange(0, 1000);
 //        $agg->addRange(1000, 2000);
 //        $agg->addRange(2000, 3000);
 //        $agg->addRange(3000, 4000);
 //        $agg->addRange(4000, 5000);
 //        $agg->addRange(5000);
-//        $query->addAggregation($agg);
-//
-//        $agg = new Range('yearsOfExperience');
-//        $agg->setField('yearsOfExperience');
-//        $agg->addRange(0, 1);
-//        $agg->addRange(1);
-//        $agg->addRange(2);
-//        $agg->addRange(3);
-//        $agg->addRange(5);
 //        $query->addAggregation($agg);
 
         return $query;
@@ -183,6 +154,11 @@ class ElasticaClientProduct extends ElasticaClientBase
         $query = new Query();
 
         $boolQuery = new Query\BoolQuery();
+
+        // filter by category
+        $term = new Query\Match();
+        $term->setField('categorySlug', $params['categorySlug']);
+        $boolQuery->addMust($term);
 
         if (isset($params['q'])) {
             $term = new Query\Term();
@@ -200,50 +176,6 @@ class ElasticaClientProduct extends ElasticaClientBase
 //
 //            $boolQuery->addMust($nested);
 //        }
-//
-//        if (isset($params['skills'])) {
-//            $term = new Query\Terms();
-//            $term->setTerms('skills.id', explode(',', $params['skills']));
-//
-//            $nested = new Query\Nested();
-//            $nested->setPath('skills');
-//            $nested->setQuery($term);
-//
-//            $boolQuery->addMust($nested);
-//        }
-//
-//        if (isset($params['categories'])) {
-//            $term = new Query\Terms();
-//            $term->setTerms('category.id', explode(',', $params['categories']));
-//
-//            $nested = new Query\Nested();
-//            $nested->setPath('category');
-//            $nested->setQuery($term);
-//
-//            $boolQuery->addMust($nested);
-//        }
-//
-//        if (isset($params['englishLevel'])) {
-//            $term = new Query\Terms();
-//            $term->setTerms('englishLevel.id', explode(',', $params['englishLevel']));
-//
-//            $nested = new Query\Nested();
-//            $nested->setPath('englishLevel');
-//            $nested->setQuery($term);
-//
-//            $boolQuery->addMust($nested);
-//        }
-//
-//        if (isset($params['authorizationStatus'])) {
-//            $term = new Query\Terms();
-//            $term->setTerms('authorizationStatus.id', explode(',', $params['authorizationStatus']));
-//
-//            $nested = new Query\Nested();
-//            $nested->setPath('authorizationStatus');
-//            $nested->setQuery($term);
-//
-//            $boolQuery->addMust($nested);
-//        }
 
         $query->setQuery($boolQuery);
 
@@ -254,7 +186,7 @@ class ElasticaClientProduct extends ElasticaClientBase
         $query
             ->setFrom($from)
             ->setSize($size)
-//            ->setSort(['name' => 'asc'])
+            ->setSort(['id' => 'desc'])
 //            ->setSource(['obj1.*', 'obj2.'])
 //            ->setFields(['name', 'created'])
 //            ->setScriptFields($scriptFields) // $scriptFields instanceof Elastica\ScriptFields

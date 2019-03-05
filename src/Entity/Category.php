@@ -264,26 +264,6 @@ class Category
         return $this;
     }
 
-    /**
-     * @return string
-     * @Groups({
-     *     "category_read",
-     *     "product_read",
-     *     "category_read_frontend"
-     * })
-     */
-    public function getName(): string
-    {
-        /** @var CategoryTranslation $translation */
-        $translation = $this->getTranslations()->first();
-
-        if ($translation) {
-            return $translation->getName();
-        }
-
-        return '';
-    }
-
     public function getIsActive(): ?bool
     {
         return $this->isActive;
@@ -306,5 +286,46 @@ class Category
         $this->position = $position;
 
         return $this;
+    }
+
+    /**
+     * @return CategoryTranslation
+     */
+    public function getTranslation(): CategoryTranslation
+    {
+        /** @var CategoryTranslation $translation */
+        foreach ($this->getTranslations() as $translation) {
+            if ($translation->getLanguage()->getCode() === 'en') {
+                return $translation;
+            }
+        }
+
+        return $this->getTranslations()->first();
+    }
+
+    /**
+     * @return string
+     * @Groups({
+     *     "category_read",
+     *     "product_read",
+     *     "category_read_frontend"
+     * })
+     */
+    public function getName(): string
+    {
+        return $this->getTranslation()->getName();
+    }
+
+    /**
+     * @return string
+     * @Groups({
+     *     "category_read",
+     *     "product_read",
+     *     "category_read_frontend"
+     * })
+     */
+    public function getSlug(): string
+    {
+        return $this->getTranslation()->getSlug();
     }
 }

@@ -229,7 +229,7 @@ class Product
         return $this->id;
     }
 
-    public function getCategory(): ?Category
+    public function getCategory(): Category
     {
         return $this->category;
     }
@@ -382,5 +382,46 @@ class Product
         }
 
         return $this;
+    }
+
+    /**
+     * @return ProductTranslation
+     */
+    public function getTranslation(): ProductTranslation
+    {
+        /** @var ProductTranslation $translation */
+        foreach ($this->getTranslations() as $translation) {
+            if ($translation->getLanguage()->getCode() === 'en') {
+                return $translation;
+            }
+        }
+
+        return $this->getTranslations()->first();
+    }
+
+    /**
+     * @return string
+     * @Groups({
+     *     "product_read",
+     *     "product_read_frontend",
+     *     "product_read_frontend_item"
+     * })
+     */
+    public function getName(): string
+    {
+        return $this->getTranslation()->getName();
+    }
+
+    /**
+     * @return string
+     * @Groups({
+     *     "product_read",
+     *     "product_read_frontend",
+     *     "product_read_frontend_item"
+     * })
+     */
+    public function getSlug(): string
+    {
+        return $this->getTranslation()->getSlug();
     }
 }
