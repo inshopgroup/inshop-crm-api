@@ -250,7 +250,7 @@ class EntityLoggerSubscriber implements EventSubscriber
                     break;
 
                 case 'date':
-
+                case 'datetime':
                     $oldValue = $oldValueRaw && $oldValueRaw instanceof \DateTime ? $oldValueRaw->format('Y-m-d H:i:s') : '';
                     $newValue = $newValueRaw && $newValueRaw instanceof \DateTime ? $newValueRaw->format('Y-m-d H:i:s') : '';
                     break;
