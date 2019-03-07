@@ -71,3 +71,9 @@ services:
         arguments:
             - "@security.user_password_encoder.generic"
             - "@faker.generator"
+
+    text.fixtures:
+        class: App\DataFixtures\TextFixtures
+        tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@faker.generator"

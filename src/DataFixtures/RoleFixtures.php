@@ -32,6 +32,7 @@ class RoleFixtures extends Fixture
             'Document' => [],
             'Image' => [],
             'Label' => [],
+            'Text' => [],
             'File' => [
                 'LIST',
                 'CREATE',
