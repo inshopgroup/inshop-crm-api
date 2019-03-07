@@ -45,6 +45,14 @@ use App\Controller\Product\ProductFrontendGetItemAction;
  *              "normalization_context"={
  *                  "groups"={"Default"}
  *              },
+ *          },
+ *          "searchGet"={
+ *              "access_control"="is_granted('ROLE_OTHER_SEARCH')",
+ *              "method"="GET",
+ *              "path"="/search",
+ *              "normalization_context"={
+ *                  "groups"={"Default"}
+ *              },
  *          }
  *     },
  *     itemOperations={

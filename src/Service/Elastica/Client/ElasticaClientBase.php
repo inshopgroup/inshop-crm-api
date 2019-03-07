@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Elastica\Document;
 use Elastica\Query;
 use Elastica\QueryBuilder;
-use Elastica\ResultSet;
 
 /**
  * Class ElasticaClientBase
@@ -18,7 +17,7 @@ abstract class ElasticaClientBase
     /**
      * @return string
      */
-    abstract protected function getIndex();
+    abstract protected function getIndex(): string;
 
     /**
      * @var ElasticaClient
@@ -112,8 +111,8 @@ abstract class ElasticaClientBase
                     'tokenizer' => [
                         'tokenizer' => [
                             'type' => 'ngram',
-                            'min_gram' => 3,
-                            'max_gram' => 10,
+                            'min_gram' => 1,
+                            'max_gram' => 12,
                             'token_chars' => [
                                 'letter',
                                 'digit',
@@ -146,9 +145,6 @@ abstract class ElasticaClientBase
                 ->addMust(
                     $qb->query()->term(['translations.slug' => $slug])
                 )
-//                ->addMustNot(
-//                    $qb->query()->exists('field1')
-//                )
         );
 
         $search = $this->client->createSearch($this->getIndex());

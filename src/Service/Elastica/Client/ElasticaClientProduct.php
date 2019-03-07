@@ -24,7 +24,7 @@ class ElasticaClientProduct extends ElasticaClientBase
     /**
      * @return string
      */
-    protected function getIndex()
+    protected function getIndex(): string
     {
         return 'product';
     }

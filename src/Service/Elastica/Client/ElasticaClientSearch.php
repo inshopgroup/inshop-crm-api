@@ -2,10 +2,10 @@
 
 namespace App\Service\Elastica\Client;
 
-use ApiPlatform\Core\Api\IriConverterInterface;
-use App\Entity\ElasticSearch;
-use App\Interfaces\ElasticInterface;
 use App\Interfaces\SearchInterface;
+use App\Service\ElasticaAdapter;
+use App\Service\ElasticaPaginator;
+use Elastica\Document;
 use Elastica\Query;
 use Elastica\ResultSet;
 use Elastica\Type\Mapping;
@@ -19,7 +19,7 @@ class ElasticaClientSearch extends ElasticaClientBase
     /**
      * @return string
      */
-    protected function getIndex()
+    protected function getIndex(): string
     {
         return 'search';
     }
@@ -38,11 +38,11 @@ class ElasticaClientSearch extends ElasticaClientBase
 
         // Set mapping
         $mapping->setProperties([
-            'id'       => array('type' => 'text'),
+            'id'       => array('type' => 'text',  'fielddata' => true),
             'iri'      => array('type' => 'text'),
             'entityId' => array('type' => 'integer'),
             'type'     => array('type' => 'text'),
-            'text'     => array('type' => 'text'),
+            'text'     => array('type' => 'text', 'analyzer' => 'index_tokenizer_analyzer', 'search_analyzer' => 'standard'),
         ]);
 
         // Send mapping to type
@@ -75,5 +75,52 @@ class ElasticaClientSearch extends ElasticaClientBase
         $path = explode('\\', \get_class($entity));
 
         return array_pop($path);
+    }
+
+    /**
+     * @param array $params
+     * @return ElasticaPaginator
+     */
+    public function search(array $params): ElasticaPaginator
+    {
+        $query = new Query();
+        $boolQuery = new Query\BoolQuery();
+
+        if (isset($params['q'])) {
+            $term = new Query\Term();
+            $term->setTerm('text', $params['q']);
+            $boolQuery->addMust($term);
+        }
+
+        $query->setQuery($boolQuery);
+
+        $page = isset($params['page']) ? $params['page'] : 1;
+        $size = isset($params['perPage']) ? $params['perPage'] : 20;
+        $from = $size * ($page - 1);
+
+        $query
+            ->setFrom($from)
+            ->setSize($size)
+            ->setSort(['id' => 'desc'])
+        ;
+
+        $search = $this->client->createSearch($this->getIndex());
+        $search->setQuery($query);
+
+        $results = $search->search();
+
+        $data = array_map(function (Document $document) {
+            return $document->toArray()['_source'];
+        }, $results->getDocuments());
+
+        $adapter = new ElasticaAdapter($data);
+        $adapter->setNbResults($results->getTotalHits());
+
+        # Elastica paginator
+        $elasticaPaginator = new ElasticaPaginator($adapter);
+        $elasticaPaginator->setCurrentPage($page);
+        $elasticaPaginator->setMaxPerPage($size);
+
+        return $elasticaPaginator;
     }
 }
