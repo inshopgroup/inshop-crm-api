@@ -41,7 +41,7 @@ class ElasticaClientSearch extends ElasticaClientBase
             'id'       => array('type' => 'text',  'fielddata' => true),
             'iri'      => array('type' => 'text'),
             'entityId' => array('type' => 'integer'),
-            'type'     => array('type' => 'text'),
+            'type'     => array('type' => 'text', 'analyzer' => 'index_tokenizer_analyzer', 'search_analyzer' => 'standard'),
             'text'     => array('type' => 'text', 'analyzer' => 'index_tokenizer_analyzer', 'search_analyzer' => 'standard'),
         ]);
 
@@ -89,6 +89,12 @@ class ElasticaClientSearch extends ElasticaClientBase
         if (isset($params['q'])) {
             $term = new Query\Term();
             $term->setTerm('text', $params['q']);
+            $boolQuery->addMust($term);
+        }
+
+        if (isset($params['type'])) {
+            $term = new Query\Term();
+            $term->setTerm('type', $params['type']);
             $boolQuery->addMust($term);
         }
 
