@@ -2,6 +2,7 @@
 
 namespace App\EventListener\Logger;
 
+use App\Entity\History;
 use App\Entity\User;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\EventSubscriber;
@@ -11,7 +12,6 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\PersistentCollection;
-use Gedmo\Loggable\Entity\LogEntry;
 use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -49,7 +49,7 @@ class EntityLoggerSubscriber implements EventSubscriber
      */
     protected static $disabledEntities = [
         EntityLogger::class,
-        LogEntry::class,
+        History::class,
         RefreshToken::class,
     ];
 
@@ -128,16 +128,16 @@ class EntityLoggerSubscriber implements EventSubscriber
             /** @var EntityLogger $entityLogger */
             foreach ($this->logs as $entityLogger) {
                 if ($entityLogger->getChanges()) {
-                    $logEntry = new LogEntry();
-                    $logEntry->setAction($entityLogger->getAction());
-                    $logEntry->setUsername($this->getUsername());
-                    $logEntry->setData($entityLogger->getChanges());
-                    $logEntry->setObjectClass(\get_class($entityLogger->getEntity()));
-                    $logEntry->setObjectId($entityLogger->getEntity()->getId());
-                    $logEntry->setLoggedAt();
-                    $logEntry->setVersion((new \DateTime())->getTimestamp());
+                    $history = new History();
+                    $history->setAction($entityLogger->getAction());
+                    $history->setUsername($this->getUsername());
+                    $history->setData($entityLogger->getChanges());
+                    $history->setObjectClass(\get_class($entityLogger->getEntity()));
+                    $history->setObjectId($entityLogger->getEntity()->getId());
+                    $history->setLoggedAt();
+                    $history->setVersion((new \DateTime())->getTimestamp());
 
-                    $em->persist($logEntry);
+                    $em->persist($history);
                 }
             }
 

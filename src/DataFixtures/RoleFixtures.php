@@ -42,6 +42,7 @@ class RoleFixtures extends Fixture
                 'DOWNLOAD',
             ],
             'Group' => [],
+            'History' => [],
             'Invoice header' => [],
             'Invoice line' => [],
             'Invoice status' => [],
@@ -105,7 +106,6 @@ class RoleFixtures extends Fixture
             'Backup status' => [],
             'Other' => [
                 'SEARCH',
-                'HISTORY',
                 'CALENDAR',
             ],
         ];

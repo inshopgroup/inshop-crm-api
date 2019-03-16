@@ -54,8 +54,12 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
 
         for ($j = 0; $j < 10; $j++) {
             $client = new Client();
+            $client->setUsername($this->faker->email);
+            $client->setPassword(md5($this->faker->email));
+            $client->setToken($this->faker->ean13);
+            $client->setTokenCreatedAt(new \DateTime());
             $client->setName(sprintf('%s %s', $this->faker->firstName, $this->faker->lastName));
-            $client->setDescription($this->faker->name);
+            $client->setDescription($this->faker->text);
             $client->addAddress($this->faker->randomElement($addresses));
             $client->setCreatedAt($this->faker->dateTimeBetween('-30 days', '+0 days'));
 
