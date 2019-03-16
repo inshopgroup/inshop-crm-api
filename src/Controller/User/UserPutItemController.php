@@ -2,7 +2,7 @@
 
 namespace App\Controller\User;
 
-use App\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class UserPutItemController
@@ -11,10 +11,10 @@ use App\Entity\User;
 class UserPutItemController extends BaseUserController
 {
     /**
-     * @param User $data
-     * @return User
+     * @param UserInterface $data
+     * @return UserInterface
      */
-    public function __invoke(User $data): User
+    public function __invoke(UserInterface $data): UserInterface
     {
         return $this->encodePassword($data);
     }

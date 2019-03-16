@@ -46,8 +46,8 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
-        frontend_secured:
-            pattern:   ^/frontend/secured
+        frontend_profile:
+            pattern:   ^/frontend/profile
             provider: client_provider
             stateless: true
             anonymous: false
@@ -83,6 +83,6 @@ security:
 
     access_control:
         - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/frontend/secured, role: ROLE_CLIENT }
+        - { path: ^/frontend/profile, role: ROLE_CLIENT }
         - { path: ^/frontend, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: [ ROLE_USER ] }

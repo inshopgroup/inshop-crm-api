@@ -2,15 +2,15 @@
 
 namespace App\Controller\User;
 
-use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class BaseUserController
- * @package App\Controller
+ * @package App\Controller\User
  */
-class BaseUserController extends Controller
+abstract class BaseUserController extends Controller
 {
     /**
      * @var UserPasswordEncoderInterface
@@ -27,10 +27,10 @@ class BaseUserController extends Controller
     }
 
     /**
-     * @param User $data
-     * @return User
+     * @param UserInterface $data
+     * @return UserInterface
      */
-    protected function encodePassword(User $data): User
+    protected function encodePassword(UserInterface $data): UserInterface
     {
         if (!empty($data->getPlainPassword())) {
             $encoded = $this->encoder->encodePassword($data, $data->getPlainPassword());

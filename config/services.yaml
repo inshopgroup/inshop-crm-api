@@ -5,6 +5,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    client_url: '%env(resolve:CLIENT_URL)%'
 
 services:
     # default configuration for services in *this* file

@@ -33,8 +33,14 @@ class ClientPutItemController extends BaseUserController
     ): JsonResponse {
         $params = json_decode($request->getContent());
 
-        if ($data instanceof Client && isset($params->plainPassword)) {
-            $data->setPlainPassword($params->plainPassword);
+        if ($data instanceof Client) {
+            if (isset($params->name)) {
+                $data->setName($params->name);
+            }
+
+            if (isset($params->plainPassword)) {
+                $data->setPlainPassword($params->plainPassword);
+            }
 
             $this->encodePassword($data);
             $validator->validate($data);

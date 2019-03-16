@@ -78,6 +78,21 @@ SQL
             ->setParameter('token', $token)
             ->getQuery()
             ->getOneOrNullResult()
-            ;
+        ;
+    }
+
+    /**
+     * @param string $email
+     * @return Client|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getClientByEmail(string $email): ?Client
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.username = :username')
+            ->setParameter('username', $email)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }

@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\PersistentCollection;
 use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class EntityLoggerSubscriber
@@ -156,7 +157,7 @@ class EntityLoggerSubscriber implements EventSubscriber
         if ($token) {
             $user = $token->getUser();
 
-            if ($user instanceof User) {
+            if ($user instanceof UserInterface) {
                 return $user->getUsername();
             }
 

@@ -14,6 +14,7 @@ use App\Traits\SoftDeleteableEntity;
 use App\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -23,12 +24,15 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Controller\Client\ClientLoginByTokenCollectionAction;
 use App\Controller\Client\ClientGetItemAction;
 use App\Controller\Client\ClientPutItemController;
+use App\Controller\Client\ClientSignupPostCollectionController;
+use App\Controller\Client\ClientRemindPasswordCollectionController;
 
 /**
  * Client
  *
  * @ORM\Table(name="client")
  * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
+ * @UniqueEntity(fields={"username"}, errorPath="username", groups={"signup"}, message="User already exists")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Gedmo\Loggable
  * @ApiResource(
@@ -46,6 +50,15 @@ use App\Controller\Client\ClientPutItemController;
  *          },
  *          "post"={
  *              "access_control"="is_granted('ROLE_CLIENT_CREATE')"
+ *          },
+ *          "signup"={
+ *              "method"="POST",
+ *              "path"="/frontend/signup",
+ *              "denormalization_context"={
+ *                  "groups"={"signup_collection"}
+ *              },
+ *              "controller"=ClientSignupPostCollectionController::class,
+ *              "defaults"={"_api_receive"=false},
  *          }
  *     },
  *     itemOperations={
@@ -61,7 +74,7 @@ use App\Controller\Client\ClientPutItemController;
  *          "clientGet"={
  *              "access_control"="is_granted('ROLE_CLIENT')",
  *              "method"="GET",
- *              "path"="/frontend/secured/me",
+ *              "path"="/frontend/profile/me",
  *              "normalization_context"={
  *                  "groups"={"client_get_item"}
  *              },
@@ -71,7 +84,7 @@ use App\Controller\Client\ClientPutItemController;
  *          "clientPut"={
  *              "access_control"="is_granted('ROLE_CLIENT')",
  *              "method"="PUT",
- *              "path"="/frontend/secured/me",
+ *              "path"="/frontend/profile/me",
  *              "normalization_context"={
  *                  "groups"={"client_put_item"}
  *              },
@@ -80,10 +93,16 @@ use App\Controller\Client\ClientPutItemController;
  *          },
  *          "loginByToken"={
  *              "method"="GET",
- *              "path"="/frontend/login/token/{token}",
+ *              "path"="/frontend/login/{token}",
  *              "controller"=ClientLoginByTokenCollectionAction::class,
  *              "defaults"={"_api_receive"=false},
  *          },
+ *          "remindPassword"={
+ *              "method"="POST",
+ *              "path"="/frontend/remind/password",
+ *              "controller"=ClientRemindPasswordCollectionController::class,
+ *              "defaults"={"_api_receive"=false},
+ *          }
  *     }
  * )
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
@@ -146,7 +165,8 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "order_header_read_collection",
      *     "order_header_write",
      *     "address_read",
-     *     "address_write"
+     *     "address_write",
+     *     "client_get_item"
      * })
      */
     private $id;
@@ -168,7 +188,9 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "task_read",
      *     "contact_read",
      *     "order_header_read",
-     *     "order_header_read_collection"
+     *     "order_header_read_collection",
+     *     "client_get_item",
+     *     "client_put_item"
      * })
      * @Assert\NotBlank()
      */
@@ -258,7 +280,8 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * @Groups({
      *     "client_read",
      *     "client_write",
-     *     "client_get_item"
+     *     "client_get_item",
+     *     "client_put_item"
      * })
      * @Assert\NotBlank()
      * @Assert\Email()
