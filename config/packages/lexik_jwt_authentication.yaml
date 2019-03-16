@@ -3,3 +3,10 @@ lexik_jwt_authentication:
   public_key:       '%kernel.project_dir%/config/jwt/public.pem'  # required for token verification
   pass_phrase: '%env(JWT_PASSPHRASE)%'
   token_ttl: 28800
+
+gesdinet_jwt_refresh_token:
+  ttl: 28800
+  ttl_update: true
+  firewall: refresh
+  user_provider: 'security.user.provider.concrete.client_provider'
+  user_identity_field: 'username'

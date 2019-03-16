@@ -14,11 +14,15 @@ use App\Traits\SoftDeleteableEntity;
 use App\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use App\Controller\Client\ClientLoginByTokenCollectionAction;
+use App\Controller\Client\ClientGetItemAction;
+use App\Controller\Client\ClientPutItemController;
 
 /**
  * Client
@@ -53,7 +57,33 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *          },
  *          "delete"={
  *              "access_control"="is_granted('ROLE_CLIENT_DELETE')"
- *          }
+ *          },
+ *          "clientGet"={
+ *              "access_control"="is_granted('ROLE_CLIENT')",
+ *              "method"="GET",
+ *              "path"="/frontend/secured/me",
+ *              "normalization_context"={
+ *                  "groups"={"client_get_item"}
+ *              },
+ *              "controller"=ClientGetItemAction::class,
+ *              "defaults"={"_api_receive"=false},
+ *          },
+ *          "clientPut"={
+ *              "access_control"="is_granted('ROLE_CLIENT')",
+ *              "method"="PUT",
+ *              "path"="/frontend/secured/me",
+ *              "normalization_context"={
+ *                  "groups"={"client_put_item"}
+ *              },
+ *              "controller"=ClientPutItemController::class,
+ *              "defaults"={"_api_receive"=false},
+ *          },
+ *          "loginByToken"={
+ *              "method"="GET",
+ *              "path"="/frontend/login/token/{token}",
+ *              "controller"=ClientLoginByTokenCollectionAction::class,
+ *              "defaults"={"_api_receive"=false},
+ *          },
  *     }
  * )
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
@@ -74,7 +104,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
-class Client implements ClientInterface, SearchInterface
+class Client implements ClientInterface, SearchInterface, UserInterface
 {
     /**
      * Hook timestampable behavior
@@ -222,6 +252,45 @@ class Client implements ClientInterface, SearchInterface
      * @ORM\OrderBy({"id" = "DESC"})
      */
     private $clients;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Groups({
+     *     "client_read",
+     *     "client_write",
+     *     "client_get_item"
+     * })
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     */
+    private $username;
+
+    /**
+     * @ORM\Column(type="string", length=64)
+     * @Assert\NotBlank()
+     */
+    private $password;
+
+    /**
+     * @Groups({
+     *     "client_write"
+     * })
+     */
+    private $plainPassword;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $token;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Gedmo\Versioned
+     */
+    protected $tokenCreatedAt;
 
     public function __construct()
     {
@@ -449,5 +518,98 @@ class Client implements ClientInterface, SearchInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $username
+     */
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param mixed $plainPassword
+     */
+    public function setPlainPassword($plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoles()
+    {
+        return ['ROLE_CLIENT'];
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getTokenCreatedAt(): \DateTime
+    {
+        return $this->tokenCreatedAt;
+    }
+
+    /**
+     * @param \DateTime $tokenCreatedAt
+     */
+    public function setTokenCreatedAt(\DateTime $tokenCreatedAt): void
+    {
+        $this->tokenCreatedAt = $tokenCreatedAt;
     }
 }

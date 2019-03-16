@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70593bb92d8ca171e36479fee588ced8",
+    "content-hash": "723f5f63a32a5daec60144b4547e470a",
     "packages": [
         {
             "name": "api-platform/api-pack",
@@ -1691,6 +1691,59 @@
                 "uploadable"
             ],
             "time": "2018-07-26T12:16:35+00:00"
+        },
+        {
+            "name": "gesdinet/jwt-refresh-token-bundle",
+            "version": "v0.5.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gesdinet/JWTRefreshTokenBundle.git",
+                "reference": "604b70c86e557c70105b8850eb44426ab2056a9d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gesdinet/JWTRefreshTokenBundle/zipball/604b70c86e557c70105b8850eb44426ab2056a9d",
+                "reference": "604b70c86e557c70105b8850eb44426ab2056a9d",
+                "shasum": ""
+            },
+            "require": {
+                "lexik/jwt-authentication-bundle": "^1.1|^2.0@dev",
+                "php": ">=5.3.3",
+                "symfony/framework-bundle": "~3.3|~4.0",
+                "symfony/validator": "~3.3|~4.0"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "~1.4",
+                "doctrine/mongodb-odm-bundle": "^3.4",
+                "doctrine/orm": "^2.4.8",
+                "phpspec/phpspec": "^3.0|^4.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Gesdinet\\JWTRefreshTokenBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcos Gómez Vilches",
+                    "email": "marcos@gesdinet.com"
+                }
+            ],
+            "description": "Implements a refresh token system over Json Web Tokens in Symfony",
+            "keywords": [
+                "jwt refresh token bundle symfony json web"
+            ],
+            "time": "2018-12-06T11:02:57+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

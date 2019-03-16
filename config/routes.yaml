@@ -5,3 +5,7 @@
 login:
     path: /login
     methods:  [POST]
+
+gesdinet_jwt_refresh_token:
+    path:     /frontend/token/refresh
+    defaults: { _controller: gesdinet.jwtrefreshtoken:refresh }

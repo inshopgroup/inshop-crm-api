@@ -7,6 +7,7 @@
         "api-platform/api-pack": "^1.2",
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "doctrine/doctrine-migrations-bundle": "^1.3",
+        "gesdinet/jwt-refresh-token-bundle": "^0.5.4",
         "guzzlehttp/guzzle": "^6.3",
         "jms/serializer-bundle": "^2.4",
         "lexik/jwt-authentication-bundle": "^2.4",

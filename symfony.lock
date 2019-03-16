@@ -122,6 +122,9 @@
     "gedmo/doctrine-extensions": {
         "version": "v2.4.35"
     },
+    "gesdinet/jwt-refresh-token-bundle": {
+        "version": "v0.5.4"
+    },
     "guzzlehttp/guzzle": {
         "version": "6.3.0"
     },

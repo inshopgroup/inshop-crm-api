@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\PersistentCollection;
 use Gedmo\Loggable\Entity\LogEntry;
+use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 /**
@@ -49,6 +50,7 @@ class EntityLoggerSubscriber implements EventSubscriber
     protected static $disabledEntities = [
         EntityLogger::class,
         LogEntry::class,
+        RefreshToken::class,
     ];
 
     /**
@@ -250,9 +252,18 @@ class EntityLoggerSubscriber implements EventSubscriber
                     break;
 
                 case 'date':
+                    $oldValue = $change[0] ? $change[0]->format('Y-m-d') : '';
+                    $newValue = $change[1] ? $change[1]->format('Y-m-d') : '';
+                    break;
+
+                case 'time':
+                    $oldValue = $change[0] ? $change[0]->format('H:i:s') : '';
+                    $newValue = $change[1] ? $change[1]->format('H:i:s') : '';
+                    break;
+
                 case 'datetime':
-                    $oldValue = $oldValueRaw && $oldValueRaw instanceof \DateTime ? $oldValueRaw->format('Y-m-d H:i:s') : '';
-                    $newValue = $newValueRaw && $newValueRaw instanceof \DateTime ? $newValueRaw->format('Y-m-d H:i:s') : '';
+                    $oldValue = $change[0] ? $change[0]->format('Y-m-d H:i:s') : '';
+                    $newValue = $change[1] ? $change[1]->format('Y-m-d H:i:s') : '';
                     break;
 
                 case 'string':

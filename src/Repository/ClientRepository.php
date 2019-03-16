@@ -65,32 +65,19 @@ SQL
         return $query->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
 
-//    /**
-//     * @return Client[] Returns an array of Client objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param string $token
+     * @return Client|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByToken(string $token): ?Client
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Client
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
+            ->where('c.token = :token')
+            ->andWhere('c.token is not null')
+            ->setParameter('token', $token)
             ->getQuery()
             ->getOneOrNullResult()
-        ;
+            ;
     }
-    */
 }
