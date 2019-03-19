@@ -2,7 +2,6 @@ version: '3.2'
 
 services:
   php:
-    restart: unless-stopped
     image: inshopgroup/docker-inshop-crm-api-php-fpm-prod:latest
     depends_on:
       - db
@@ -16,7 +15,6 @@ services:
       - api
 
   nginx:
-    restart: unless-stopped
     image: inshopgroup/docker-inshop-crm-api-nginx-prod:latest
     depends_on:
       - php
@@ -28,7 +26,6 @@ services:
       - api
 
   db:
-    restart: unless-stopped
     image: postgres:9.5-alpine
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
