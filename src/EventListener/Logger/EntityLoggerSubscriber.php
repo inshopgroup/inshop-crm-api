@@ -253,8 +253,8 @@ class EntityLoggerSubscriber implements EventSubscriber
                     break;
 
                 case 'date':
-                    $oldValue = $change[0] ? $change[0]->format('Y-m-d') : '';
-                    $newValue = $change[1] ? $change[1]->format('Y-m-d') : '';
+                    $oldValue = $change[0] ? $change[0]->format('d-m-Y') : '';
+                    $newValue = $change[1] ? $change[1]->format('d-m-Y') : '';
                     break;
 
                 case 'time':
@@ -263,8 +263,8 @@ class EntityLoggerSubscriber implements EventSubscriber
                     break;
 
                 case 'datetime':
-                    $oldValue = $change[0] ? $change[0]->format('Y-m-d H:i:s') : '';
-                    $newValue = $change[1] ? $change[1]->format('Y-m-d H:i:s') : '';
+                    $oldValue = $change[0] ? $change[0]->format('d-m-Y H:i:s') : '';
+                    $newValue = $change[1] ? $change[1]->format('d-m-Y H:i:s') : '';
                     break;
 
                 case 'string':
