@@ -83,7 +83,10 @@ class Module
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"module_read", "group_read"})
+     * @Groups({
+     *     "module_read",
+     *     "group_read"
+     * })
      */
     private $id;
 
@@ -92,14 +95,21 @@ class Module
      *
      * @ORM\Column(type="string", length=255, unique=true)
      * @Gedmo\Versioned
-     * @Groups({"module_read", "module_write", "group_read"})
+     * @Groups({
+     *     "module_read",
+     *     "module_write",
+     *     "group_read"
+     * })
      * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Role", mappedBy="module")
-     * @Groups({"module_read"})
+     * @ORM\OrderBy({"id" = "DESC"})
+     * @Groups({
+     *     "module_read"
+     * })
      * @Assert\NotBlank()
      */
     private $roles;

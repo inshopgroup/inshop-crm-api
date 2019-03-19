@@ -81,7 +81,11 @@ class Role
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"role_read", "group_read", "group_write", "module_read"})
+     * @Groups({
+     *     "role_read",
+     *     "group_read",
+     *     "module_read"
+     * })
      */
     private $id;
 
@@ -90,7 +94,12 @@ class Role
      *
      * @ORM\Column(type="string", length=255)
      * @Gedmo\Versioned
-     * @Groups({"role_read", "role_write", "group_read", "module_read"})
+     * @Groups({
+     *     "role_read",
+     *     "role_write",
+     *     "group_read",
+     *     "module_read"
+     * })
      * @Assert\NotBlank()
      */
     private $name;
@@ -100,7 +109,12 @@ class Role
      *
      * @ORM\Column(type="string", length=255, unique=true)
      * @Gedmo\Versioned
-     * @Groups({"role_read", "role_write", "group_read", "module_read"})
+     * @Groups({
+     *     "role_read",
+     *     "role_write",
+     *     "group_read",
+     *     "module_read"
+     * })
      * @Assert\NotBlank()
      */
     private $role;
@@ -108,7 +122,11 @@ class Role
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Module", inversedBy="roles")
      * @Gedmo\Versioned
-     * @Groups({"role_read", "role_write", "group_read"})
+     * @Groups({
+     *     "role_read",
+     *     "role_write",
+     *     "group_read"
+     * })
      * @Assert\NotBlank()
      */
     private $module;
