@@ -11,7 +11,7 @@ vich_uploader:
             delete_on_remove: true
         image:
             uri_prefix: /image
-            upload_destination: '%kernel.project_dir%/data/images'
+            upload_destination: '%kernel.project_dir%/public/images'
             namer: Vich\UploaderBundle\Naming\UniqidNamer
             inject_on_load: true
             delete_on_update: true
