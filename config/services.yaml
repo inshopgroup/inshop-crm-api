@@ -76,3 +76,9 @@ services:
             - '@api_platform.resource_class_resolver'
         tags:
             - { name: 'serializer.normalizer', priority: 17 }
+
+    Liip\ImagineBundle\Imagine\Data\DataManager:
+        alias: 'liip_imagine.data.manager'
+
+    Liip\ImagineBundle\Imagine\Filter\FilterManager:
+        alias: 'liip_imagine.filter.manager'
