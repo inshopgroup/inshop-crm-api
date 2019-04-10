@@ -22,7 +22,9 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $days
      * @return mixed
+     * @throws \Exception
      */
     public function getSummary($days)
     {
@@ -44,7 +46,9 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $days
      * @return mixed
+     * @throws \Exception
      */
     public function getTimeSummary($days)
     {

@@ -110,6 +110,9 @@
     "elasticsearch/elasticsearch": {
         "version": "v6.0.1"
     },
+    "firebase/php-jwt": {
+        "version": "v5.0.0"
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
         "recipe": {
@@ -127,6 +130,21 @@
     },
     "gesdinet/jwt-refresh-token-bundle": {
         "version": "v0.5.4"
+    },
+    "google/apiclient": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "49c5d7a66d863d28513979bf0666dc77599100c0"
+        }
+    },
+    "google/apiclient-services": {
+        "version": "v0.93"
+    },
+    "google/auth": {
+        "version": "v1.4.0"
     },
     "guzzlehttp/guzzle": {
         "version": "6.3.0"
@@ -238,6 +256,9 @@
     },
     "phpoption/phpoption": {
         "version": "1.5.0"
+    },
+    "phpseclib/phpseclib": {
+        "version": "2.0.15"
     },
     "psr/cache": {
         "version": "1.0.1"

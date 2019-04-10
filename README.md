@@ -26,6 +26,7 @@ https://demo.inshopcrm.com/signin
  * Clients management
  * Projects & tasks
  * Calendar with events & reminders
+ * Google calendar integration
  * Documents & templates
  * Multi currency support
  * Products & categories management

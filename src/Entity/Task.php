@@ -228,6 +228,11 @@ class Task implements ClientInterface, SearchInterface
     private $timeSpent = 0;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $googleEventId;
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -363,6 +368,18 @@ class Task implements ClientInterface, SearchInterface
     public function setTimeSpent(float $timeSpent): self
     {
         $this->timeSpent = (int)($timeSpent * 60);
+
+        return $this;
+    }
+
+    public function getGoogleEventId(): ?string
+    {
+        return $this->googleEventId;
+    }
+
+    public function setGoogleEventId(?string $googleEventId): self
+    {
+        $this->googleEventId = $googleEventId;
 
         return $this;
     }

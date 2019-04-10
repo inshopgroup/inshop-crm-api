@@ -64,7 +64,10 @@ class EntityLoggerSubscriber implements EventSubscriber
         'createdBy',
         'updatedBy',
         'username',
-        'password'
+        'password',
+        'token',
+        'googleCalendars',
+        'googleAccessToken',
     ];
 
     /**

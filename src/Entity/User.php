@@ -229,6 +229,26 @@ class User implements \Serializable, UserInterface
     private $language;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isGoogleSyncEnabled = false;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $googleAccessToken;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $googleCalendars;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $googleCalendarId;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -456,6 +476,54 @@ class User implements \Serializable, UserInterface
     public function setLanguage(Language $language): self
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    public function getIsGoogleSyncEnabled(): ?bool
+    {
+        return $this->isGoogleSyncEnabled;
+    }
+
+    public function setIsGoogleSyncEnabled(?bool $isGoogleSyncEnabled): self
+    {
+        $this->isGoogleSyncEnabled = $isGoogleSyncEnabled;
+
+        return $this;
+    }
+
+    public function getGoogleAccessToken(): ?string
+    {
+        return $this->googleAccessToken;
+    }
+
+    public function setGoogleAccessToken(?string $googleAccessToken): self
+    {
+        $this->googleAccessToken = $googleAccessToken;
+
+        return $this;
+    }
+
+    public function getGoogleCalendars(): ?string
+    {
+        return $this->googleCalendars;
+    }
+
+    public function setGoogleCalendars(?string $googleCalendars): self
+    {
+        $this->googleCalendars = $googleCalendars;
+
+        return $this;
+    }
+
+    public function getGoogleCalendarId(): ?string
+    {
+        return $this->googleCalendarId;
+    }
+
+    public function setGoogleCalendarId(?string $googleCalendarId): self
+    {
+        $this->googleCalendarId = $googleCalendarId;
 
         return $this;
     }

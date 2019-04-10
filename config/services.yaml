@@ -61,6 +61,14 @@ services:
             - { name: 'doctrine.event_listener', event: 'postUpdate' }
             - { name: 'doctrine.event_listener', event: 'preRemove' }
 
+
+    app.elastica.listener.task:
+        class: 'App\EventListener\TaskListener'
+        tags:
+            - { name: 'doctrine.event_listener', event: 'postPersist' }
+            - { name: 'doctrine.event_listener', event: 'postUpdate' }
+            - { name: 'doctrine.event_listener', event: 'preRemove' }
+
     App\Service\Normalizer\ElasticaCollectionNormalizer:
         class: 'App\Service\Normalizer\ElasticaCollectionNormalizer'
         arguments:
