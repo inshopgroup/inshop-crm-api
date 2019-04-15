@@ -164,7 +164,7 @@ cd inshop-crm
 # api
 git clone git@github.com:inshopgroup/inshop-crm-api.git
 cd inshop-crm-api
-cd cp .env.dist .env
+cp .env.dist .env
 docker-compose up -d
 cd ..
 
