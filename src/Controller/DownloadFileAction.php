@@ -22,7 +22,7 @@ class DownloadFileAction extends Controller
      */
     public function indexAction(File $file): BinaryFileResponse
     {
-        $path = $this->getParameter('kernel.project_dir').'/var/files/'.$file->getContentUrl();
+        $path = $this->getParameter('kernel.project_dir').'/data/files/'.$file->getContentUrl();
 
         return $this->file($path);
     }
