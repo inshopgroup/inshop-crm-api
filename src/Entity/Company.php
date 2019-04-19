@@ -64,7 +64,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
  * @ApiFilter(SearchFilter::class, properties={
  *     "id": "exact",
- *     "code": "exact",
  *     "name": "ipartial",
  *     "krs": "ipartial",
  *     "nip": "ipartial",
@@ -80,7 +79,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     properties={
  *          "id",
  *          "name",
- *          "code",
  *          "contactPerson",
  *          "krs",
  *          "nip",
@@ -117,8 +115,6 @@ class Company implements SearchInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Groups({
      *     "company_read",
-     *     "client_read",
-     *     "client_write",
      *     "contact_read",
      *     "address_read",
      *     "invoice_header_read",
@@ -144,7 +140,6 @@ class Company implements SearchInterface
      * @Groups({
      *     "company_read",
      *     "company_write",
-     *     "client_read",
      *     "contact_read",
      *     "address_read",
      *     "invoice_header_read",
@@ -165,7 +160,6 @@ class Company implements SearchInterface
      * @Groups({
      *     "company_read",
      *     "company_write",
-     *     "client_read"
      * })
      */
     private $fullName;
@@ -178,7 +172,6 @@ class Company implements SearchInterface
      * @Groups({
      *     "company_read",
      *     "company_write",
-     *     "client_read"
      * })
      */
     private $krs;
@@ -191,7 +184,6 @@ class Company implements SearchInterface
      * @Groups({
      *     "company_read",
      *     "company_write",
-     *     "client_read"
      * })
      */
     private $nip;
@@ -204,7 +196,6 @@ class Company implements SearchInterface
      * @Groups({
      *     "company_read",
      *     "company_write",
-     *     "client_read"
      * })
      */
     private $bank_name;
@@ -217,7 +208,6 @@ class Company implements SearchInterface
      * @Groups({
      *     "company_read",
      *     "company_write",
-     *     "client_read"
      * })
      */
     private $bank_account_number;
@@ -230,7 +220,6 @@ class Company implements SearchInterface
      * @Groups({
      *     "company_read",
      *     "company_write",
-     *     "client_read"
      * })
      */
     private $isVat;
@@ -243,20 +232,9 @@ class Company implements SearchInterface
      * @Groups({
      *     "company_read",
      *     "company_write",
-     *     "client_read"
      * })
      */
     private $vatComment;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Client", inversedBy="companies")
-     * @Groups({
-     *     "company_read",
-     *     "company_write"
-     * })
-     * @ORM\OrderBy({"id" = "DESC"})
-     */
-    private $clients;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Address", inversedBy="companies")
@@ -305,18 +283,6 @@ class Company implements SearchInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="text", nullable=true)
-     * @Gedmo\Versioned
-     * @Groups({
-     *     "company_read",
-     *     "company_write"
-     * })
-     */
-    private $comment;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Gedmo\Versioned
      * @Groups({
@@ -340,20 +306,6 @@ class Company implements SearchInterface
     private $description;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="integer")
-     * @Gedmo\Versioned
-     * @Groups({
-     *     "company_read",
-     *     "company_write",
-     *     "company_read_collection"
-     * })
-     * @Assert\NotBlank()
-     */
-    private $code;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Label")
      * @ORM\OrderBy({"id" = "ASC"})
      * @Groups({
@@ -366,7 +318,6 @@ class Company implements SearchInterface
 
     public function __construct()
     {
-        $this->clients = new ArrayCollection();
         $this->addresses = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->contacts = new ArrayCollection();
@@ -387,9 +338,7 @@ class Company implements SearchInterface
                 $this->getName(),
                 $this->getKrs(),
                 $this->getNip(),
-                $this->getCode(),
                 $this->getContactPerson(),
-                $this->getComment(),
                 $this->getDescription(),
             ]
         );
@@ -492,32 +441,6 @@ class Company implements SearchInterface
     public function setVatComment(?string $vatComment): self
     {
         $this->vatComment = $vatComment;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Client[]
-     */
-    public function getClients(): Collection
-    {
-        return $this->clients;
-    }
-
-    public function addClient(Client $client): self
-    {
-        if (!$this->clients->contains($client)) {
-            $this->clients[] = $client;
-        }
-
-        return $this;
-    }
-
-    public function removeClient(Client $client): self
-    {
-        if ($this->clients->contains($client)) {
-            $this->clients->removeElement($client);
-        }
 
         return $this;
     }
@@ -629,30 +552,6 @@ class Company implements SearchInterface
                 $companyProduct->setCompany(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(?string $comment): self
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    public function getCode(): ?int
-    {
-        return $this->code;
-    }
-
-    public function setCode(int $code): self
-    {
-        $this->code = $code;
 
         return $this;
     }
