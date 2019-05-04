@@ -249,31 +249,11 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     private $projects;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Company", mappedBy="clients")
-     * @Groups({
-     *     "client_read",
-     *     "client_write"
-     * })
-     * @ORM\OrderBy({"id" = "DESC"})
-     */
-    private $companies;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Document", mappedBy="clients", orphanRemoval=true)
      * @ORM\OrderBy({"id" = "DESC"})
      * @ApiSubresource()
      */
     private $documents;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Client")
-     * @Groups({
-     *     "client_read",
-     *     "client_write"
-     * })
-     * @ORM\OrderBy({"id" = "DESC"})
-     */
-    private $clients;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
@@ -462,34 +442,6 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     }
 
     /**
-     * @return Collection|Company[]
-     */
-    public function getCompanies(): Collection
-    {
-        return $this->companies;
-    }
-
-    public function addCompany(Company $company): self
-    {
-        if (!$this->companies->contains($company)) {
-            $this->companies[] = $company;
-            $company->addClient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompany(Company $company): self
-    {
-        if ($this->companies->contains($company)) {
-            $this->companies->removeElement($company);
-            $company->removeClient($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Document[]
      */
     public function getDocuments(): Collection
@@ -512,32 +464,6 @@ class Client implements ClientInterface, SearchInterface, UserInterface
         if ($this->documents->contains($document)) {
             $this->documents->removeElement($document);
             $document->removeClient($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Client[]
-     */
-    public function getClients(): Collection
-    {
-        return $this->clients;
-    }
-
-    public function addClient(Client $client): self
-    {
-        if (!$this->clients->contains($client)) {
-            $this->clients[] = $client;
-        }
-
-        return $this;
-    }
-
-    public function removeClient(Client $client): self
-    {
-        if ($this->clients->contains($client)) {
-            $this->clients->removeElement($client);
         }
 
         return $this;

@@ -17,7 +17,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * Contact
+ * City
  *
  * @ORM\Table(name="city")
  * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
