@@ -56,9 +56,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i < 2; $i++) {
             $company = new Company();
             $company->setName($this->faker->company);
-            $company->setCode($i);
             $company->setContactPerson($this->faker->firstName);
-            $company->setComment($this->faker->company);
             $company->setDescription($this->faker->company);
             $company->setFullName($this->faker->company);
             $company->setBankName($this->faker->company);
