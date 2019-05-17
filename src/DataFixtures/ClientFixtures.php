@@ -65,12 +65,6 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
 
             $manager->persist($client);
 
-            $clients[] = $client;
-
-            if (count($clients) > 5) {
-                $client->addClient($this->faker->randomElement($clients));
-            }
-
             $phone = new Contact();
             $phone->setContactType($manager->getRepository(ContactType::class)->find(ContactType::TYPE_PHONE));
             $phone->setValue($this->faker->phoneNumber);
