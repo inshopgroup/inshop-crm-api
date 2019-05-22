@@ -1,0 +1,28 @@
+# Read the documentation: https://github.com/1up-lab/OneupFlysystemBundle/tree/master/Resources/doc/index.md
+oneup_flysystem:
+  adapters:
+    files_adapter:
+      local:
+        directory: '%kernel.root_dir%/files'
+    backups_adapter:
+      local:
+        directory: '%kernel.root_dir%/backups'
+    images_adapter:
+      local:
+        directory: '%kernel.root_dir%/images'
+
+  filesystems:
+    files_filesystem:
+      adapter: files_adapter
+      alias: files_filesystem
+      visibility: private
+
+    backups_filesystem:
+      adapter: backups_adapter
+      alias: backups_filesystem
+      visibility: private
+
+    images_filesystem:
+      adapter: images_adapter
+      alias: images_filesystem
+      visibility: public
