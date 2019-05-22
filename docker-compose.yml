@@ -73,10 +73,18 @@ services:
       - api
       - esnet
 
+  redis:
+    image: redis:latest
+    volumes:
+      - redis-data:/var/lib/redis
+    networks:
+      - api
+
 volumes:
   es-data1: {}
   es-data2: {}
   db-data: {}
+  redis-data: {}
   files-data: {}
   images-data: {}
 
