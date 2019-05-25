@@ -15,12 +15,12 @@ class HistoryGetEntityCollectionAction
      * @param EntityManagerInterface $em
      * @param HistoryRepository $historyRepository
      * @param string $entity
-     * @param int $id
+     * @param int $entityId
      * @return array
      */
-    public function __invoke(EntityManagerInterface $em, HistoryRepository $historyRepository, string $entity, int $id): array
+    public function __invoke(EntityManagerInterface $em, HistoryRepository $historyRepository, string $entity, int $entityId): array
     {
-        $entity = $em->getRepository('\\App\\Entity\\' . $entity)->find($id);
+        $entity = $em->getRepository('\\App\\Entity\\' . $entity)->find($entityId);
 
         return $historyRepository->getLogEntries($entity);
     }
