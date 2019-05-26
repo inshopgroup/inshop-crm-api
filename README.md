@@ -130,7 +130,6 @@ services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.3.1
     environment:
-      - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -143,11 +142,19 @@ services:
       - api
       - esnet
 
+  redis:
+    image: redis:latest
+    volumes:
+      - redis-data:/var/lib/redis
+    networks:
+      - api
+      
 volumes:
   es-data: {}
   db-data: {}
   files-data: {}
   images-data: {}
+  redis-data: {}
 
 networks:
     api:
