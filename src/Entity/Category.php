@@ -144,18 +144,6 @@ class Category
     /**
      * @var boolean
      *
-     * @ORM\Column(type="boolean")
-     * @Gedmo\Versioned
-     * @Groups({
-     *     "category_read",
-     *     "category_write"
-     * })
-     */
-    private $isActive = true;
-
-    /**
-     * @var boolean
-     *
      * @ORM\Column(type="integer")
      * @Gedmo\Versioned
      * @Groups({
@@ -246,18 +234,6 @@ class Category
                 $translation->setTranslatable(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getIsActive(): ?bool
-    {
-        return $this->isActive;
-    }
-
-    public function setIsActive(bool $isActive): self
-    {
-        $this->isActive = $isActive;
 
         return $this;
     }

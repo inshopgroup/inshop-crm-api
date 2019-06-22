@@ -173,19 +173,6 @@ class User implements \Serializable, UserInterface
     private $email;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(type="boolean")
-     * @Gedmo\Versioned
-     * @Groups({
-     *     "user_read",
-     *     "user_write",
-     *     "task_read"
-     * })
-     */
-    private $isActive;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="assignee")
      * @Groups({
      *     "user_read"
@@ -239,7 +226,6 @@ class User implements \Serializable, UserInterface
      */
     public function __construct()
     {
-        $this->isActive = true;
         $this->tasks = new ArrayCollection();
         $this->groups = new ArrayCollection();
     }
@@ -345,22 +331,6 @@ class User implements \Serializable, UserInterface
         $this->email = $email;
     }
 
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     */
-    public function setIsActive(bool $isActive): void
-    {
-        $this->isActive = $isActive;
-    }
-
     public function setUsername(string $username): self
     {
         $this->username = $username;
@@ -374,11 +344,6 @@ class User implements \Serializable, UserInterface
         $this->password = $password;
 
         return $this;
-    }
-
-    public function getIsActive(): ?bool
-    {
-        return $this->isActive;
     }
 
     /**
