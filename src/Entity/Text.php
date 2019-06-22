@@ -25,8 +25,8 @@ use App\Controller\Text\TextFrontendGetItemAction;
  * @Gedmo\Loggable
  * @ApiResource(
  *     attributes={
- *          "normalization_context"={"groups"={"text_read", "read"}},
- *          "denormalization_context"={"groups"={"text_write"}},
+ *          "normalization_context"={"groups"={"text_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"text_write", "is_active_write"}},
  *          "order"={"id": "ASC"}
  *     },
  *     itemOperations={

@@ -28,8 +28,8 @@ use App\Controller\Product\ProductFrontendGetItemAction;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Gedmo\Loggable
  * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"product_read", "read"}},
- *     "denormalization_context"={"groups"={"product_write"}},
+ *     "normalization_context"={"groups"={"product_read", "read", "is_active_read"}},
+ *     "denormalization_context"={"groups"={"product_write", "is_active_write"}},
  *     "order"={"id": "DESC"}
  * },
  *     collectionOperations={

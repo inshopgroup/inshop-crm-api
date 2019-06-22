@@ -22,8 +22,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * @ApiResource(
  *     iri="http://schema.org/MediaObject",
  *     attributes={
- *          "normalization_context"={"groups"={"image_read", "read"}},
- *          "denormalization_context"={"groups"={"image_write"}},
+ *          "normalization_context"={"groups"={"image_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"image_write", "is_active_write"}},
  *          "order"={"id": "DESC"}
  *     },
  *     collectionOperations={

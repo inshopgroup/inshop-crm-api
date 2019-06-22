@@ -27,8 +27,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Gedmo\Loggable
  * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"shipping_notice_status_read", "read"}},
- *     "denormalization_context"={"groups"={"shipping_notice_status_write"}},
+ *     "normalization_context"={"groups"={"shipping_notice_status_read", "read", "is_active_read"}},
+ *     "denormalization_context"={"groups"={"shipping_notice_status_write", "is_active_write"}},
  *     "order"={"id": "ASC"}
  * },
  *     collectionOperations={

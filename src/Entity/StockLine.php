@@ -23,8 +23,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * @Gedmo\Loggable
  * @ApiResource(
  *     attributes={
- *          "normalization_context"={"groups"={"stock_line_read", "read"}},
- *          "denormalization_context"={"groups"={"stock_line_write"}},
+ *          "normalization_context"={"groups"={"stock_line_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"stock_line_write", "is_active_write"}},
  *          "order"={"id": "ASC"}
  *     },
  *     collectionOperations={

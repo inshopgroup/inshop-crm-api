@@ -37,8 +37,8 @@ use App\Controller\Client\ClientRemindPasswordCollectionController;
  * @Gedmo\Loggable
  * @ApiResource(
  *     attributes={
- *          "normalization_context"={"groups"={"client_read", "read"}},
- *          "denormalization_context"={"groups"={"client_write"}},
+ *          "normalization_context"={"groups"={"client_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"client_write", "is_active_write"}},
  *          "order"={"id": "DESC"}
  *     },
  *     collectionOperations={
