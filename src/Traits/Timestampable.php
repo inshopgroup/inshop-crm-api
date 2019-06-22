@@ -7,10 +7,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Trait TimestampableEntity
+ * Trait Timestampable
  * @package App\Traits
  */
-trait TimestampableEntity
+trait Timestampable
 {
     /**
      * @var \DateTime

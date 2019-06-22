@@ -14,10 +14,6 @@ parameters:
 doctrine:
     dbal:
         default_connection: default
-        types:
-            date: App\DBAL\Types\UTCDateType
-        #            time: AppBundle\DBAL\Types\UTCTimeType
-        #            datetime: AppBundle\DBAL\Types\UTCDateTimeType
         connections:
             default:
                 driver: '%env(resolve:DATABASE_DRIVER)%'
@@ -27,7 +23,7 @@ doctrine:
                 user: '%env(resolve:DATABASE_USER)%'
                 password: '%env(resolve:DATABASE_PASSWORD)%'
                 charset: UTF8
-                server_version: 9.6
+                server_version: 11.4
 
     orm:
         default_entity_manager: default
@@ -45,16 +41,10 @@ doctrine:
                         prefix: 'App\Entity'
                         alias: App
 
-                filters:
-                    softdeleteable:
-                        class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
-                        enabled: true
-
 stof_doctrine_extensions:
     default_locale: en_US
     orm:
         default:
             timestampable: true
-            softdeleteable: true
             blameable: true
             sluggable: true

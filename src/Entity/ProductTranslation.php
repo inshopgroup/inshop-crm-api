@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use App\Traits\BlameableEntity;
-use App\Traits\SoftDeleteableEntity;
-use App\Traits\TimestampableEntity;
+use App\Traits\Blameable;
+use App\Traits\IsActive;
+use App\Traits\Timestampable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -71,23 +71,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  */
 class ProductTranslation
 {
-    /**
-     * Hook timestampable behavior
-     * updates createdAt, updatedAt fields
-     */
-    use TimestampableEntity;
-
-    /**
-     * Hook blameable behavior
-     * updates createdBy, updatedBy fields
-     */
-    use BlameableEntity;
-
-    /**
-     * Hook SoftDeleteable behavior
-     * updates deletedAt field
-     */
-    use SoftDeleteableEntity;
+    use Timestampable;
+    use Blameable;
+    use IsActive;
 
     /**
      * @ORM\Column(name="id", type="integer")

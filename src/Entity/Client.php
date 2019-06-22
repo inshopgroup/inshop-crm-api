@@ -9,9 +9,9 @@ use App\Interfaces\SearchInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Traits\BlameableEntity;
-use App\Traits\SoftDeleteableEntity;
-use App\Traits\TimestampableEntity;
+use App\Traits\Blameable;
+use App\Traits\IsActive;
+use App\Traits\Timestampable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -125,23 +125,9 @@ use App\Controller\Client\ClientRemindPasswordCollectionController;
  */
 class Client implements ClientInterface, SearchInterface, UserInterface
 {
-    /**
-     * Hook timestampable behavior
-     * updates createdAt, updatedAt fields
-     */
-    use TimestampableEntity;
-
-    /**
-     * Hook blameable behavior
-     * updates createdBy, updatedBy fields
-     */
-    use BlameableEntity;
-
-    /**
-     * Hook SoftDeleteable behavior
-     * updates deletedAt field
-     */
-    use SoftDeleteableEntity;
+    use Timestampable;
+    use Blameable;
+    use IsActive;
 
     /**
      * @var integer

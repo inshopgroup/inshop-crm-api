@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Interfaces\ElasticInterface;
 
 /**
+ * TODO: move file from Entity
  * Class SearchModel
  * @package App\Entity
  */

@@ -26,7 +26,7 @@ services:
       - api
 
   db:
-    image: postgres:9.5-alpine
+    image: postgres:11.4-alpine
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_USER=${DATABASE_USER}

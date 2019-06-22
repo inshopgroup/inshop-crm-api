@@ -7,10 +7,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Trait BlameableEntity
+ * Trait Blameable
  * @package App\Traits
  */
-trait BlameableEntity
+trait Blameable
 {
     /**
      * @var string
