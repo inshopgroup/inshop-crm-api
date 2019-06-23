@@ -19,13 +19,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * StockLineStatus
  *
  * @ORM\Entity(repositoryClass="App\Repository\StockLineStatusRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"stock_line_status_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"stock_line_status_write", "is_active_write"}},
- *     "order"={"id": "ASC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"stock_line_status_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"stock_line_status_write", "is_active_write"}},
+ *          "order"={"id": "ASC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_STOCK_LINE_STATUS_LIST')"

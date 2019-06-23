@@ -33,8 +33,6 @@ use App\Controller\Client\ClientRemindPasswordCollectionController;
  * @ORM\Table(name="client")
  * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
  * @UniqueEntity(fields={"username"}, errorPath="username", groups={"signup"}, message="User already exists")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"client_read", "read", "is_active_read"}},

@@ -22,30 +22,30 @@ use App\Controller\TaskDeadlineAction;
  * Task
  *
  * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"task_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"task_write", "is_active_write"}},
- *     "order"={"id": "DESC"}
- * }, collectionOperations={
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"task_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"task_write", "is_active_write"}},
+ *          "order"={"id": "DESC"}
+ *     },
+ *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_TASK_LIST')"
  *          },
  *          "post"={
  *              "access_control"="is_granted('ROLE_TASK_CREATE')"
  *          },
- *     "deadline"={
- *         "access_control"="is_granted('ROLE_TASK_DEADLINE')",
- *         "method"="GET",
- *         "path"="/tasks/deadline",
- *         "controller"=TaskDeadlineAction::class,
- *         "defaults"={"_api_receive"=false},
- *         "normalization_context"={
- *             "groups"={"task_read", "read"}
- *         }
+ *          "deadline"={
+ *              "access_control"="is_granted('ROLE_TASK_DEADLINE')",
+ *              "method"="GET",
+ *              "path"="/tasks/deadline",
+ *              "controller"=TaskDeadlineAction::class,
+ *              "defaults"={"_api_receive"=false},
+ *              "normalization_context"={
+ *                  "groups"={"task_read", "read", "is_active_read"}
+ *              }
+ *          },
  *     },
- * },
  *     itemOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_TASK_SHOW')"

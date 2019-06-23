@@ -20,13 +20,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *
  * @ORM\Table(name="shipping_notice_line_status")
  * @ORM\Entity(repositoryClass="App\Repository\ShippingNoticeLineStatusRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"shipping_notice_line_status_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"shipping_notice_line_status_write", "is_active_write"}},
- *     "order"={"id": "ASC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"shipping_notice_line_status_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"shipping_notice_line_status_write", "is_active_write"}},
+ *          "order"={"id": "ASC"}
+ *      },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_SHIPPING_NOTICE_LINE_STATUS_LIST')"

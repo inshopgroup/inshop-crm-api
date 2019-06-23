@@ -28,21 +28,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * @ORM\Table(name="`user`")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity({"username"})
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
  * @ApiResource(
- *     collectionOperations={"get", "post"={"controller"=UserPostCollectionController::class}},
- *     itemOperations={
- *          "get"={
- *              "access_control"="is_granted('ROLE_USER_SHOW')"
- *          },
- *          "put"={
- *              "controller"=UserPutItemController::class,
- *              "access_control"="is_granted('ROLE_USER_UPDATE')"
- *          },
- *          "delete"={
- *              "access_control"="is_granted('ROLE_USER_DELETE')"
- *          }
+ *     attributes={
+ *         "normalization_context"={"groups"={"user_read", "read", "is_active_read"}},
+ *         "denormalization_context"={"groups"={"user_write", "is_active_write"}},
+ *         "order"={"id": "DESC"},
  *     },
  *     collectionOperations={
  *          "get"={
@@ -60,10 +50,17 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *              "defaults"={"_api_receive"=false},
  *          }
  *     },
- *     attributes={
- *         "normalization_context"={"groups"={"user_read", "read", "is_active_read"}},
- *         "denormalization_context"={"groups"={"user_write", "is_active_write"}},
- *         "order"={"id": "DESC"},
+ *     itemOperations={
+ *          "get"={
+ *              "access_control"="is_granted('ROLE_USER_SHOW')"
+ *          },
+ *          "put"={
+ *              "controller"=UserPutItemController::class,
+ *              "access_control"="is_granted('ROLE_USER_UPDATE')"
+ *          },
+ *          "delete"={
+ *              "access_control"="is_granted('ROLE_USER_DELETE')"
+ *          }
  *     },
  * )
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})

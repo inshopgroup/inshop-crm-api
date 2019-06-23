@@ -19,8 +19,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * StockLine
  *
  * @ORM\Entity(repositoryClass="App\Repository\StockLineRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"stock_line_read", "read", "is_active_read"}},

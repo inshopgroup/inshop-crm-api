@@ -19,13 +19,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * Warehouse
  *
  * @ORM\Entity(repositoryClass="App\Repository\WarehouseRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"warehouse_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"warehouse_write", "is_active_write"}},
- *     "order"={"id": "ASC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"warehouse_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"warehouse_write", "is_active_write"}},
+ *          "order"={"id": "ASC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_WAREHOUSE_LIST')"

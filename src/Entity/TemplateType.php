@@ -19,13 +19,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * TemplateType
  *
  * @ORM\Entity(repositoryClass="App\Repository\TemplateTypeRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"template_type_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"template_type_write", "is_active_write"}},
- *     "order"={"id": "ASC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"template_type_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"template_type_write", "is_active_write"}},
+ *          "order"={"id": "ASC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_TEMPLATE_TYPE_LIST')"

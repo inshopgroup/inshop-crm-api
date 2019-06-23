@@ -21,13 +21,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *
  * @ORM\Table(name="city")
  * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"city_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"city_write", "is_active_write"}},
- *     "order"={"id": "DESC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"city_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"city_write", "is_active_write"}},
+ *          "order"={"id": "DESC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_CITY_LIST')"

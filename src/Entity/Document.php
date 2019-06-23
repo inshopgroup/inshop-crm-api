@@ -25,13 +25,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *
  * @ORM\Table(name="document")
  * @ORM\Entity(repositoryClass="App\Repository\DocumentRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"document_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"document_write", "is_active_write"}},
- *     "order"={"id": "DESC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"document_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"document_write", "is_active_write"}},
+ *          "order"={"id": "DESC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_DOCUMENT_LIST')"

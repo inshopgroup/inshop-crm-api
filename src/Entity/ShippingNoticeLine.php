@@ -16,13 +16,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="shipping_notice_line")
  * @ORM\Entity(repositoryClass="App\Repository\ShippingNoticeLineRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"shipping_notice_line_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"shipping_notice_line_write", "is_active_write"}},
- *     "order"={"id": "DESC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"shipping_notice_line_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"shipping_notice_line_write", "is_active_write"}},
+ *          "order"={"id": "DESC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_SHIPPING_NOTICE_LINE_LIST')"

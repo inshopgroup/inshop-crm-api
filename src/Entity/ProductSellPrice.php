@@ -24,13 +24,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *
  * @ORM\Table(name="product_sell_price")
  * @ORM\Entity(repositoryClass="App\Repository\ProductSellPriceRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"product_sell_price_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"product_sell_price_write", "is_active_write"}},
- *     "order"={"id": "DESC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"product_sell_price_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"product_sell_price_write", "is_active_write"}},
+ *          "order"={"id": "DESC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_PRODUCT_SELL_PRICE_LIST')"

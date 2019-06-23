@@ -19,13 +19,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * ShipmentMethod
  *
  * @ORM\Entity(repositoryClass="App\Repository\ShipmentMethodRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"shipment_method_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"shipment_method_write", "is_active_write"}},
- *     "order"={"id": "ASC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"shipment_method_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"shipment_method_write", "is_active_write"}},
+ *          "order"={"id": "ASC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_SHIPMENT_METHOD_LIST')"

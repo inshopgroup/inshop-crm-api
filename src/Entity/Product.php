@@ -25,13 +25,12 @@ use App\Controller\Product\ProductFrontendGetItemAction;
  *
  * @ORM\Table(name="product")
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"product_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"product_write", "is_active_write"}},
- *     "order"={"id": "DESC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"product_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"product_write", "is_active_write"}},
+ *          "order"={"id": "DESC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_PRODUCT_LIST')"

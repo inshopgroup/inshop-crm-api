@@ -20,13 +20,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * ContactType
  *
  * @ORM\Entity(repositoryClass="App\Repository\ContactTypeRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"contact_type_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"contact_type_write", "is_active_write"}},
- *     "order"={"id": "ASC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"contact_type_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"contact_type_write", "is_active_write"}},
+ *          "order"={"id": "ASC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_CONTACT_TYPE_LIST')"

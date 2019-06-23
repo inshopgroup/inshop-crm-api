@@ -16,13 +16,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="invoice_line")
  * @ORM\Entity(repositoryClass="App\Repository\InvoiceLineRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"invoice_line_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"invoice_line_write", "is_active_write"}},
- *     "order"={"id": "DESC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"invoice_line_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"invoice_line_write", "is_active_write"}},
+ *          "order"={"id": "DESC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_INVOICE_LINE_LIST')"

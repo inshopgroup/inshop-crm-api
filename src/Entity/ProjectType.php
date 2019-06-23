@@ -19,13 +19,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * ProjectType
  *
  * @ORM\Entity(repositoryClass="App\Repository\ProjectTypeRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"project_type_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"project_type_write", "is_active_write"}},
- *     "order"={"id": "ASC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"project_type_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"project_type_write", "is_active_write"}},
+ *          "order"={"id": "ASC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_PROJECT_TYPE_LIST')"

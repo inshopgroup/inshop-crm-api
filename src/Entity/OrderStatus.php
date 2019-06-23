@@ -24,13 +24,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *
  * @ORM\Table(name="order_status")
  * @ORM\Entity(repositoryClass="App\Repository\OrderStatusRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"order_status_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"order_status_write", "is_active_write"}},
- *     "order"={"id": "ASC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"order_status_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"order_status_write", "is_active_write"}},
+ *          "order"={"id": "ASC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_ORDER_STATUS_LIST')"

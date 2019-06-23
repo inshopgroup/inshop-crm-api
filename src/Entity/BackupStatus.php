@@ -20,13 +20,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *
  * @ORM\Table(name="backup_status")
  * @ORM\Entity(repositoryClass="App\Repository\BackupStatusRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"backup_status_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"backup_status_write", "is_active_write"}},
- *     "order"={"id": "DESC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"backup_status_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"backup_status_write", "is_active_write"}},
+ *          "order"={"id": "DESC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_BACKUP_STATUS_LIST')"

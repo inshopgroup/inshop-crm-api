@@ -23,13 +23,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * Project
  *
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"project_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"project_write", "is_active_write"}},
- *     "order"={"updatedAt": "DESC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"project_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"project_write", "is_active_write"}},
+ *          "order"={"updatedAt": "DESC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_PROJECT_LIST')"

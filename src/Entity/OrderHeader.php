@@ -24,8 +24,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *
  * @ORM\Table(name="order_header")
  * @ORM\Entity(repositoryClass="App\Repository\OrderHeaderRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
  * @ApiResource(
  *     attributes={
  *         "normalization_context"={"groups"={"order_header_read", "read", "is_active_read"}},
@@ -35,7 +33,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     collectionOperations={
  *          "get"={
  *              "normalization_context"={
- *                  "groups"={"order_header_read_collection", "read"}
+ *                  "groups"={"order_header_read_collection", "read", "is_active_read"}
  *              },
  *              "access_control"="is_granted('ROLE_ORDER_HEADER_LIST')"
  *          },

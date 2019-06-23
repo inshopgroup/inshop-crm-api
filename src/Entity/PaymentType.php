@@ -19,13 +19,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * PaymentType
  *
  * @ORM\Entity(repositoryClass="App\Repository\PaymentTypeRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"payment_type_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"payment_type_write", "is_active_write"}},
- *     "order"={"id": "ASC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"payment_type_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"payment_type_write", "is_active_write"}},
+ *          "order"={"id": "ASC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_PAYMENT_TYPE_LIST')"

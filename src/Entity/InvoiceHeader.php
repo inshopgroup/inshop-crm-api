@@ -24,8 +24,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *
  * @ORM\Table(name="invoice_header")
  * @ORM\Entity(repositoryClass="App\Repository\InvoiceHeaderRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
  * @ApiResource(
  *     attributes={
  *         "normalization_context"={"groups"={"invoice_header_read", "read", "is_active_read"}},

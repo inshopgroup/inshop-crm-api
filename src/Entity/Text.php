@@ -21,8 +21,6 @@ use App\Controller\Text\TextFrontendGetItemAction;
  *
  * @ORM\Table(name="text")
  * @ORM\Entity(repositoryClass="App\Repository\TextRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"text_read", "read", "is_active_read"}},
@@ -52,7 +50,7 @@ use App\Controller\Text\TextFrontendGetItemAction;
  *     collectionOperations={
  *          "get"={
  *              "normalization_context"={
- *                  "groups"={"text_read_collection", "read"}
+ *                  "groups"={"text_read_collection", "read", "is_active_read"}
  *              },
  *              "access_control"="is_granted('ROLE_TEXT_LIST')"
  *          },

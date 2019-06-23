@@ -25,13 +25,12 @@ use App\Controller\Category\CategoryFrontendGetItemAction;
  *
  * @ORM\Table(name="category")
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- * @Gedmo\Loggable
- * @ApiResource(attributes={
- *     "normalization_context"={"groups"={"category_read", "read", "is_active_read"}},
- *     "denormalization_context"={"groups"={"category_write", "is_active_write"}},
- *     "order"={"id": "DESC"}
- * },
+ * @ApiResource(
+ *     attributes={
+ *          "normalization_context"={"groups"={"category_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"category_write", "is_active_write"}},
+ *          "order"={"id": "DESC"}
+ *     },
  *     collectionOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_CATEGORY_LIST')"
