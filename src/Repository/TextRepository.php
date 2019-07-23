@@ -19,22 +19,21 @@ class TextRepository extends ServiceEntityRepository
         parent::__construct($registry, Text::class);
     }
 
-    // /**
-    //  * @return Text[] Returns an array of Text objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param string $value
+     * @return Text|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findBySlug(string $value): ?Text
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            ->innerJoin('t.translations', 'tt')
+            ->andWhere('tt.slug = :slug')
+            ->setParameter('slug', $value)
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Text

@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class TextFrontendGetItemAction
- * @package App\Controller\Candidate
+ * @package App\Controller\Text
  */
 class TextFrontendGetItemAction
 {
@@ -17,10 +17,11 @@ class TextFrontendGetItemAction
      * @param Request $request
      * @param TextRepository $textRepository
      * @return Text
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function __invoke(Request $request, TextRepository $textRepository): Text
     {
-        $text = $textRepository->findOneBy(['slug' => $request->get('slug')]);
+        $text = $textRepository->findBySlug($request->get('slug'));
 
         if (!$text) {
             throw new NotFoundHttpException();

@@ -2,7 +2,9 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Language;
 use App\Entity\Text;
+use App\Entity\TextTranslation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -31,20 +33,52 @@ class TextFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        $text = new Text();
-        $text->setTitle('Terms of use');
-        $text->setContent($this->faker->text);
-        $manager->persist($text);
+        $languages = $manager->getRepository(Language::class)->findAll();
 
         $text = new Text();
-        $text->setTitle('Homepage about');
-        $text->setContent($this->faker->text);
         $manager->persist($text);
 
+        /** @var Language $language */
+        foreach ($languages as $language) {
+            $textTranslation = new TextTranslation();
+            $textTranslation->setTitle('Terms of use');
+            $textTranslation->setContent($this->faker->text);
+            $textTranslation->setTranslatable($text);
+            $textTranslation->setLanguage($language);
+            $text->addTranslation($textTranslation);
+
+            $manager->persist($textTranslation);
+        }
+
         $text = new Text();
-        $text->setTitle('About');
-        $text->setContent($this->faker->text);
         $manager->persist($text);
+
+        /** @var Language $language */
+        foreach ($languages as $language) {
+            $textTranslation = new TextTranslation();
+            $textTranslation->setTitle('Homepage about');
+            $textTranslation->setContent($this->faker->text);
+            $textTranslation->setTranslatable($text);
+            $textTranslation->setLanguage($language);
+            $text->addTranslation($textTranslation);
+
+            $manager->persist($textTranslation);
+        }
+
+        $text = new Text();
+        $manager->persist($text);
+
+        /** @var Language $language */
+        foreach ($languages as $language) {
+            $textTranslation = new TextTranslation();
+            $textTranslation->setTitle('About');
+            $textTranslation->setContent($this->faker->text);
+            $textTranslation->setTranslatable($text);
+            $textTranslation->setLanguage($language);
+            $text->addTranslation($textTranslation);
+
+            $manager->persist($textTranslation);
+        }
 
         $manager->flush();
     }

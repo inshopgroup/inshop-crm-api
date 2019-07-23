@@ -81,7 +81,8 @@ class Language
      *     "category_read",
      *     "category_write",
      *     "product_read",
-     *     "product_write"
+     *     "product_write",
+     *     "text_read",
      * })
      */
     private $id;
@@ -95,7 +96,8 @@ class Language
      *     "invoice_header_read",
      *     "user_read",
      *     "category_read",
-     *     "product_read"
+     *     "product_read",
+     *     "text_read",
      * })
      * @Assert\NotBlank()
      */
@@ -109,7 +111,8 @@ class Language
      *     "language_write",
      *     "category_read",
      *     "product_read",
-     *     "category_read_frontend"
+     *     "category_read_frontend",
+     *     "text_read",
      * })
      * @Assert\NotBlank()
      */

@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -62,15 +64,14 @@ use App\Controller\Text\TextFrontendGetItemAction;
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
  * @ApiFilter(SearchFilter::class, properties={
  *     "id": "exact",
- *     "title": "ipartial",
+ *     "translations.title": "ipartial",
  *     "slug": "ipartial",
  * })
  * @ApiFilter(
  *     OrderFilter::class,
  *     properties={
  *          "id",
- *          "title",
- *          "slug",
+ *          "translations.title",
  *          "createdAt",
  *          "updatedAt"
  *     }
@@ -91,161 +92,62 @@ class Text
      * @Groups({
      *     "text_read",
      *     "text_read_collection",
+     *     "text_read_frontend",
      * })
      */
     protected $id;
 
     /**
-     * @Gedmo\Slug(fields={"title"})
-     * @ORM\Column(length=128)
+     * @ORM\OneToMany(targetEntity="App\Entity\TextTranslation", mappedBy="translatable", cascade={"persist"}, orphanRemoval=true)
      * @Groups({
      *     "text_read",
-     *     "text_read_collection",
-     * })
-     */
-    private $slug;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Versioned
-     * @Groups({
-     *     "text_read",
+     *     "text_write",
      *     "text_read_collection",
      *     "text_read_frontend",
-     *     "text_write",
      * })
-     * @Assert\NotBlank()
+     * @ORM\OrderBy({"id" = "ASC"})
+     * @Assert\Valid()
+     * @Assert\Count(min=1)
      */
-    protected $title = '';
+    private $translations;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="text")
-     * @Gedmo\Versioned
-     * @Groups({
-     *     "text_read",
-     *     "text_read_frontend",
-     *     "text_write",
-     * })
-     * @Assert\NotBlank()
-     */
-    protected $content = '';
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Versioned
-     * @Groups({
-     *     "text_read",
-     *     "text_read_frontend",
-     *     "text_write",
-     * })
-     */
-    protected $seoTitle = '';
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Versioned
-     * @Groups({
-     *     "text_read",
-     *     "text_read_frontend",
-     *     "text_write",
-     * })
-     */
-    protected $seoDescription = '';
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Versioned
-     * @Groups({
-     *     "text_read",
-     *     "text_read_frontend",
-     *     "text_write",
-     * })
-     */
-    protected $seoKeywords = '';
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSlug(): ?string
+    /**
+     * @return Collection|TextTranslation[]
+     */
+    public function getTranslations(): Collection
     {
-        return $this->slug;
+        return $this->translations;
     }
 
-    public function setSlug(string $slug): self
+    public function addTranslation(TextTranslation $translation): self
     {
-        $this->slug = $slug;
+        if (!$this->translations->contains($translation)) {
+            $this->translations[] = $translation;
+            $translation->setTranslatable($this);
+        }
 
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function removeTranslation(TextTranslation $translation): self
     {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    public function getSeoTitle(): ?string
-    {
-        return $this->seoTitle;
-    }
-
-    public function setSeoTitle(string $seoTitle): self
-    {
-        $this->seoTitle = $seoTitle;
-
-        return $this;
-    }
-
-    public function getSeoDescription(): ?string
-    {
-        return $this->seoDescription;
-    }
-
-    public function setSeoDescription(string $seoDescription): self
-    {
-        $this->seoDescription = $seoDescription;
-
-        return $this;
-    }
-
-    public function getSeoKeywords(): ?string
-    {
-        return $this->seoKeywords;
-    }
-
-    public function setSeoKeywords(string $seoKeywords): self
-    {
-        $this->seoKeywords = $seoKeywords;
+        if ($this->translations->contains($translation)) {
+            $this->translations->removeElement($translation);
+            // set the owning side to null (unless already changed)
+            if ($translation->getTranslatable() === $this) {
+                $translation->setTranslatable(null);
+            }
+        }
 
         return $this;
     }
