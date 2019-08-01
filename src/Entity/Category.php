@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Interfaces\TranslatableInterface;
+use App\Traits\TranslationSluggable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +12,6 @@ use App\Traits\IsActive;
 use App\Traits\Timestampable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -44,7 +45,7 @@ use App\Controller\Category\CategoryFrontendGetItemAction;
  *              "controller"=CategoryFrontendGetCollectionAction::class,
  *              "defaults"={"_api_receive"=false},
  *              "normalization_context"={
- *                  "groups"={"category_read_frontend"}
+ *                  "groups"={"category_read_frontend", "slug"}
  *              },
  *          }
  *     },
@@ -64,7 +65,7 @@ use App\Controller\Category\CategoryFrontendGetItemAction;
  *              "controller"=CategoryFrontendGetItemAction::class,
  *              "defaults"={"_api_receive"=false},
  *              "normalization_context"={
- *                  "groups"={"category_read_frontend"}
+ *                  "groups"={"category_read_frontend", "slug"}
  *              },
  *          }
  *     })
@@ -85,11 +86,12 @@ use App\Controller\Category\CategoryFrontendGetItemAction;
  *     }
  * )
  */
-class Category
+class Category implements TranslatableInterface
 {
     use Timestampable;
     use Blameable;
     use IsActive;
+    use TranslationSluggable;
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -121,7 +123,7 @@ class Category
      * @Groups({
      *     "category_read",
      *     "category_write",
-     *     "category_read_frontend"
+     *     "category_read_frontend",
      * })
      * @Assert\Valid()
      */
@@ -250,22 +252,8 @@ class Category
     }
 
     /**
-     * @return CategoryTranslation
-     */
-    public function getTranslation(): CategoryTranslation
-    {
-        /** @var CategoryTranslation $translation */
-        foreach ($this->getTranslations() as $translation) {
-            if ($translation->getLanguage()->getCode() === 'en') {
-                return $translation;
-            }
-        }
-
-        return $this->getTranslations()->first();
-    }
-
-    /**
      * @return string
+     * @throws \Exception
      * @Groups({
      *     "category_read",
      *     "product_read",
@@ -274,19 +262,9 @@ class Category
      */
     public function getName(): string
     {
-        return $this->getTranslation()->getName();
-    }
+        /** @var CategoryTranslation $translation */
+        $translation = $this->getTranslation();
 
-    /**
-     * @return string
-     * @Groups({
-     *     "category_read",
-     *     "product_read",
-     *     "category_read_frontend"
-     * })
-     */
-    public function getSlug(): string
-    {
-        return $this->getTranslation()->getSlug();
+        return $translation->getName();
     }
 }

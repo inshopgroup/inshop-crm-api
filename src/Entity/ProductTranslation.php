@@ -88,11 +88,6 @@ class ProductTranslation
     /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=128)
-     * @Groups({
-     *     "product_read",
-     *     "product_write",
-     *     "product_read_frontend"
-     * })
      */
     private $slug;
 

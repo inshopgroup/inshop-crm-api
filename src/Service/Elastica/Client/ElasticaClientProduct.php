@@ -49,19 +49,22 @@ class ElasticaClientProduct extends ElasticaClientBase
                 'type' => 'object',
                 'properties' => array(
                     'lang' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-                    'slug' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
                     'name' => array('type' => 'text'),
                     'description' => array('type' => 'text'),
                 ),
             ),
-            'categoryId' => array('type' => 'integer'),
-            'categorySlug' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-            'categoryTranslations' => array(
-                'type' => 'nested',
+            'category' => array(
+                'type' => 'object',
                 'properties' => array(
-                    'lang' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
+                    'id' => array('type' => 'integer'),
                     'slug' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-                    'name' => array('type' => 'text',  'fielddata' => true, 'analyzer' => 'index_keyword_analyzer'),
+                    'translations' => array(
+                        'type' => 'nested',
+                        'properties' => array(
+                            'lang' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
+                            'name' => array('type' => 'text',  'fielddata' => true, 'analyzer' => 'index_keyword_analyzer'),
+                        ),
+                    ),
                 ),
             ),
         ));
@@ -73,6 +76,7 @@ class ElasticaClientProduct extends ElasticaClientBase
     /**
      * @param Product $entity
      * @return array
+     * @throws \Exception
      */
     public function toArray(Product $entity): array
     {
@@ -82,7 +86,6 @@ class ElasticaClientProduct extends ElasticaClientBase
         foreach ($entity->getCategory()->getTranslations() as $categoryTranslation) {
             $categoryTranslations[] = [
               'lang' => $categoryTranslation->getLanguage()->getCode(),
-              'slug' => $categoryTranslation->getSlug(),
               'name' => $categoryTranslation->getName(),
             ];
         }
@@ -103,9 +106,11 @@ class ElasticaClientProduct extends ElasticaClientBase
             'id' => $entity->getId(),
             'slug' => $entity->getSlug(),
             'translations' => $translations,
-            'categoryId' => $entity->getCategory()->getId(),
-            'categorySlug' => $entity->getCategory()->getSlug(),
-            'categoryTranslations' => $categoryTranslations,
+            'category' => [
+                'id' => $entity->getCategory()->getId(),
+                'slug' => $entity->getCategory()->getSlug(),
+                'translations' => $categoryTranslations,
+            ]
         ];
     }
 
@@ -115,14 +120,6 @@ class ElasticaClientProduct extends ElasticaClientBase
      */
     protected function addAggregations(Query $query): Query
     {
-//        $agg = new Nested('cities', 'cities');
-//        $terms = new Terms('id');
-//        $script = new Script("doc['cities.id'].value + '|' + doc['cities.name'].value");
-//        $terms->setScript($script);
-//        $terms->setSize(30);
-//        $agg->addAggregation($terms);
-//        $query->addAggregation($agg);
-//
 //        $agg = new Nested('category', 'category');
 //        $terms = new Terms('id');
 //        $script = new Script("doc['category.id'].value + '|' + doc['category.name'].value");
@@ -157,7 +154,7 @@ class ElasticaClientProduct extends ElasticaClientBase
 
         // filter by category
         $term = new Query\Match();
-        $term->setField('categorySlug', $params['categorySlug']);
+        $term->setField('category.slug', $params['categorySlug']);
         $boolQuery->addMust($term);
 
         if (isset($params['q'])) {
@@ -165,17 +162,6 @@ class ElasticaClientProduct extends ElasticaClientBase
             $term->setTerm('search', $params['q']);
             $boolQuery->addMust($term);
         }
-//
-//        if (isset($params['cities'])) {
-//            $term = new Query\Terms();
-//            $term->setTerms('cities.id', explode(',', $params['cities']));
-//
-//            $nested = new Query\Nested();
-//            $nested->setPath('cities');
-//            $nested->setQuery($term);
-//
-//            $boolQuery->addMust($nested);
-//        }
 
         $query->setQuery($boolQuery);
 

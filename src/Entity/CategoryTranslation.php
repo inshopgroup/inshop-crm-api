@@ -90,11 +90,6 @@ class CategoryTranslation
     /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=128)
-     * @Groups({
-     *     "category_read",
-     *     "category_write",
-     *     "category_read_frontend"
-     * })
      */
     private $slug;
 

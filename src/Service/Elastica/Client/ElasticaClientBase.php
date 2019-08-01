@@ -143,7 +143,7 @@ abstract class ElasticaClientBase
         $query->setQuery(
             $qb->query()->bool()
                 ->addMust(
-                    $qb->query()->term(['translations.slug' => $slug])
+                    $qb->query()->term(['slug' => $slug])
                 )
         );
 

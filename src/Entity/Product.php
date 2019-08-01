@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Interfaces\TranslatableInterface;
+use App\Traits\TranslationSluggable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -97,11 +99,12 @@ use App\Controller\Product\ProductFrontendGetItemAction;
  *     }
  * )
  */
-class Product
+class Product implements TranslatableInterface
 {
     use Timestampable;
     use Blameable;
     use IsActive;
+    use TranslationSluggable;
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -378,22 +381,8 @@ class Product
     }
 
     /**
-     * @return ProductTranslation
-     */
-    public function getTranslation(): ProductTranslation
-    {
-        /** @var ProductTranslation $translation */
-        foreach ($this->getTranslations() as $translation) {
-            if ($translation->getLanguage()->getCode() === 'en') {
-                return $translation;
-            }
-        }
-
-        return $this->getTranslations()->first();
-    }
-
-    /**
      * @return string
+     * @throws \Exception
      * @Groups({
      *     "product_read",
      *     "product_read_frontend",
@@ -402,19 +391,9 @@ class Product
      */
     public function getName(): string
     {
-        return $this->getTranslation()->getName();
-    }
+        /** @var ProductTranslation $translation */
+        $translation = $this->getTranslation();
 
-    /**
-     * @return string
-     * @Groups({
-     *     "product_read",
-     *     "product_read_frontend",
-     *     "product_read_frontend_item"
-     * })
-     */
-    public function getSlug(): string
-    {
-        return $this->getTranslation()->getSlug();
+        return $translation->getName();
     }
 }

@@ -87,11 +87,6 @@ class TextTranslation
     /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(length=128)
-     * @Groups({
-     *     "text_read",
-     *     "text_write",
-     *     "text_read_frontend"
-     * })
      */
     private $slug;
 
@@ -269,7 +264,7 @@ class TextTranslation
         return $this;
     }
 
-    public function getLanguage(): ?Language
+    public function getLanguage(): Language
     {
         return $this->language;
     }

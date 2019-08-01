@@ -61,7 +61,6 @@ services:
       - { name: 'doctrine.event_listener', event: 'postUpdate' }
       - { name: 'doctrine.event_listener', event: 'preRemove' }
 
-
   app.elastica.listener.task:
     class: 'App\EventListener\TaskListener'
     tags:

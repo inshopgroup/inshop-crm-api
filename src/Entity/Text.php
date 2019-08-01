@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use App\Interfaces\TranslatableInterface;
+use App\Traits\TranslationSluggable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,7 +27,7 @@ use App\Controller\Text\TextFrontendGetItemAction;
  * @ORM\Entity(repositoryClass="App\Repository\TextRepository")
  * @ApiResource(
  *     attributes={
- *          "normalization_context"={"groups"={"text_read", "read", "is_active_read"}},
+ *          "normalization_context"={"groups"={"text_read", "read", "is_active_read", "slug"}},
  *          "denormalization_context"={"groups"={"text_write", "is_active_write"}},
  *          "order"={"id": "ASC"}
  *     },
@@ -77,11 +79,12 @@ use App\Controller\Text\TextFrontendGetItemAction;
  *     }
  * )
  */
-class Text
+class Text implements TranslatableInterface
 {
     use Timestampable;
     use Blameable;
     use IsActive;
+    use TranslationSluggable;
 
     /**
      * @var integer
