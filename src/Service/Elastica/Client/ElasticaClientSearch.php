@@ -88,7 +88,7 @@ class ElasticaClientSearch extends ElasticaClientBase
 
         if (isset($params['q'])) {
             $term = new Query\Term();
-            $term->setTerm('text', $params['q']);
+            $term->setTerm('text', mb_strtolower($params['q']));
             $boolQuery->addMust($term);
         }
 
@@ -101,7 +101,7 @@ class ElasticaClientSearch extends ElasticaClientBase
         $query->setQuery($boolQuery);
 
         $page = isset($params['page']) ? $params['page'] : 1;
-        $size = isset($params['perPage']) ? $params['perPage'] : 20;
+        $size = isset($params['perPage']) ? $params['perPage'] : 30;
         $from = $size * ($page - 1);
 
         $query

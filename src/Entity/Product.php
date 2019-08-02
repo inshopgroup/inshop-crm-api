@@ -21,6 +21,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Controller\Product\ProductFrontendGetItemAction;
+use App\Controller\SearchAction;
 
 /**
  * Product
@@ -51,6 +52,7 @@ use App\Controller\Product\ProductFrontendGetItemAction;
  *              "access_control"="is_granted('ROLE_OTHER_SEARCH')",
  *              "method"="GET",
  *              "path"="/search",
+ *              "controller"=SearchAction::class,
  *              "normalization_context"={
  *                  "groups"={"Default"}
  *              },
