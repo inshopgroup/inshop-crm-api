@@ -7,7 +7,6 @@ use App\Controller\User\BaseUserController;
 use App\Entity\Client;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ClientSignupPostCollectionController
@@ -16,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ClientSignupPostCollectionController extends BaseUserController
 {
     /**
-     * @param Request $request
+     * @param Client $data
      * @param ValidatorInterface $validator
      * @param \Swift_Mailer $mailer
      * @param ParameterBagInterface $params
@@ -25,39 +24,32 @@ class ClientSignupPostCollectionController extends BaseUserController
      * @throws \Exception
      */
     public function __invoke(
-        Request $request,
+        Client $data,
         ValidatorInterface $validator,
         \Swift_Mailer $mailer,
         ParameterBagInterface $params,
         EntityManagerInterface $em
     ): Client {
-        $data = json_decode($request->getContent(), true);
+        $data->setToken(\bin2hex(\random_bytes(32)));
+        $data->setTokenCreatedAt(new \DateTime());
 
-        $client = new Client();
-        $client->setUsername($data['username']);
-        $client->setName($data['name']);
-        $client->setPlainPassword($data['plainPassword']);
-//        $client->setIsActive(false);
-        $client->setToken(\bin2hex(\random_bytes(32)));
-        $client->setTokenCreatedAt(new \DateTime());
+        /** @var Client $data */
+        $data = $this->encodePassword($data);
 
-        /** @var Client $client */
-        $client = $this->encodePassword($client);
-
-        $validator->validate($client, ['groups' => 'signup']);
+        $validator->validate($data, ['groups' => 'signup']);
         $em->flush();
 
         try {
             $message = (new \Swift_Message())
                 ->setSubject('Confirm registration')
                 ->setFrom('noreply@inshopcrm.com')
-                ->setTo($client->getUsername())
+                ->setTo($data->getUsername())
                 ->setBody(
                     $this->renderView(
                         'emails/signup.html.twig',
                         [
-                            'user' => $client,
-                            'url' => sprintf('%s%s%s', $params->get('client_url'), '/token/login/', $client->getToken()),
+                            'user' => $data,
+                            'url' => sprintf('%s%s%s', $params->get('client_url'), '/token/login/', $data->getToken()),
                         ]
                     ),
                     'text/html'
@@ -66,6 +58,6 @@ class ClientSignupPostCollectionController extends BaseUserController
             $mailer->send($message);
         } catch (\Exception $e) {}
 
-        return $client;
+        return $data;
     }
 }

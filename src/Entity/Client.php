@@ -56,7 +56,7 @@ use App\Controller\Client\ClientRemindPasswordCollectionController;
  *                  "groups"={"signup_collection"}
  *              },
  *              "controller"=ClientSignupPostCollectionController::class,
- *              "defaults"={"_api_receive"=false},
+ *              "defaults"={"_api_receive"=true},
  *          }
  *     },
  *     itemOperations={
@@ -174,7 +174,8 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "order_header_read",
      *     "order_header_read_collection",
      *     "client_get_item",
-     *     "client_put_item"
+     *     "client_put_item",
+     *     "signup_collection",
      * })
      * @Assert\NotBlank()
      */
@@ -245,7 +246,8 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "client_read",
      *     "client_write",
      *     "client_get_item",
-     *     "client_put_item"
+     *     "client_put_item",
+     *     "signup_collection",
      * })
      * @Assert\NotBlank()
      * @Assert\Email()
@@ -254,14 +256,15 @@ class Client implements ClientInterface, SearchInterface, UserInterface
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\NotBlank()
      */
     private $password;
 
     /**
      * @Groups({
-     *     "client_write"
+     *     "client_write",
+     *     "signup_collection",
      * })
+     * @Assert\NotBlank()
      */
     private $plainPassword;
 
@@ -456,7 +459,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     /**
      * @return string
      */
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
