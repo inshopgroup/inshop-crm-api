@@ -63,14 +63,14 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($brand);
         }
 
-        for ($j = 0; $j < 20; $j++) {
+        for ($j = 0; $j < 5; $j++) {
             $category = new Category();
 
             foreach ($languages as $language) {
                 $categoryTranslation = new CategoryTranslation();
                 $categoryTranslation->setTranslatable($category);
                 $categoryTranslation->setLanguage($language);
-                $categoryTranslation->setName($this->faker->company);
+                $categoryTranslation->setName($this->faker->text(10));
                 $categoryTranslation->setDescription($this->faker->text);
                 $category->addTranslation($categoryTranslation);
 
@@ -78,8 +78,26 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
             }
 
             $categories[] = $category;
-
             $manager->persist($category);
+
+            for ($k = 0; $k < 15; $k++) {
+                $subCategory = new Category();
+                $subCategory->setParent($category);
+
+                foreach ($languages as $language) {
+                    $categoryTranslation = new CategoryTranslation();
+                    $categoryTranslation->setTranslatable($subCategory);
+                    $categoryTranslation->setLanguage($language);
+                    $categoryTranslation->setName($this->faker->text(10));
+                    $categoryTranslation->setDescription($this->faker->text);
+                    $subCategory->addTranslation($categoryTranslation);
+
+                    $manager->persist($categoryTranslation);
+                }
+
+                $categories[] = $subCategory;
+                $manager->persist($subCategory);
+            }
         }
 
         $manager->flush();
