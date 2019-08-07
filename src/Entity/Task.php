@@ -57,7 +57,11 @@ use App\Controller\TaskDeadlineAction;
  *              "access_control"="is_granted('ROLE_TASK_DELETE')"
  *          }
  *     })
- * @ApiFilter(DateFilter::class, properties={"deadline", "createdAt", "updatedAt"})
+ * @ApiFilter(DateFilter::class, properties={
+ *     "deadline",
+ *     "createdAt",
+ *     "updatedAt"
+ * })
  * @ApiFilter(SearchFilter::class, properties={
  *     "id": "exact",
  *     "status.id": "exact",
