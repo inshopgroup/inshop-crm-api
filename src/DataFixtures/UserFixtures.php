@@ -44,42 +44,45 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         $roles = $manager->getRepository(Role::class)->findAll();
         $language = $manager->getRepository(Language::class)->findOneBy(['code' => 'en']);
-        $users = [];
-        $groups = [];
 
-        foreach (['Managers', 'Accounting', 'Administrators'] as $groupTitle) {
-            $group = new Group();
-            $group->setName($groupTitle);
-            foreach ($roles as $role) {
-                $group->addRole($role);
+        $groupDemo = new Group();
+        $groupDemo->setName('Demo');
+
+        /** @var Role $role */
+        foreach ($roles as $role) {
+            if (!\in_array($role->getRole(), ['ROLE_GROUP_UPDATE', 'ROLE_GROUP_DELETE', 'ROLE_USER_UPDATE', 'ROLE_USER_DELETE'])) {
+                $groupDemo->addRole($role);
             }
-            $manager->persist($group);
-
-            $groups[] = $group;
         }
+        $manager->persist($groupDemo);
+
 
         $user = new User();
         $user->setLanguage($language);
         $user->setUsername('demo');
         $user->setName(sprintf('%s %s', $this->faker->firstName, $this->faker->lastName));
-        $user->addGroup($group);
+        $user->addGroup($groupDemo);
         $user->setPassword($this->encoder->encodePassword($user, 'demo'));
         $manager->persist($user);
         $manager->flush();
 
-        for ($i = 0; $i < 10; $i++) {
-            $user = new User();
-            $user->setLanguage($language);
-            $user->setUsername($this->faker->email);
-            $user->setName(sprintf('%s %s', $this->faker->firstName, $this->faker->lastName));
-            $user->addGroup($this->faker->randomElement($groups));
-            $user->setPassword($this->encoder->encodePassword($user, $this->faker->name));
-            $manager->persist($user);
 
-            $users[] = $user;
-
-            $manager->flush();
+        $groupAdmin = new Group();
+        $groupAdmin->setName('Administrators');
+        foreach ($roles as $role) {
+            $groupAdmin->addRole($role);
         }
+        $manager->persist($groupAdmin);
+
+
+        $user = new User();
+        $user->setLanguage($language);
+        $user->setUsername('admin');
+        $user->setName(sprintf('%s %s', $this->faker->firstName, $this->faker->lastName));
+        $user->addGroup($groupAdmin);
+        $user->setPassword($this->encoder->encodePassword($user, 'admin'));
+        $manager->persist($user);
+        $manager->flush();
     }
 
     /**
