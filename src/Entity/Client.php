@@ -32,7 +32,7 @@ use App\Controller\Client\ClientRemindPasswordCollectionController;
  *
  * @ORM\Table(name="client")
  * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
- * @UniqueEntity(fields={"username"}, errorPath="username", groups={"signup"}, message="User already exists")
+ * @UniqueEntity(fields={"username"}, errorPath="username", message="User already exists")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"client_read", "read", "is_active_read"}},
@@ -264,7 +264,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "client_write",
      *     "signup_collection",
      * })
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"signup"})
      */
     private $plainPassword;
 
@@ -282,6 +282,10 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      */
     protected $tokenCreatedAt;
 
+    /**
+     * Client constructor.
+     * @throws \Exception
+     */
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
@@ -290,6 +294,8 @@ class Client implements ClientInterface, SearchInterface, UserInterface
         $this->companies = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->clients = new ArrayCollection();
+
+        $this->password = \bin2hex(\random_bytes(32));
     }
 
     /**
