@@ -183,7 +183,7 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $bank_name;
+    private $bankName;
 
     /**
      * @var string
@@ -195,7 +195,7 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $bank_account_number;
+    private $bankAccountNumber;
 
     /**
      * @var string
@@ -382,30 +382,6 @@ class Company implements SearchInterface
         return $this;
     }
 
-    public function getBankName(): ?string
-    {
-        return $this->bank_name;
-    }
-
-    public function setBankName(?string $bank_name): self
-    {
-        $this->bank_name = $bank_name;
-
-        return $this;
-    }
-
-    public function getBankAccountNumber(): ?string
-    {
-        return $this->bank_account_number;
-    }
-
-    public function setBankAccountNumber(?string $bank_account_number): self
-    {
-        $this->bank_account_number = $bank_account_number;
-
-        return $this;
-    }
-
     public function getIsVat(): ?bool
     {
         return $this->isVat;
@@ -587,6 +563,30 @@ class Company implements SearchInterface
         if ($this->labels->contains($label)) {
             $this->labels->removeElement($label);
         }
+
+        return $this;
+    }
+
+    public function getBankName(): ?string
+    {
+        return $this->bankName;
+    }
+
+    public function setBankName(?string $bankName): self
+    {
+        $this->bankName = $bankName;
+
+        return $this;
+    }
+
+    public function getBankAccountNumber(): ?string
+    {
+        return $this->bankAccountNumber;
+    }
+
+    public function setBankAccountNumber(?string $bankAccountNumber): self
+    {
+        $this->bankAccountNumber = $bankAccountNumber;
 
         return $this;
     }
