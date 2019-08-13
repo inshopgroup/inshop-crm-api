@@ -183,7 +183,7 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $bank_name;
+    private $bankName;
 
     /**
      * @var string
@@ -195,7 +195,7 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $bank_account_number;
+    private $bankAccountNumber;
 
     /**
      * @var string
@@ -384,24 +384,24 @@ class Company implements SearchInterface
 
     public function getBankName(): ?string
     {
-        return $this->bank_name;
+        return $this->bankName;
     }
 
-    public function setBankName(?string $bank_name): self
+    public function setBankName(?string $bankName): self
     {
-        $this->bank_name = $bank_name;
+        $this->bankName = $bankName;
 
         return $this;
     }
 
     public function getBankAccountNumber(): ?string
     {
-        return $this->bank_account_number;
+        return $this->bankAccountNumber;
     }
 
-    public function setBankAccountNumber(?string $bank_account_number): self
+    public function setBankAccountNumber(?string $bankAccountNumber): self
     {
-        $this->bank_account_number = $bank_account_number;
+        $this->bankAccountNumber = $bankAccountNumber;
 
         return $this;
     }
