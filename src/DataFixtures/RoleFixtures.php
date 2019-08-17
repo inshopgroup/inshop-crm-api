@@ -35,7 +35,13 @@ class RoleFixtures extends Fixture
                 'DELETE',
                 'DOWNLOAD',
             ],
-            'Group' => [],
+            'Group' => [
+                'LIST',
+//                'CREATE',
+                'SHOW',
+//                'UPDATE',
+//                'DELETE',
+            ],
             'History' => [
                 'LIST',
             ],
@@ -57,10 +63,10 @@ class RoleFixtures extends Fixture
             'Template type' => [],
             'User' => [
                 'LIST',
-                'CREATE',
+//                'CREATE',
                 'SHOW',
-                'UPDATE',
-                'DELETE',
+//                'UPDATE',
+//                'DELETE',
                 'DASHBOARD',
             ],
             'Other' => [
