@@ -6,9 +6,11 @@ orders & invoice management, possibilities to integrate with third party softwar
 
 https://inshopcrm.com/
 
-![alt text](https://inshopcrm.com/static/screenshots/inshop-crm-login.png "Inshop CRM login page")
+![alt text](https://inshopcrm.com/static/vuetify/signin.png "Inshop CRM login page")
 
-![alt text](https://inshopcrm.com/static/screenshots/inshop-crm-dashboard.png "Inshop CRM login dashboard with charts")
+![alt text](https://inshopcrm.com/static/vuetify/dashboard.png "Inshop CRM login dashboard with charts")
+
+![alt text](https://inshopcrm.com/static/vuetify/calendar.png "Inshop CRM login dashboard with charts")
 
 ## Live demo
 Fill free to check out our demo CRM instance
@@ -24,7 +26,8 @@ https://demo.inshopcrm.com/signin
 
  * Multi language support
  * Clients management
- * Projects & tasks
+ * Projects
+ * Tasks
  * Calendar with events & reminders
  * Google calendar integration
  * Documents & templates
@@ -44,8 +47,7 @@ https://demo.inshopcrm.com/signin
  - Elasticsearch
  
 ### CRM / ERP / ecommerce
- - VueJs, Vuex, Nuxt
- - Bootstrap
+ - VueJS, Vuex, Vuetify, Nuxt
  - Docker
  - GIT
 
