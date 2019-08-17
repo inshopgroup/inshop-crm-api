@@ -42,7 +42,7 @@ use App\Controller\Client\ClientRemindPasswordCollectionController;
  *     collectionOperations={
  *          "get"={
  *              "normalization_context"={
- *                  "groups"={"client_read_collection", "read"}
+ *                  "groups"={"client_read_collection", "read", "is_active_read"}
  *              },
  *              "access_control"="is_granted('ROLE_CLIENT_LIST')"
  *          },

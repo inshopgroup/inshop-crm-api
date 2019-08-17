@@ -27,7 +27,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     attributes={
  *          "normalization_context"={"groups"={"project_read", "read", "is_active_read"}},
  *          "denormalization_context"={"groups"={"project_write", "is_active_write"}},
- *          "order"={"updatedAt": "DESC"}
+ *          "order"={"id": "DESC"}
  *     },
  *     collectionOperations={
  *          "get"={
