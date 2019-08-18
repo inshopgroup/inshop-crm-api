@@ -13,7 +13,7 @@ https://inshopcrm.com/
 ![alt text](https://inshopcrm.com/static/vuetify/calendar.png "Inshop CRM login dashboard with charts")
 
 ## Live demo
-Fill free to check out our demo CRM instance
+Feel free to check out our demo CRM instance
 
 Username: demo
 
