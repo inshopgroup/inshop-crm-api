@@ -50,9 +50,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
         /** @var Role $role */
         foreach ($roles as $role) {
-            if (!\in_array($role->getRole(), ['ROLE_GROUP_UPDATE', 'ROLE_GROUP_DELETE', 'ROLE_USER_UPDATE', 'ROLE_USER_DELETE'])) {
-                $groupDemo->addRole($role);
-            }
+            $groupDemo->addRole($role);
         }
         $manager->persist($groupDemo);
 
@@ -63,24 +61,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user->setName(sprintf('%s %s', $this->faker->firstName, $this->faker->lastName));
         $user->addGroup($groupDemo);
         $user->setPassword($this->encoder->encodePassword($user, 'demo'));
-        $manager->persist($user);
-        $manager->flush();
-
-
-        $groupAdmin = new Group();
-        $groupAdmin->setName('Administrators');
-        foreach ($roles as $role) {
-            $groupAdmin->addRole($role);
-        }
-        $manager->persist($groupAdmin);
-
-
-        $user = new User();
-        $user->setLanguage($language);
-        $user->setUsername('admin');
-        $user->setName(sprintf('%s %s', $this->faker->firstName, $this->faker->lastName));
-        $user->addGroup($groupAdmin);
-        $user->setPassword($this->encoder->encodePassword($user, 'admin'));
         $manager->persist($user);
         $manager->flush();
     }

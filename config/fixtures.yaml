@@ -55,10 +55,6 @@ services:
         class: App\DataFixtures\RoleFixtures
         tags: ['doctrine.fixture.orm']
 
-#    catalog.fixtures:
-#        class: App\DataFixtures\CatalogFixtures
-#        tags: ['doctrine.fixture.orm']
-
     product.fixtures:
         class: App\DataFixtures\ProductFixtures
         tags: ['doctrine.fixture.orm']

@@ -77,7 +77,10 @@ class Label
      *     "product_read",
      *     "company_read",
      *     "company_write",
-     *     "company_read_collection"
+     *     "company_read_collection",
+     *     "client_read",
+     *     "client_read_collection",
+     *     "client_write",
      * })
      */
     private $id;
@@ -90,7 +93,9 @@ class Label
      *     "label_write",
      *     "product_read",
      *     "company_read",
-     *     "company_read_collection"
+     *     "company_read_collection",
+     *     "client_read",
+     *     "client_read_collection",
      * })
      * @Assert\NotBlank()
      */

@@ -42,7 +42,7 @@ use App\Controller\Client\ClientRemindPasswordCollectionController;
  *     collectionOperations={
  *          "get"={
  *              "normalization_context"={
- *                  "groups"={"client_read_collection", "read"}
+ *                  "groups"={"client_read_collection", "read", "is_active_read"}
  *              },
  *              "access_control"="is_granted('ROLE_CLIENT_LIST')"
  *          },
@@ -107,6 +107,7 @@ use App\Controller\Client\ClientRemindPasswordCollectionController;
  * @ApiFilter(SearchFilter::class, properties={
  *     "id": "exact",
  *     "name": "ipartial",
+ *     "labels.id": "exact",
  *     "contacts.value": "ipartial",
  *     "description": "ipartial"
  * })
@@ -208,6 +209,17 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     private $description;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Label")
+     * @ORM\OrderBy({"id" = "ASC"})
+     * @Groups({
+     *     "client_read",
+     *     "client_read_collection",
+     *     "client_write"
+     * })
+     */
+    private $labels;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Contact", inversedBy="clients", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"id" = "ASC"})
      * @Groups({
@@ -296,6 +308,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
         $this->clients = new ArrayCollection();
 
         $this->password = \bin2hex(\random_bytes(32));
+        $this->labels = new ArrayCollection();
     }
 
     /**
@@ -553,5 +566,31 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     public function setTokenCreatedAt(\DateTime $tokenCreatedAt): void
     {
         $this->tokenCreatedAt = $tokenCreatedAt;
+    }
+
+    /**
+     * @return Collection|Label[]
+     */
+    public function getLabels(): Collection
+    {
+        return $this->labels;
+    }
+
+    public function addLabel(Label $label): self
+    {
+        if (!$this->labels->contains($label)) {
+            $this->labels[] = $label;
+        }
+
+        return $this;
+    }
+
+    public function removeLabel(Label $label): self
+    {
+        if ($this->labels->contains($label)) {
+            $this->labels->removeElement($label);
+        }
+
+        return $this;
     }
 }

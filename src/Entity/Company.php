@@ -382,30 +382,6 @@ class Company implements SearchInterface
         return $this;
     }
 
-    public function getBankName(): ?string
-    {
-        return $this->bankName;
-    }
-
-    public function setBankName(?string $bankName): self
-    {
-        $this->bankName = $bankName;
-
-        return $this;
-    }
-
-    public function getBankAccountNumber(): ?string
-    {
-        return $this->bankAccountNumber;
-    }
-
-    public function setBankAccountNumber(?string $bankAccountNumber): self
-    {
-        $this->bankAccountNumber = $bankAccountNumber;
-
-        return $this;
-    }
-
     public function getIsVat(): ?bool
     {
         return $this->isVat;
@@ -587,6 +563,30 @@ class Company implements SearchInterface
         if ($this->labels->contains($label)) {
             $this->labels->removeElement($label);
         }
+
+        return $this;
+    }
+
+    public function getBankName(): ?string
+    {
+        return $this->bankName;
+    }
+
+    public function setBankName(?string $bankName): self
+    {
+        $this->bankName = $bankName;
+
+        return $this;
+    }
+
+    public function getBankAccountNumber(): ?string
+    {
+        return $this->bankAccountNumber;
+    }
+
+    public function setBankAccountNumber(?string $bankAccountNumber): self
+    {
+        $this->bankAccountNumber = $bankAccountNumber;
 
         return $this;
     }
