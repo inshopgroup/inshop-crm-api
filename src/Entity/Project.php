@@ -137,7 +137,7 @@ class Project implements ClientInterface, SearchInterface
     private $tasks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Document", inversedBy="projects")
+     * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="project")
      * @Groups({"project_read"})
      * @ORM\OrderBy({"id" = "DESC"})
      */

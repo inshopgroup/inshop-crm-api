@@ -86,7 +86,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
                 $document = new Document();
                 $document->setName($this->faker->colorName);
                 $document->addFile($this->faker->randomElement($files));
-                $document->addCompany($company);
+                $document->setCompany($company);
                 $manager->persist($document);
             }
         }

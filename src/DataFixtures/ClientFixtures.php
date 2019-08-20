@@ -100,9 +100,9 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
                 for ($n = 0; $n < 3; $n++) {
                     $document = new Document();
                     $document->setName($this->faker->colorName);
-                    $document->addProject($project);
+                    $document->setProject($project);
                     $document->addFile($this->faker->randomElement($files));
-                    $document->addClient($client);
+                    $document->setClient($client);
                     $manager->persist($document);
                 }
             }

@@ -233,7 +233,7 @@ class Company implements SearchInterface
     private $addresses;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Document", mappedBy="companies", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="company")
      * @ORM\OrderBy({"id" = "DESC"})
      * @Groups({
      *     "invoice_header_read"
@@ -243,7 +243,7 @@ class Company implements SearchInterface
     private $documents;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Contact", inversedBy="companies", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Contact", mappedBy="company")
      * @ORM\OrderBy({"id" = "ASC"})
      * @Groups({
      *     "company_read",

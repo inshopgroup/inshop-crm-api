@@ -94,23 +94,23 @@ class Document implements SearchInterface
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Client", inversedBy="documents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="documents")
      * @Groups({"document_read", "document_write"})
      */
-    private $clients;
+    private $client;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Company", inversedBy="documents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="documents")
      * @Groups({"document_read", "document_write"})
      */
-    private $companies;
+    private $company;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="documents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="documents")
      * @Groups({"document_read", "document_write"})
      * @ORM\OrderBy({"id" = "DESC"})
      */
-    private $projects;
+    private $project;
 
     /**
      * @var File[]
@@ -125,9 +125,6 @@ class Document implements SearchInterface
 
     public function __construct()
     {
-        $this->clients = new ArrayCollection();
-        $this->companies = new ArrayCollection();
-        $this->projects = new ArrayCollection();
         $this->files = new ArrayCollection();
     }
 
@@ -164,86 +161,6 @@ class Document implements SearchInterface
     }
 
     /**
-     * @return Collection|Client[]
-     */
-    public function getClients(): Collection
-    {
-        return $this->clients;
-    }
-
-    public function addClient(Client $client): self
-    {
-        if (!$this->clients->contains($client)) {
-            $this->clients[] = $client;
-        }
-
-        return $this;
-    }
-
-    public function removeClient(Client $client): self
-    {
-        if ($this->clients->contains($client)) {
-            $this->clients->removeElement($client);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Company[]
-     */
-    public function getCompanies(): Collection
-    {
-        return $this->companies;
-    }
-
-    public function addCompany(Company $company): self
-    {
-        if (!$this->companies->contains($company)) {
-            $this->companies[] = $company;
-        }
-
-        return $this;
-    }
-
-    public function removeCompany(Company $company): self
-    {
-        if ($this->companies->contains($company)) {
-            $this->companies->removeElement($company);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Project[]
-     */
-    public function getProjects(): Collection
-    {
-        return $this->projects;
-    }
-
-    public function addProject(Project $project): self
-    {
-        if (!$this->projects->contains($project)) {
-            $this->projects[] = $project;
-            $project->addDocument($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProject(Project $project): self
-    {
-        if ($this->projects->contains($project)) {
-            $this->projects->removeElement($project);
-            $project->removeDocument($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|File[]
      */
     public function getFiles(): Collection
@@ -265,6 +182,42 @@ class Document implements SearchInterface
         if ($this->files->contains($file)) {
             $this->files->removeElement($file);
         }
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): self
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
 
         return $this;
     }

@@ -125,27 +125,21 @@ class Contact implements SearchInterface
     private $contactType;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Client", mappedBy="contacts")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="contacts")
      * @Groups({
      *     "contact_read",
      *     "contact_write"
      * })
      * @Assert\NotBlank()
      */
-    private $clients;
+    private $client;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Company", mappedBy="contacts")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="contacts")
      * @Groups({"contact_read", "contact_write"})
      * @Assert\NotBlank()
      */
-    private $companies;
-
-    public function __construct()
-    {
-        $this->clients = new ArrayCollection();
-        $this->companies = new ArrayCollection();
-    }
+    private $company;
 
     /**
      * Get id
@@ -220,58 +214,26 @@ class Contact implements SearchInterface
         );
     }
 
-    /**
-     * @return Collection|Client[]
-     */
-    public function getClients(): Collection
+    public function getClient(): ?Client
     {
-        return $this->clients;
+        return $this->client;
     }
 
-    public function addClient(Client $client): self
+    public function setClient(?Client $client): self
     {
-        if (!$this->clients->contains($client)) {
-            $this->clients[] = $client;
-            $client->addContact($this);
-        }
+        $this->client = $client;
 
         return $this;
     }
 
-    public function removeClient(Client $client): self
+    public function getCompany(): ?Company
     {
-        if ($this->clients->contains($client)) {
-            $this->clients->removeElement($client);
-            $client->removeContact($this);
-        }
-
-        return $this;
+        return $this->company;
     }
 
-    /**
-     * @return Collection|Company[]
-     */
-    public function getCompanies(): Collection
+    public function setCompany(?Company $company): self
     {
-        return $this->companies;
-    }
-
-    public function addCompany(Company $company): self
-    {
-        if (!$this->companies->contains($company)) {
-            $this->companies[] = $company;
-            $company->addContact($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompany(Company $company): self
-    {
-        if ($this->companies->contains($company)) {
-            $this->companies->removeElement($company);
-            $company->removeContact($this);
-        }
+        $this->company = $company;
 
         return $this;
     }

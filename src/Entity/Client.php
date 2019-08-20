@@ -220,7 +220,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     private $labels;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Contact", inversedBy="clients", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Contact", mappedBy="client")
      * @ORM\OrderBy({"id" = "ASC"})
      * @Groups({
      *     "client_read",
@@ -246,7 +246,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     private $projects;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Document", mappedBy="clients", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="client")
      * @ORM\OrderBy({"id" = "DESC"})
      * @ApiSubresource()
      */
