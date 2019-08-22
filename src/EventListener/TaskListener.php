@@ -66,8 +66,13 @@ class TaskListener
                 $changes = $unitOfWork->getEntityChangeSet($entity);
 
                 if (array_key_exists('assignee', $changes)) {
-                    $this->googleClient->deleteEvent($entity, $changes['assignee'][0]);
-                    $this->googleClient->insertEvent($entity, $changes['assignee'][1]);
+                    if ($changes['assignee'][0]) {
+                        $this->googleClient->deleteEvent($entity, $changes['assignee'][0]);
+                    }
+
+                    if ($changes['assignee'][1]) {
+                        $this->googleClient->insertEvent($entity, $changes['assignee'][1]);
+                    }
                 } else {
                     $this->googleClient->updateEvent($entity, $entity->getAssignee());
                 }

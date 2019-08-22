@@ -115,11 +115,11 @@ class GoogleClient
     /**
      * @param Task $task
      * @param User $user
-     * @return \Google_Service_Calendar_Event
+     * @return \Google_Service_Calendar_Event|null
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function insertEvent(Task $task, User $user): \Google_Service_Calendar_Event
+    public function insertEvent(Task $task, User $user): ?\Google_Service_Calendar_Event
     {
         if (!$user->getIsGoogleSyncEnabled() || !$user->getGoogleCalendarId()) {
             return null;
