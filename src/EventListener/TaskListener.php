@@ -37,13 +37,14 @@ class TaskListener
             if ($entity instanceof Task) {
                 $user = $entity->getAssignee();
 
-                if (!$user->getIsGoogleSyncEnabled() || !$user->getGoogleCalendarId()) {
-                    return;
-                }
+                if ($user) {
+                    if (!$user->getIsGoogleSyncEnabled() || !$user->getGoogleCalendarId()) {
+                        return;
+                    }
 
-                $user = $entity->getAssignee();
-                $this->googleClient->init($user);
-                $this->googleClient->insertEvent($entity, $user);
+                    $this->googleClient->init($user);
+                    $this->googleClient->insertEvent($entity, $user);
+                }
             }
         } catch (\Exception $e) {
 
@@ -87,13 +88,14 @@ class TaskListener
             if ($entity instanceof Task) {
                 $user = $entity->getAssignee();
 
-                if (!$user->getIsGoogleSyncEnabled() || !$user->getGoogleCalendarId()) {
-                    return;
-                }
+                if ($user) {
+                    if (!$user->getIsGoogleSyncEnabled() || !$user->getGoogleCalendarId()) {
+                        return;
+                    }
 
-                $user = $entity->getAssignee();
-                $this->googleClient->init($user);
-                $this->googleClient->deleteEvent($entity, $user);
+                    $this->googleClient->init($user);
+                    $this->googleClient->deleteEvent($entity, $user);
+                }
             }
         } catch (\Exception $e) {
 
