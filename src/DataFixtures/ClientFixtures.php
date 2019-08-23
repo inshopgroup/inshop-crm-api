@@ -68,13 +68,13 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
             $phone = new Contact();
             $phone->setContactType($manager->getRepository(ContactType::class)->find(ContactType::TYPE_PHONE));
             $phone->setValue($this->faker->phoneNumber);
-            $client->addContact($phone);
+            $phone->setClient($client);
             $manager->persist($phone);
 
             $email = new Contact();
             $email->setContactType($manager->getRepository(ContactType::class)->find(ContactType::TYPE_EMAIL));
             $email->setValue($this->faker->email);
-            $client->addContact($email);
+            $phone->setClient($client);
             $manager->persist($email);
 
             for ($k = 0; $k < 3; $k++) {

@@ -128,16 +128,17 @@ class Contact implements SearchInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="contacts")
      * @Groups({
      *     "contact_read",
-     *     "contact_write"
+     *     "contact_write",
      * })
-     * @Assert\NotBlank()
      */
     private $client;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="contacts")
-     * @Groups({"contact_read", "contact_write"})
-     * @Assert\NotBlank()
+     * @Groups({
+     *     "contact_read",
+     *     "contact_write",
+     * })
      */
     private $company;
 

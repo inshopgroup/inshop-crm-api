@@ -177,6 +177,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "client_get_item",
      *     "client_put_item",
      *     "signup_collection",
+     *     "address_read",
      * })
      * @Assert\NotBlank()
      */
