@@ -44,7 +44,9 @@ class ElasticaClientProduct extends ElasticaClientBase
         $mapping->setProperties(array(
             'id' => array('type' => 'integer'),
             'slug' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-            'search' => array('type' => 'text', 'analyzer' => 'index_tokenizer_analyzer', 'search_analyzer' => 'search_analyzer'),
+            'search'     => array('type' => 'text', 'copy_to' => ['search_ngram', 'search_whitespace']),
+            'search_ngram' => array('type' => 'text', 'analyzer' => 'analyzer_ngram'),
+            'search_whitespace' => array('type' => 'text', 'analyzer' => 'analyzer_whitespace'),
             'translations' => array(
                 'type' => 'object',
                 'properties' => array(
@@ -158,9 +160,7 @@ class ElasticaClientProduct extends ElasticaClientBase
         $boolQuery->addMust($term);
 
         if (isset($params['q'])) {
-            $term = new Query\Term();
-            $term->setTerm('search', $params['q']);
-            $boolQuery->addMust($term);
+            $boolQuery->addMust($this->getKeywordQuery($params['q']));
         }
 
         $query->setQuery($boolQuery);
@@ -173,15 +173,6 @@ class ElasticaClientProduct extends ElasticaClientBase
             ->setFrom($from)
             ->setSize($size)
             ->setSort(['id' => 'desc'])
-//            ->setSource(['obj1.*', 'obj2.'])
-//            ->setFields(['name', 'created'])
-//            ->setScriptFields($scriptFields) // $scriptFields instanceof Elastica\ScriptFields
-//            ->setHighlight(['fields' => 'content'])
-//            ->setRescore($rescoreQuery) // $rescoreQuery instanceof Elastica\Rescore\AbstractRescore
-//            ->setExplain(false)
-//            ->setVersion(false)
-//            ->setPostFilter($filterTerm) // $$filterTerm instanceof Elastica\Filter\AbstractFilter
-//            ->setMinScore(0.5)
         ;
 
         $search = $this->client->createSearch($this->getIndex());
