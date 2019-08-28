@@ -167,19 +167,23 @@ abstract class ElasticaClientBase
         $bqw = new Query\BoolQuery();
 
         foreach ($words as $word) {
-            $bq = new Query\BoolQuery();
+            $word = trim($word);
 
-            $fuzzy = new Query\Fuzzy();
-            $fuzzy->setField('search_whitespace', $word);
+            if (!empty($word)) {
+                $bq = new Query\BoolQuery();
 
-            $match = new Query\Match();
-            $match->setFieldQuery('search_ngram', $word);
-            $match->setFieldAnalyzer('search_ngram', 'search_analyser');
+                $fuzzy = new Query\Fuzzy();
+                $fuzzy->setField('search_whitespace', $word);
 
-            $bq->addShould($fuzzy);
-            $bq->addShould($match);
+                $match = new Query\Match();
+                $match->setFieldQuery('search_ngram', $word);
+                $match->setFieldAnalyzer('search_ngram', 'search_analyser');
 
-            $bqw->addMust($bq);
+                $bq->addShould($fuzzy);
+                $bq->addShould($match);
+
+                $bqw->addMust($bq);
+            }
         }
 
         $wildcard = new Query\Wildcard();
