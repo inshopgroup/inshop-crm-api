@@ -160,7 +160,7 @@ abstract class ElasticaClientBase
      */
     protected function getKeywordQuery(string $q): Query\BoolQuery
     {
-        $q = mb_strtolower($q);
+        $q = mb_strtolower(trim($q));
         $words = explode(' ', $q);
 
         $bqq = new Query\BoolQuery();
