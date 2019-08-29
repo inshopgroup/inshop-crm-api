@@ -44,15 +44,15 @@ class ElasticaClientProduct extends ElasticaClientBase
         $mapping->setProperties(array(
             'id' => array('type' => 'integer'),
             'slug' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-            'search'     => array('type' => 'text', 'copy_to' => ['search_ngram', 'search_whitespace']),
+            'search'     => array('type' => 'text'),
             'search_ngram' => array('type' => 'text', 'analyzer' => 'analyzer_ngram'),
             'search_whitespace' => array('type' => 'text', 'analyzer' => 'analyzer_whitespace'),
             'translations' => array(
                 'type' => 'object',
                 'properties' => array(
                     'lang' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-                    'name' => array('type' => 'text'),
-                    'description' => array('type' => 'text'),
+                    'name' => array('type' => 'text', 'copy_to' => ['search', 'search_ngram', 'search_whitespace']),
+                    'description' => array('type' => 'text', 'copy_to' => ['search', 'search_ngram', 'search_whitespace']),
                 ),
             ),
             'category' => array(
@@ -64,7 +64,7 @@ class ElasticaClientProduct extends ElasticaClientBase
                         'type' => 'nested',
                         'properties' => array(
                             'lang' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-                            'name' => array('type' => 'text',  'fielddata' => true, 'analyzer' => 'index_keyword_analyzer'),
+                            'name' => array('type' => 'text', 'copy_to' => ['search', 'search_ngram', 'search_whitespace']),
                         ),
                     ),
                 ),
