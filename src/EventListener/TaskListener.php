@@ -37,13 +37,14 @@ class TaskListener
             if ($entity instanceof Task) {
                 $user = $entity->getAssignee();
 
-                if (!$user->getIsGoogleSyncEnabled() || !$user->getGoogleCalendarId()) {
-                    return;
-                }
+                if ($user) {
+                    if (!$user->getIsGoogleSyncEnabled() || !$user->getGoogleCalendarId()) {
+                        return;
+                    }
 
-                $user = $entity->getAssignee();
-                $this->googleClient->init($user);
-                $this->googleClient->insertEvent($entity, $user);
+                    $this->googleClient->init($user);
+                    $this->googleClient->insertEvent($entity, $user);
+                }
             }
         } catch (\Exception $e) {
 
@@ -65,8 +66,13 @@ class TaskListener
                 $changes = $unitOfWork->getEntityChangeSet($entity);
 
                 if (array_key_exists('assignee', $changes)) {
-                    $this->googleClient->deleteEvent($entity, $changes['assignee'][0]);
-                    $this->googleClient->insertEvent($entity, $changes['assignee'][1]);
+                    if ($changes['assignee'][0]) {
+                        $this->googleClient->deleteEvent($entity, $changes['assignee'][0]);
+                    }
+
+                    if ($changes['assignee'][1]) {
+                        $this->googleClient->insertEvent($entity, $changes['assignee'][1]);
+                    }
                 } else {
                     $this->googleClient->updateEvent($entity, $entity->getAssignee());
                 }
@@ -87,13 +93,14 @@ class TaskListener
             if ($entity instanceof Task) {
                 $user = $entity->getAssignee();
 
-                if (!$user->getIsGoogleSyncEnabled() || !$user->getGoogleCalendarId()) {
-                    return;
-                }
+                if ($user) {
+                    if (!$user->getIsGoogleSyncEnabled() || !$user->getGoogleCalendarId()) {
+                        return;
+                    }
 
-                $user = $entity->getAssignee();
-                $this->googleClient->init($user);
-                $this->googleClient->deleteEvent($entity, $user);
+                    $this->googleClient->init($user);
+                    $this->googleClient->deleteEvent($entity, $user);
+                }
             }
         } catch (\Exception $e) {
 

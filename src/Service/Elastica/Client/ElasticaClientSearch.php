@@ -12,7 +12,7 @@ use Elastica\Type\Mapping;
 
 /**
  * Class ElasticaClientSearch
- * @package App\Service
+ * @package App\Service\Elastica\Client
  */
 class ElasticaClientSearch extends ElasticaClientBase
 {
@@ -41,8 +41,10 @@ class ElasticaClientSearch extends ElasticaClientBase
             'id'       => array('type' => 'text',  'fielddata' => true),
             'iri'      => array('type' => 'text'),
             'entityId' => array('type' => 'integer'),
-            'type'     => array('type' => 'text', 'analyzer' => 'index_tokenizer_analyzer', 'search_analyzer' => 'standard'),
-            'text'     => array('type' => 'text', 'analyzer' => 'index_tokenizer_analyzer', 'search_analyzer' => 'standard'),
+            'type'     => array('type' => 'text'),
+            'search'     => array('type' => 'text', 'copy_to' => ['search_ngram', 'search_whitespace']),
+            'search_ngram' => array('type' => 'text', 'analyzer' => 'analyzer_ngram'),
+            'search_whitespace' => array('type' => 'text', 'analyzer' => 'analyzer_whitespace'),
         ]);
 
         // Send mapping to type
@@ -62,7 +64,7 @@ class ElasticaClientSearch extends ElasticaClientBase
             'iri'      => $this->iriConverter->getIriFromItem($entity),
             'entityId' => $entity->getId(),
             'type'     => $class,
-            'text'     => $entity->getSearchText(),
+            'search'     => $entity->getSearchText(),
         ];
     }
 
@@ -87,9 +89,7 @@ class ElasticaClientSearch extends ElasticaClientBase
         $boolQuery = new Query\BoolQuery();
 
         if (isset($params['q'])) {
-            $term = new Query\Term();
-            $term->setTerm('text', mb_strtolower($params['q']));
-            $boolQuery->addMust($term);
+            $boolQuery->addMust($this->getKeywordQuery($params['q']));
         }
 
         if (isset($params['type'])) {

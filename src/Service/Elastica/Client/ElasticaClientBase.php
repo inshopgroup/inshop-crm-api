@@ -92,38 +92,38 @@ abstract class ElasticaClientBase
                 'number_of_replicas' => 1,
                 'analysis' => [
                     'analyzer' => [
-                        'index_tokenizer_analyzer' => [
-                            'type' => 'custom',
-                            'tokenizer' => 'tokenizer',
-                            'filter' => array('standard', 'lowercase')
-                        ],
                         'index_keyword_analyzer' => [
                             'type' => 'custom',
                             'tokenizer' => 'keyword',
                             'filter' => array()
                         ],
-                        'search_analyzer' => [
+                        'analyzer_ngram' => [
                             'type' => 'custom',
-                            'tokenizer' => 'standard',
-                            'filter' => array('standard', 'lowercase', 'mySnowball')
+                            'tokenizer' => 'my_tokenizer',
+                            'filter' => array('lowercase')
+                        ],
+                        'analyzer_whitespace' => [
+                            'type' => 'custom',
+                            'tokenizer' => 'whitespace',
+                            'filter' => array('lowercase')
+                        ],
+                        'search_analyser' => [
+                            'type' => 'custom',
+                            'tokenizer' => 'whitespace',
+                            'filter' => array('lowercase')
                         ]
                     ],
                     'tokenizer' => [
-                        'tokenizer' => [
+                        'my_tokenizer' => [
                             'type' => 'ngram',
-                            'min_gram' => 1,
-                            'max_gram' => 12,
+                            'min_gram' => 3,
+                            'max_gram' => 20,
                             'token_chars' => [
                                 'letter',
                                 'digit',
+                                'symbol',
                             ],
                         ],
-                    ],
-                    'filter' => [
-                        'mySnowball' => array(
-                            'type' => 'snowball',
-                            'language' => 'English'
-                        )
                     ]
                 ]
             ],
@@ -152,5 +152,46 @@ abstract class ElasticaClientBase
         $documents = $search->search()->getDocuments();
 
         return array_shift($documents);
+    }
+
+    /**
+     * @param string $q
+     * @return Query\BoolQuery
+     */
+    protected function getKeywordQuery(string $q): Query\BoolQuery
+    {
+        $q = mb_strtolower(trim($q));
+        $words = explode(' ', $q);
+
+        $bqq = new Query\BoolQuery();
+        $bqw = new Query\BoolQuery();
+
+        foreach ($words as $word) {
+            $word = trim($word);
+
+            if (!empty($word)) {
+                $bq = new Query\BoolQuery();
+
+                $fuzzy = new Query\Fuzzy();
+                $fuzzy->setField('search_whitespace', $word);
+
+                $match = new Query\Match();
+                $match->setFieldQuery('search_ngram', $word);
+                $match->setFieldAnalyzer('search_ngram', 'search_analyser');
+
+                $bq->addShould($fuzzy);
+                $bq->addShould($match);
+
+                $bqw->addMust($bq);
+            }
+        }
+
+        $wildcard = new Query\Wildcard();
+        $wildcard->setValue('search', '*' . $q . '*');
+
+        $bqq->addShould($wildcard);
+        $bqq->addShould($bqw);
+
+        return $bqq;
     }
 }
