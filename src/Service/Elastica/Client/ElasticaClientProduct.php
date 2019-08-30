@@ -44,8 +44,9 @@ class ElasticaClientProduct extends ElasticaClientBase
 
         $mapping->setProperties(array(
             'id' => array('type' => 'integer'),
+            'ean' => array('type' => 'text'),
             'slug' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-            'search'     => array('type' => 'text'),
+            'search' => array('type' => 'text'),
             'search_ngram' => array('type' => 'text', 'analyzer' => 'analyzer_ngram'),
             'search_whitespace' => array('type' => 'text', 'analyzer' => 'analyzer_whitespace'),
             'translations' => array(
@@ -122,6 +123,7 @@ class ElasticaClientProduct extends ElasticaClientBase
 
         return [
             'id' => $entity->getId(),
+            'ean' => $entity->getEan(),
             'slug' => $entity->getSlug(),
             'translations' => $translations,
             'images' => $images,
