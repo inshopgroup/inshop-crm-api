@@ -3,6 +3,7 @@
 namespace App\Service\Elastica\Client;
 
 use App\Entity\CategoryTranslation;
+use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\ProductTranslation;
 use App\Service\ElasticaAdapter;
@@ -55,6 +56,12 @@ class ElasticaClientProduct extends ElasticaClientBase
                     'description' => array('type' => 'text', 'copy_to' => ['search', 'search_ngram', 'search_whitespace']),
                 ),
             ),
+            'images' => array(
+                'type' => 'object',
+                'properties' => array(
+                    'contentUrl' => array('type' => 'text'),
+                ),
+            ),
             'category' => array(
                 'type' => 'object',
                 'properties' => array(
@@ -104,10 +111,20 @@ class ElasticaClientProduct extends ElasticaClientBase
             ];
         }
 
+        $images = [];
+
+        /** @var Image $image */
+        foreach ($entity->getImages() as $image) {
+            $images[] = [
+              'contentUrl' => $image->getContentUrl(),
+            ];
+        }
+
         return [
             'id' => $entity->getId(),
             'slug' => $entity->getSlug(),
             'translations' => $translations,
+            'images' => $images,
             'category' => [
                 'id' => $entity->getCategory()->getId(),
                 'slug' => $entity->getCategory()->getSlug(),
