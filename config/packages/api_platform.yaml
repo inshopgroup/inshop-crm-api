@@ -15,6 +15,16 @@ api_platform:
             client_items_per_page: true
             client_enabled: true
 
+    exception_to_status:
+        # The 4 following handlers are registered by default, keep those lines to prevent unexpected side effects
+        Symfony\Component\Serializer\Exception\ExceptionInterface: 400 # Use a raw status code (recommended)
+        ApiPlatform\Core\Exception\InvalidArgumentException: 'HTTP_BAD_REQUEST' # Or a `Symfony\Component\HttpFoundation\Response`'s constant
+        ApiPlatform\Core\Exception\FilterValidationException: 400
+        Doctrine\ORM\OptimisticLockException: 409
+
+        # Custom mapping
+        App\Exception\EntityRemoveException: 409
+
     # Enable the Varnish integration
 #    http_cache:
 #        invalidation:

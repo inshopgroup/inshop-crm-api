@@ -47,6 +47,10 @@ services:
     tags:
       - { name: doctrine.event_subscriber, connection: default }
 
+  App\EventListener\EntityRemoveListener:
+    tags:
+      - { name: doctrine.event_listener, event: preRemove }
+
   app.elastica.listener.search.index:
     class: 'App\EventListener\ElasticaSearchListener'
     tags:
