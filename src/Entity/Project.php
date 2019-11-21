@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -89,7 +88,6 @@ class Project implements ClientInterface, SearchInterface
      * @var integer
      *
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Gedmo\Versioned
      * @Groups({"project_read", "project_write", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
      * @Assert\NotBlank()
      */
@@ -99,14 +97,12 @@ class Project implements ClientInterface, SearchInterface
      * @var integer
      *
      * @ORM\Column(type="text", nullable=true)
-     * @Gedmo\Versioned
      * @Groups({"project_read", "project_write", "document_read"})
      */
     private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="projects")
-     * @Gedmo\Versioned
      * @Groups({"project_read", "project_write", "task_read"})
      * @Assert\NotBlank()
      */
@@ -114,7 +110,6 @@ class Project implements ClientInterface, SearchInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProjectStatus")
-     * @Gedmo\Versioned
      * @Groups({"project_read", "project_write", "document_read", "client_read", "client_write"})
      * @Assert\NotBlank()
      */
@@ -122,7 +117,6 @@ class Project implements ClientInterface, SearchInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProjectType")
-     * @Gedmo\Versioned
      * @Groups({"project_read", "project_write", "client_read", "client_write"})
      * @Assert\NotBlank()
      */

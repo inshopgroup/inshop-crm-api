@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
@@ -108,7 +107,6 @@ class Task implements ClientInterface, SearchInterface
      * @var integer
      *
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -124,7 +122,6 @@ class Task implements ClientInterface, SearchInterface
      * @var integer
      *
      * @ORM\Column(type="text", nullable=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -136,7 +133,6 @@ class Task implements ClientInterface, SearchInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="tasks")
-     * @Gedmo\Versioned
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -148,7 +144,6 @@ class Task implements ClientInterface, SearchInterface
 
     /**
      * @ORM\Column(type="date", nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -162,7 +157,6 @@ class Task implements ClientInterface, SearchInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
-     * @Gedmo\Versioned
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -173,7 +167,6 @@ class Task implements ClientInterface, SearchInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TaskStatus")
-     * @Gedmo\Versioned
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -189,7 +182,6 @@ class Task implements ClientInterface, SearchInterface
      * Estimated time in minutes
      *
      * @ORM\Column(type="float", nullable=false, options={"default": 0})
-     * @Gedmo\Versioned
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -203,7 +195,6 @@ class Task implements ClientInterface, SearchInterface
      * Spent time in minutes
      *
      * @ORM\Column(type="float", nullable=false, options={"default": 0})
-     * @Gedmo\Versioned
      * @Groups({
      *     "task_read",
      *     "task_write",

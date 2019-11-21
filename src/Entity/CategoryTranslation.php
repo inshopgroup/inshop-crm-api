@@ -113,7 +113,6 @@ class CategoryTranslation
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "category_read",
      *     "category_write",
@@ -126,7 +125,6 @@ class CategoryTranslation
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "category_read",
      *     "category_write",

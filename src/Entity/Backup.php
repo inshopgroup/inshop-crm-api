@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -106,7 +105,6 @@ class Backup
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\BackupType")
-     * @Gedmo\Versioned
      * @Groups({
      *     "backup_read",
      *     "backup_write"
@@ -117,7 +115,6 @@ class Backup
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\BackupStatus")
-     * @Gedmo\Versioned
      * @Groups({
      *     "backup_read",
      *     "backup_write"

@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -108,7 +107,6 @@ class Category implements TranslatableInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="subCategories")
-     * @Gedmo\Versioned
      * @Groups({
      *     "category_read",
      *     "category_write",
@@ -146,7 +144,6 @@ class Category implements TranslatableInterface
      * @var boolean
      *
      * @ORM\Column(type="integer")
-     * @Gedmo\Versioned
      * @Groups({
      *     "category_read",
      *     "category_write"

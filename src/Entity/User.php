@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -108,7 +107,6 @@ class User implements \Serializable, UserInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "user_read",
      *     "user_write",
@@ -124,7 +122,6 @@ class User implements \Serializable, UserInterface
      * @var string
      *
      * @ORM\Column(type="string", length=64)
-     * @Gedmo\Versioned
      * @Assert\NotBlank()
      */
     private $password;
@@ -142,7 +139,6 @@ class User implements \Serializable, UserInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "user_read",
      *     "user_write",
@@ -158,7 +154,6 @@ class User implements \Serializable, UserInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "user_read",
      *     "user_write",
@@ -189,7 +184,6 @@ class User implements \Serializable, UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     * @Gedmo\Versioned
      * @Groups({
      *     "user_read",
      *     "user_write"

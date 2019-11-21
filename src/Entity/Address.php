@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -105,7 +104,6 @@ class Address implements SearchInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Country")
-     * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
      *     "address_write",
@@ -119,7 +117,6 @@ class Address implements SearchInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\City")
-     * @Gedmo\Versioned
      * @Groups({
      *     "client_read",
      *     "address_read",
@@ -135,7 +132,6 @@ class Address implements SearchInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
      *     "address_write",
@@ -149,7 +145,6 @@ class Address implements SearchInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
      *     "address_write",
@@ -163,7 +158,6 @@ class Address implements SearchInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
      *     "address_write",
@@ -178,7 +172,6 @@ class Address implements SearchInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
      *     "address_write",
@@ -193,7 +186,6 @@ class Address implements SearchInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
      *     "address_write",
@@ -208,7 +200,6 @@ class Address implements SearchInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
      *     "address_write",
@@ -222,7 +213,6 @@ class Address implements SearchInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "address_read",
      *     "address_write",

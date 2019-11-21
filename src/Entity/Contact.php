@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -94,7 +93,6 @@ class Contact implements SearchInterface
      * @var integer
      *
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "contact_read",
      *     "contact_write",
@@ -110,7 +108,6 @@ class Contact implements SearchInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ContactType")
-     * @Gedmo\Versioned
      * @Groups({
      *     "contact_read",
      *     "contact_write",

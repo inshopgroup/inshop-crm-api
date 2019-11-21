@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -64,7 +63,6 @@ class InvoiceLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\InvoiceHeader", inversedBy="lines")
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_line_write"
      * })
@@ -74,7 +72,6 @@ class InvoiceLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product")
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_line_read",
      *     "invoice_line_write",
@@ -87,7 +84,6 @@ class InvoiceLine
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_line_read",
      *     "invoice_line_write",
@@ -100,7 +96,6 @@ class InvoiceLine
 
     /**
      * @ORM\Column(type="float", nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_line_read",
      *     "invoice_line_write",
@@ -113,7 +108,6 @@ class InvoiceLine
 
     /**
      * @ORM\Column(type="float", nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_line_read",
      *     "invoice_line_write",
@@ -126,7 +120,6 @@ class InvoiceLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Vat")
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_line_read",
      *     "invoice_header_read",

@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -160,7 +159,6 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "client_read",
      *     "client_read_collection",
@@ -198,7 +196,6 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * @var string
      *
      * @ORM\Column(type="text", nullable=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "client_read",
      *     "client_read_collection",
@@ -290,7 +287,6 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
-     * @Gedmo\Versioned
      */
     protected $tokenCreatedAt;
 

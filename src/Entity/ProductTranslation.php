@@ -110,7 +110,6 @@ class ProductTranslation
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "product_write",
      *     "product_read",
@@ -122,7 +121,6 @@ class ProductTranslation
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "product_write",
      *     "product_read",

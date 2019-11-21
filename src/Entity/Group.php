@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -83,7 +82,6 @@ class Group
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Gedmo\Versioned
      * @Groups({"group_read", "group_write", "user_read"})
      * @Assert\NotBlank()
      */

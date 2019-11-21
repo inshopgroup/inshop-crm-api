@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -79,7 +78,6 @@ class StockLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\StockLineStatus")
-     * @Gedmo\Versioned
      * @Groups({
      *     "stock_line_read",
      *     "stock_line_write",
@@ -90,7 +88,6 @@ class StockLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product")
-     * @Gedmo\Versioned
      * @Groups({
      *     "stock_line_read",
      *     "stock_line_write",
@@ -101,7 +98,6 @@ class StockLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ShippingNoticeLine")
-     * @Gedmo\Versioned
      * @Groups({
      *     "stock_line_read",
      *     "stock_line_write",
@@ -112,7 +108,6 @@ class StockLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Warehouse")
-     * @Gedmo\Versioned
      * @Groups({
      *     "stock_line_read",
      *     "stock_line_write",
@@ -132,7 +127,6 @@ class StockLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
-     * @Gedmo\Versioned
      * @Groups({
      *     "stock_line_read",
      *     "stock_line_write",
@@ -143,7 +137,6 @@ class StockLine
 
     /**
      * @ORM\Column(type="float", nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "stock_line_read",
      *     "stock_line_write",
@@ -154,7 +147,6 @@ class StockLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CompanyProduct")
-     * @Gedmo\Versioned
      * @Groups({
      *     "stock_line_read",
      *     "stock_line_write",

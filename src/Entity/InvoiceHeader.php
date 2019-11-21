@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -91,7 +90,6 @@ class InvoiceHeader
      * @var integer
      *
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_read_collection",
@@ -103,7 +101,6 @@ class InvoiceHeader
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\InvoiceStatus")
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_read_collection",
@@ -115,7 +112,6 @@ class InvoiceHeader
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\InvoiceType")
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_read_collection",
@@ -127,7 +123,6 @@ class InvoiceHeader
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OrderHeader")
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_write"
@@ -137,7 +132,6 @@ class InvoiceHeader
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company")
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_read_collection",
@@ -149,7 +143,6 @@ class InvoiceHeader
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company")
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_read_collection",
@@ -160,7 +153,6 @@ class InvoiceHeader
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Document")
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_write"
@@ -171,7 +163,6 @@ class InvoiceHeader
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_write"
@@ -182,7 +173,6 @@ class InvoiceHeader
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_write"
@@ -193,7 +183,6 @@ class InvoiceHeader
 
     /**
      * @ORM\Column(type="date", nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_write"
@@ -204,7 +193,6 @@ class InvoiceHeader
 
     /**
      * @ORM\Column(type="date", nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_write"
@@ -215,7 +203,6 @@ class InvoiceHeader
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_write"

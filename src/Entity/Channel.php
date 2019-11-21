@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -85,7 +84,6 @@ class Channel
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "channel_read",
      *     "channel_write",
@@ -99,7 +97,6 @@ class Channel
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
-     * @Gedmo\Versioned
      * @Groups({
      *     "channel_read",
      *     "channel_write",
@@ -115,7 +112,6 @@ class Channel
      * @var boolean
      *
      * @ORM\Column(type="boolean")
-     * @Gedmo\Versioned
      * @Groups({
      *     "channel_read",
      *     "channel_write"

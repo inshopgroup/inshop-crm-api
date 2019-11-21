@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -66,7 +65,6 @@ class OrderLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OrderHeader", inversedBy="lines")
-     * @Gedmo\Versioned
      * @Groups({
      *     "order_line_write"
      * })
@@ -76,7 +74,6 @@ class OrderLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OrderLineStatus")
-     * @Gedmo\Versioned
      * @Groups({
      *     "order_line_read",
      *     "order_line_write",
@@ -89,7 +86,6 @@ class OrderLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProductSellPrice")
-     * @Gedmo\Versioned
      * @Groups({
      *     "order_line_read",
      *     "order_line_write",
@@ -102,7 +98,6 @@ class OrderLine
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\StockLine", inversedBy="orderLine")
-     * @Gedmo\Versioned
      * @Groups({
      *     "order_line_read",
      *     "order_line_write",
@@ -125,7 +120,6 @@ class OrderLine
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "order_line_read",
      *     "order_line_write",
@@ -138,7 +132,6 @@ class OrderLine
 
     /**
      * @ORM\Column(type="float", nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "order_line_read",
      *     "order_line_write",
@@ -151,7 +144,6 @@ class OrderLine
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Vat")
-     * @Gedmo\Versioned
      * @Groups({
      *     "order_line_read",
      *     "order_line_write",

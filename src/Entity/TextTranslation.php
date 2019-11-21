@@ -111,7 +111,6 @@ class TextTranslation
      * @var string
      *
      * @ORM\Column(type="string", length=255)
-     * @Gedmo\Versioned
      * @Groups({
      *     "text_read",
      *     "text_write",
@@ -126,7 +125,6 @@ class TextTranslation
      * @var string
      *
      * @ORM\Column(type="text")
-     * @Gedmo\Versioned
      * @Groups({
      *     "text_read",
      *     "text_write",
@@ -140,7 +138,6 @@ class TextTranslation
      * @var string
      *
      * @ORM\Column(type="string", length=255)
-     * @Gedmo\Versioned
      * @Groups({
      *     "text_read",
      *     "text_write",
@@ -153,7 +150,6 @@ class TextTranslation
      * @var string
      *
      * @ORM\Column(type="string", length=255)
-     * @Gedmo\Versioned
      * @Groups({
      *     "text_read",
      *     "text_write",
@@ -166,7 +162,6 @@ class TextTranslation
      * @var string
      *
      * @ORM\Column(type="string", length=255)
-     * @Gedmo\Versioned
      * @Groups({
      *     "text_read",
      *     "text_write",

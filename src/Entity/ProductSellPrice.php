@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -84,7 +83,6 @@ class ProductSellPrice
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="productSellPrices")
-     * @Gedmo\Versioned
      * @Groups({
      *     "product_sell_price_read",
      *     "product_sell_price_write",
@@ -96,7 +94,6 @@ class ProductSellPrice
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Channel")
-     * @Gedmo\Versioned
      * @Groups({
      *     "product_sell_price_read",
      *     "product_sell_price_write"
@@ -107,7 +104,6 @@ class ProductSellPrice
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Vat")
-     * @Gedmo\Versioned
      * @Groups({
      *     "product_sell_price_read",
      *     "product_sell_price_write"
@@ -118,7 +114,6 @@ class ProductSellPrice
 
     /**
      * @ORM\Column(type="float", nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "product_sell_price_read",
      *     "product_sell_price_write"
@@ -129,7 +124,6 @@ class ProductSellPrice
 
     /**
      * @ORM\Column(type="float", nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "product_sell_price_read",
      *     "product_sell_price_write"
@@ -140,7 +134,6 @@ class ProductSellPrice
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "product_sell_price_read",
      *     "product_sell_price_write"
@@ -151,7 +144,6 @@ class ProductSellPrice
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
-     * @Gedmo\Versioned
      * @Groups({
      *     "product_sell_price_read",
      *     "product_sell_price_write"
@@ -162,7 +154,6 @@ class ProductSellPrice
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CompanyProduct")
-     * @Gedmo\Versioned
      * @Groups({
      *     "product_sell_price_read",
      *     "product_sell_price_write"

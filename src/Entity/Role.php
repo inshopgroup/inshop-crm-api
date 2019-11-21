@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -78,7 +77,6 @@ class Role
      * @var string
      *
      * @ORM\Column(type="string", length=255)
-     * @Gedmo\Versioned
      * @Groups({
      *     "role_read",
      *     "role_write",
@@ -93,7 +91,6 @@ class Role
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Gedmo\Versioned
      * @Groups({
      *     "role_read",
      *     "role_write",
@@ -106,7 +103,6 @@ class Role
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Module", inversedBy="roles")
-     * @Gedmo\Versioned
      * @Groups({
      *     "role_read",
      *     "role_write",
