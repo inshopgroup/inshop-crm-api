@@ -57,6 +57,7 @@ security:
 
         frontend:
             pattern:   ^/frontend
+            provider: client_provider
             anonymous: true
 
         docs:

@@ -3,26 +3,25 @@ oneup_flysystem:
   adapters:
     files_adapter:
       local:
-        directory: '%kernel.root_dir%/files'
+        directory: '%kernel.project_dir%/data/files'
+
     backups_adapter:
       local:
-        directory: '%kernel.root_dir%/backups'
+        directory: '%kernel.project_dir%/data/backups'
+
     images_adapter:
       local:
-        directory: '%kernel.root_dir%/images'
+        directory: '%kernel.project_dir%/data/images'
 
   filesystems:
-    files_filesystem:
+    files:
       adapter: files_adapter
-      alias: files_filesystem
-      visibility: private
+      mount: files_filesystem
 
-    backups_filesystem:
+    backups:
       adapter: backups_adapter
-      alias: backups_filesystem
-      visibility: private
+      mount: backups_filesystem
 
-    images_filesystem:
+    images:
       adapter: images_adapter
-      alias: images_filesystem
-      visibility: public
+      mount: images_filesystem
