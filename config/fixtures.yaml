@@ -47,10 +47,6 @@ services:
         arguments:
             - "@faker.generator"
 
-    backup.fixtures:
-        class: App\DataFixtures\BackupFixtures
-        tags: ['doctrine.fixture.orm']
-
     role.fixtures:
         class: App\DataFixtures\RoleFixtures
         tags: ['doctrine.fixture.orm']

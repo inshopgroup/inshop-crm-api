@@ -106,16 +106,6 @@ class RoleFixtures extends Fixture
 //            'Stock line status' => [],
 //            'Vat' => [],
 //            'Warehouse' => [],
-//            'Backup' => [
-//                'LIST',
-//                'CREATE',
-//                'SHOW',
-//                'UPDATE',
-//                'DELETE',
-//                'DOWNLOAD',
-//            ],
-//            'Backup type' => [],
-//            'Backup status' => [],
         ];
 
         $actions = [

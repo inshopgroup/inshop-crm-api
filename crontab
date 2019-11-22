@@ -16,5 +16,3 @@
 # m h  dom mon dow   command
 
 PATH=/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-
-0 1 * * * export $(grep -v '^#' .env | xargs -d '\n') && /usr/local/bin/php /var/www/bin/console backup:database --env=prod >> /var/www/var/log/backup.log 2>&1

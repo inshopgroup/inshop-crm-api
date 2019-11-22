@@ -5,10 +5,6 @@ oneup_flysystem:
       local:
         directory: '%kernel.project_dir%/data/files'
 
-    backups_adapter:
-      local:
-        directory: '%kernel.project_dir%/data/backups'
-
     images_adapter:
       local:
         directory: '%kernel.project_dir%/data/images'
@@ -17,10 +13,6 @@ oneup_flysystem:
     files:
       adapter: files_adapter
       mount: files_filesystem
-
-    backups:
-      adapter: backups_adapter
-      mount: backups_filesystem
 
     images:
       adapter: images_adapter
