@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Task;
 use App\Entity\TaskStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\ResultSetMapping;
 
@@ -17,7 +17,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
  */
 class TaskRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Task::class);
     }

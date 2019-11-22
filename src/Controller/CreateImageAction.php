@@ -5,8 +5,8 @@ namespace App\Controller;
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use App\Entity\Image;
 use App\Form\ImageType;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Liip\ImagineBundle\Binary\BinaryInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -26,13 +26,13 @@ final class CreateImageAction
 
     /**
      * CreateImageAction constructor.
-     * @param RegistryInterface $doctrine
+     * @param ManagerRegistry $doctrine
      * @param FormFactoryInterface $factory
      * @param ValidatorInterface $validator
      * @param Container $container
      */
     public function __construct(
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         FormFactoryInterface $factory,
         ValidatorInterface $validator,
         ContainerInterface $container

@@ -5,7 +5,7 @@ namespace App\Controller;
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use App\Entity\File;
 use App\Form\FileType;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -22,11 +22,11 @@ final class CreateFileAction
 
     /**
      * CreateFileAction constructor.
-     * @param RegistryInterface $doctrine
+     * @param ManagerRegistry $doctrine
      * @param FormFactoryInterface $factory
      * @param ValidatorInterface $validator
      */
-    public function __construct(RegistryInterface $doctrine, FormFactoryInterface $factory, ValidatorInterface $validator)
+    public function __construct(ManagerRegistry $doctrine, FormFactoryInterface $factory, ValidatorInterface $validator)
     {
         $this->validator = $validator;
         $this->doctrine = $doctrine;

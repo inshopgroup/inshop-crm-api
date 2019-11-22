@@ -3,7 +3,6 @@
 namespace App\EventListener\Logger;
 
 use App\Entity\History;
-use App\Entity\User;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,7 +12,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\PersistentCollection;
 use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -23,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class EntityLoggerSubscriber implements EventSubscriber
 {
     /**
-     * @var TokenStorage
+     * @var TokenStorageInterface
      */
     protected $tokenStorage;
 
@@ -72,9 +71,9 @@ class EntityLoggerSubscriber implements EventSubscriber
 
     /**
      * EntityLoggerSubscriber constructor.
-     * @param TokenStorage $tokenStorage
+     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(TokenStorage $tokenStorage)
+    public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
     }
