@@ -7,7 +7,6 @@ use App\Entity\Image;
 use App\Form\ImageType;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Liip\ImagineBundle\Binary\BinaryInterface;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,9 +18,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class CreateImageAction
 {
+    /**
+     * @var ValidatorInterface
+     */
     private $validator;
+
+    /**
+     * @var ManagerRegistry
+     */
     private $doctrine;
+
+    /**
+     * @var FormFactoryInterface
+     */
     private $factory;
+
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
     /**
@@ -29,7 +43,7 @@ final class CreateImageAction
      * @param ManagerRegistry $doctrine
      * @param FormFactoryInterface $factory
      * @param ValidatorInterface $validator
-     * @param Container $container
+     * @param ContainerInterface $container
      */
     public function __construct(
         ManagerRegistry $doctrine,
@@ -79,17 +93,17 @@ final class CreateImageAction
     protected function makeThumbNail(Image $image): void
     {
         $filters = [
-            'thumbnail_200' => 200,
-            'thumbnail_420' => 420,
-            'thumbnail_1000' => 1000,
+            'thumbnail_200' => 'images_200_filesystem',
+            'thumbnail_420' => 'images_420_filesystem',
+            'thumbnail_1000' => 'images_1000_filesystem',
         ];
 
-        foreach ($filters as $filter => $thumbDir) {
+        foreach ($filters as $filter => $bucket) {
            /** @var BinaryInterface $img */
-            $img = $this->container->get('liip_imagine.data.manager')->find($filter, '/images/' . $image->getContentUrl());
+            $img = $this->container->get('liip_imagine.data.manager')->find($filter, $image->getContentUrl());
             $img = $this->container->get('liip_imagine.filter.manager')->applyFilter($img, $filter);
 
-            file_put_contents($this->container->getParameter('kernel.project_dir') . '/public/images/' . $thumbDir . '/' . $image->getContentUrl(), $img->getContent());
+            $this->container->get('oneup_flysystem.mount_manager')->getFilesystem($bucket)->write($image->getContentUrl(), $img->getContent());
         }
     }
 }

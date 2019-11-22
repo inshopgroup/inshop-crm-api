@@ -9,6 +9,18 @@ oneup_flysystem:
       local:
         directory: '%kernel.project_dir%/data/images'
 
+    images_200_adapter:
+      local:
+        directory: '%kernel.project_dir%/public/images/200'
+
+    images_420_adapter:
+      local:
+        directory: '%kernel.project_dir%/public/images/420'
+
+    images_1000_adapter:
+      local:
+        directory: '%kernel.project_dir%/public/images/1000'
+
   filesystems:
     files:
       adapter: files_adapter
@@ -17,3 +29,15 @@ oneup_flysystem:
     images:
       adapter: images_adapter
       mount: images_filesystem
+
+    images_200:
+      adapter: images_200_adapter
+      mount: images_200_filesystem
+
+    images_420:
+      adapter: images_420_adapter
+      mount: images_420_filesystem
+
+    images_1000:
+      adapter: images_1000_adapter
+      mount: images_1000_filesystem

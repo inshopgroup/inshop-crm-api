@@ -1,8 +1,8 @@
 liip_imagine:
     loaders:
         default:
-            filesystem:
-                data_root: "/var/www/public/images"
+            flysystem:
+                filesystem_service: oneup_flysystem.images_filesystem
 
     # valid drivers options include "gd" or "gmagick" or "imagick"
     driver: "gd"
