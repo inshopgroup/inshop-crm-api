@@ -7,7 +7,6 @@ services:
       - db
     env_file:
       - ./.env
-    command: sh ./bin/entrypoint.sh
     volumes:
       - .:/var/www:rw,cached
       - files-data:/var/www/var/files:rw
