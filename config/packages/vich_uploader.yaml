@@ -4,15 +4,11 @@ vich_uploader:
 
     mappings:
         file:
-            upload_destination: files_filesystem
+            uri_prefix: /file
+            upload_destination: asset_filesystem
             namer: Vich\UploaderBundle\Naming\UniqidNamer
-            inject_on_load: true
-            delete_on_update: true
-            delete_on_remove: true
 
         image:
-            upload_destination: images_filesystem
+            uri_prefix: /image
+            upload_destination: image_filesystem
             namer: Vich\UploaderBundle\Naming\UniqidNamer
-            inject_on_load: true
-            delete_on_update: true
-            delete_on_remove: true

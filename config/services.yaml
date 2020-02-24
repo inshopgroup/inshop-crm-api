@@ -105,3 +105,13 @@ services:
   Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
     arguments:
       - '@app.redis'
+
+  app.s3_client:
+    class: Aws\S3\S3Client
+    arguments:
+      -
+        version: 'latest'
+        region: '%env(AWS_S3_BUCKET_REGION)%'
+        credentials:
+          key: '%env(AWS_S3_ACCESS_ID)%'
+          secret: '%env(AWS_S3_ACCESS_SECRET)%'

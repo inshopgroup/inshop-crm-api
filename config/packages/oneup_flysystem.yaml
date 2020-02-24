@@ -1,43 +1,49 @@
 # Read the documentation: https://github.com/1up-lab/OneupFlysystemBundle/tree/master/Resources/doc/index.md
 oneup_flysystem:
   adapters:
-    files_adapter:
-      local:
-        directory: '%kernel.project_dir%/data/files'
+    file_adapter:
+      awss3v3:
+        client: app.s3_client
+        bucket: '%env(AWS_S3_BUCKET_FILE_NAME)%'
+        prefix: ~
 
-    images_adapter:
-      local:
-        directory: '%kernel.project_dir%/data/images'
+    image_adapter:
+      awss3v3:
+        client: app.s3_client
+        bucket: '%env(AWS_S3_BUCKET_IMAGE_NAME)%'
+        prefix: ~
 
-    images_200_adapter:
-      local:
-        directory: '%kernel.project_dir%/public/images/200'
-
-    images_420_adapter:
-      local:
-        directory: '%kernel.project_dir%/public/images/420'
-
-    images_1000_adapter:
-      local:
-        directory: '%kernel.project_dir%/public/images/1000'
+#    images_200_adapter:
+#      local:
+#        directory: '%kernel.project_dir%/public/images/200'
+#
+#    images_420_adapter:
+#      local:
+#        directory: '%kernel.project_dir%/public/images/420'
+#
+#    images_1000_adapter:
+#      local:
+#        directory: '%kernel.project_dir%/public/images/1000'
 
   filesystems:
-    files:
-      adapter: files_adapter
-      mount: files_filesystem
+    file_filesystem:
+      adapter: file_adapter
+      mount: file_filesystem
+      visibility: public
 
-    images:
-      adapter: images_adapter
-      mount: images_filesystem
+    image_filesystem:
+      adapter: image_adapter
+      mount: image_filesystem
+      visibility: public
 
-    images_200:
-      adapter: images_200_adapter
-      mount: images_200_filesystem
-
-    images_420:
-      adapter: images_420_adapter
-      mount: images_420_filesystem
-
-    images_1000:
-      adapter: images_1000_adapter
-      mount: images_1000_filesystem
+#    images_200:
+#      adapter: images_200_adapter
+#      mount: images_200_filesystem
+#
+#    images_420:
+#      adapter: images_420_adapter
+#      mount: images_420_filesystem
+#
+#    images_1000:
+#      adapter: images_1000_adapter
+#      mount: images_1000_filesystem
