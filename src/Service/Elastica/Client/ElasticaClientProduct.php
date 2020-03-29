@@ -203,9 +203,6 @@ class ElasticaClientProduct extends ElasticaClientBase
             return $document->toArray()['_source'];
         }, $results->getDocuments());
 
-        $adapter = new ElasticaAdapter($data);
-        $adapter->setNbResults($results->getTotalHits());
-
         // Facets
         $query = new Query();
         $query->setSize(0);
@@ -214,10 +211,11 @@ class ElasticaClientProduct extends ElasticaClientBase
         $search = $this->client->createSearch($this->getIndex());
         $search->setQuery($query);
 
-        # Elastica paginator
-        $elasticaPaginator = new ElasticaPaginator($adapter);
+        $elasticaPaginator = new ElasticaPaginator();
+        $elasticaPaginator->setTotalItems($results->getTotalHits());
+        $elasticaPaginator->setResults($data);
         $elasticaPaginator->setCurrentPage($page);
-        $elasticaPaginator->setMaxPerPage($size);
+        $elasticaPaginator->setItemsPerPage($size);
         $elasticaPaginator->setAggregations($search->search()->getAggregations());
 
         return $elasticaPaginator;

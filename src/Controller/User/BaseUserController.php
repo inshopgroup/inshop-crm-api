@@ -2,7 +2,7 @@
 
 namespace App\Controller\User;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Class BaseUserController
  * @package App\Controller\User
  */
-abstract class BaseUserController extends Controller
+abstract class BaseUserController extends AbstractController
 {
     /**
      * @var UserPasswordEncoderInterface

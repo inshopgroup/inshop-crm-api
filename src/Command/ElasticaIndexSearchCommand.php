@@ -14,7 +14,7 @@ use App\Entity\Task;
 use App\Interfaces\SearchInterface;
 use App\Service\Elastica\Client\ElasticaClientSearch;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -23,7 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * Class ElasticaIndexSearchCommand
  * @package App\Command
  */
-class ElasticaIndexSearchCommand extends ContainerAwareCommand
+class ElasticaIndexSearchCommand extends Command
 {
     /**
      * @var ElasticaClientSearch
@@ -31,15 +31,21 @@ class ElasticaIndexSearchCommand extends ContainerAwareCommand
     protected $search;
 
     /**
-     * SearchIndexCommand constructor.
-     * @param null|string $name
-     * @param ElasticaClientSearch $search
+     * @var EntityManagerInterface
      */
-    public function __construct(?string $name = null, ElasticaClientSearch $search)
-    {
-        parent::__construct($name);
+    protected $entityManager;
 
+    /**
+     * ElasticaIndexSearchCommand constructor.
+     * @param ElasticaClientSearch $search
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(ElasticaClientSearch $search, EntityManagerInterface $entityManager)
+    {
         $this->search = $search;
+        $this->entityManager = $entityManager;
+
+        parent::__construct();
     }
 
     protected function configure(): void
@@ -52,15 +58,13 @@ class ElasticaIndexSearchCommand extends ContainerAwareCommand
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|null|void
+     * @return int|void
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->search->createIndex();
         $this->search->createMapping();
-
-        /** @var EntityManagerInterface $em */
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $io = new SymfonyStyle($input, $output);
 
@@ -77,16 +81,19 @@ class ElasticaIndexSearchCommand extends ContainerAwareCommand
         ];
 
         foreach ($searchableEntities as $entityClass) {
-            $this->indexEntity($entityClass, $em, $io);
+            $this->indexEntity($entityClass, $this->entityManager, $io);
         }
 
         $io->success('Search index updated successfully');
+
+        return 0;
     }
 
     /**
      * @param string $entityClass
      * @param EntityManagerInterface $em
      * @param SymfonyStyle $io
+     * @throws \Exception
      */
     private function indexEntity(
         string $entityClass,

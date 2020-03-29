@@ -5,14 +5,14 @@ namespace App\Controller;
 use App\Entity\File;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * Class DownloadFileAction
  * @package App\Controller
  */
-class DownloadFileAction extends Controller
+class DownloadFileAction extends AbstractController
 {
     /**
      * @param File $file

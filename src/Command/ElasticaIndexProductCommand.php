@@ -6,7 +6,7 @@ use App\Entity\Product;
 use App\Repository\ProductRepository;
 use App\Service\Elastica\Client\ElasticaClientProduct;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * Class ElasticaIndexProductCommand
  * @package App\Command
  */
-class ElasticaIndexProductCommand extends ContainerAwareCommand
+class ElasticaIndexProductCommand extends Command
 {
     /**
      * @var ElasticaClientProduct
@@ -23,15 +23,21 @@ class ElasticaIndexProductCommand extends ContainerAwareCommand
     protected $search;
 
     /**
-     * ElasticaIndexProductCommand constructor.
-     * @param null|string $name
-     * @param ElasticaClientProduct $search
+     * @var EntityManagerInterface
      */
-    public function __construct(?string $name = null, ElasticaClientProduct $search)
-    {
-        parent::__construct($name);
+    protected $entityManager;
 
+    /**
+     * ElasticaIndexProductCommand constructor.
+     * @param ElasticaClientProduct $search
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(ElasticaClientProduct $search, EntityManagerInterface $entityManager)
+    {
         $this->search = $search;
+        $this->entityManager = $entityManager;
+
+        parent::__construct();
     }
 
     protected function configure(): void
@@ -44,22 +50,20 @@ class ElasticaIndexProductCommand extends ContainerAwareCommand
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|null|void
+     * @return int|void
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->search->createIndex();
         $this->search->createMapping();
 
-        /** @var EntityManagerInterface $em */
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-
         $io = new SymfonyStyle($input, $output);
         $io->note('Indexing products');
         $io->note((new \DateTime())->format('Y-m-d H:i:s'));
 
         /** @var ProductRepository $repository */
-        $repository = $em->getRepository(Product::class);
+        $repository = $this->entityManager->getRepository(Product::class);
         $entities = $repository->findAll();
         $entitiesCount = \count($entities);
 
@@ -81,5 +85,7 @@ class ElasticaIndexProductCommand extends ContainerAwareCommand
         $io->note((new \DateTime())->format('Y-m-d H:i:s'));
 
         $io->success('Search index updated successfully');
+
+        return 0;
     }
 }
