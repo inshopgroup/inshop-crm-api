@@ -3,7 +3,6 @@
 namespace App\Service\Elastica\Client;
 
 use App\Interfaces\SearchInterface;
-use App\Service\ElasticaAdapter;
 use App\Service\ElasticaPaginator;
 use Elastica\Document;
 use Elastica\Query;
@@ -119,13 +118,13 @@ class ElasticaClientSearch extends ElasticaClientBase
             return $document->toArray()['_source'];
         }, $results->getDocuments());
 
-        $adapter = new ElasticaAdapter($data);
-        $adapter->setNbResults($results->getTotalHits());
-
         # Elastica paginator
-        $elasticaPaginator = new ElasticaPaginator($adapter);
+        $elasticaPaginator = new ElasticaPaginator();
+        $elasticaPaginator->setTotalItems($results->getTotalHits());
+        $elasticaPaginator->setResults($data);
         $elasticaPaginator->setCurrentPage($page);
-        $elasticaPaginator->setMaxPerPage($size);
+        $elasticaPaginator->setItemsPerPage($size);
+        $elasticaPaginator->setAggregations($search->search()->getAggregations());
 
         return $elasticaPaginator;
     }

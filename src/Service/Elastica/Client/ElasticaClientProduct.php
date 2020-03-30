@@ -6,7 +6,6 @@ use App\Entity\CategoryTranslation;
 use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\ProductTranslation;
-use App\Service\ElasticaAdapter;
 use App\Service\ElasticaPaginator;
 use Elastica\Aggregation\Nested;
 use Elastica\Aggregation\Range;
