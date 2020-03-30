@@ -4,19 +4,18 @@ namespace App\DataFixtures;
 
 use App\Entity\Channel;
 use App\Entity\Client;
-use App\Entity\Currency;
 use App\Entity\OrderHeader;
 use App\Entity\OrderLine;
 use App\Entity\OrderLineStatus;
 use App\Entity\OrderStatus;
 use App\Entity\PaymentType;
-use App\Entity\Product;
 use App\Entity\ProductSellPrice;
 use App\Entity\ShipmentMethod;
 use App\Entity\Vat;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
+use Faker;
 
 /**
  * Class OrderFixtures
@@ -25,17 +24,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 class OrderFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
-     * @var \Faker\Generator
+     * @var Faker\Generator
      */
     protected $faker;
 
     /**
      * OrderFixtures constructor.
-     * @param $faker
      */
-    public function __construct($faker)
+    public function __construct()
     {
-        $this->faker = $faker;
+        $this->faker = Faker\Factory::create();
     }
 
     /**

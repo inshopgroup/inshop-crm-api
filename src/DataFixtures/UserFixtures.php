@@ -8,8 +8,9 @@ use App\Entity\Role;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Faker;
 
 /**
  * Class UserFixtures
@@ -23,18 +24,18 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     protected $encoder;
 
     /**
-     * @var \Faker\Generator
+     * @var Faker\Generator
      */
     protected $faker;
 
     /**
-     * BaseController constructor.
+     * UserFixtures constructor.
      * @param UserPasswordEncoderInterface $encoder
      */
-    public function __construct(UserPasswordEncoderInterface $encoder, $faker)
+    public function __construct(UserPasswordEncoderInterface $encoder)
     {
         $this->encoder = $encoder;
-        $this->faker = $faker;
+        $this->faker = Faker\Factory::create();
     }
 
     /**

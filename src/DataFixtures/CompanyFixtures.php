@@ -11,7 +11,8 @@ use App\Entity\File;
 use App\Entity\Label;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
+use Faker;
 
 /**
  * Class CompanyFixtures
@@ -20,17 +21,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 class CompanyFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
-     * @var \Faker\Generator
+     * @var Faker\Generator
      */
     protected $faker;
 
     /**
      * CompanyFixtures constructor.
-     * @param $faker
      */
-    public function __construct($faker)
+    public function __construct()
     {
-        $this->faker = $faker;
+        $this->faker = Faker\Factory::create();
     }
 
     /**

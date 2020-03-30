@@ -6,7 +6,8 @@ use App\Entity\Address;
 use App\Entity\Country;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
+use Faker;
 
 /**
  * Class AddressFixtures
@@ -15,17 +16,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 class AddressFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
-     * @var \Faker\Generator
+     * @var Faker\Generator
      */
     protected $faker;
 
     /**
      * AddressFixtures constructor.
-     * @param $faker
      */
-    public function __construct($faker)
+    public function __construct()
     {
-        $this->faker = $faker;
+        $this->faker = Faker\Factory::create();
     }
 
     /**

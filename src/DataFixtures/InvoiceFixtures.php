@@ -14,7 +14,8 @@ use App\Entity\Product;
 use App\Entity\Vat;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
+use Faker;
 
 /**
  * Class InvoiceFixtures
@@ -23,21 +24,21 @@ use Doctrine\Common\Persistence\ObjectManager;
 class InvoiceFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
-     * @var \Faker\Generator
+     * @var Faker\Generator
      */
     protected $faker;
 
     /**
      * InvoiceFixtures constructor.
-     * @param $faker
      */
-    public function __construct($faker)
+    public function __construct()
     {
-        $this->faker = $faker;
+        $this->faker = Faker\Factory::create();
     }
 
     /**
      * @param ObjectManager $manager
+     * @throws \Exception
      */
     public function load(ObjectManager $manager)
     {

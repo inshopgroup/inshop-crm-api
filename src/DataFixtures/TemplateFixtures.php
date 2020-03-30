@@ -5,7 +5,8 @@ namespace App\DataFixtures;
 use App\Entity\File;
 use App\Entity\Template;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
+use Faker;
 
 /**
  * Class TemplateFixtures
@@ -14,17 +15,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 class TemplateFixtures extends Fixture
 {
     /**
-     * @var \Faker\Generator
+     * @var Faker\Generator
      */
     protected $faker;
 
     /**
      * TemplateFixtures constructor.
-     * @param $faker
      */
-    public function __construct($faker)
+    public function __construct()
     {
-        $this->faker = $faker;
+        $this->faker = Faker\Factory::create();
     }
 
     /**

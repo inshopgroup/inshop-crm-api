@@ -5,7 +5,8 @@ namespace App\DataFixtures;
 use App\Entity\City;
 use App\Entity\Country;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
+use Faker;
 
 /**
  * Class CountryFixtures
@@ -14,17 +15,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 class CountryFixtures extends Fixture
 {
     /**
-     * @var \Faker\Generator
+     * @var Faker\Generator
      */
     protected $faker;
 
     /**
      * CountryFixtures constructor.
-     * @param $faker
      */
-    public function __construct($faker)
+    public function __construct()
     {
-        $this->faker = $faker;
+        $this->faker = Faker\Factory::create();
     }
 
     /**

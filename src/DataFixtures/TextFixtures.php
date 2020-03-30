@@ -6,7 +6,8 @@ use App\Entity\Language;
 use App\Entity\Text;
 use App\Entity\TextTranslation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
+use Faker;
 
 /**
  * Class TextFixtures
@@ -15,17 +16,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 class TextFixtures extends Fixture
 {
     /**
-     * @var \Faker\Generator
+     * @var Faker\Generator
      */
     protected $faker;
 
     /**
-     * AddressFixtures constructor.
-     * @param $faker
+     * TextFixtures constructor.
      */
-    public function __construct($faker)
+    public function __construct()
     {
-        $this->faker = $faker;
+        $this->faker = Faker\Factory::create();
     }
 
     /**
