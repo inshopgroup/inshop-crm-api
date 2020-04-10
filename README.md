@@ -41,7 +41,7 @@ https://demo.inshopcrm.com/signin
 
 ### Backend
  - PHP 7.2
- - Symfony 4
+ - Symfony 5
  - API Platform
  - Postgres
  - Elasticsearch
