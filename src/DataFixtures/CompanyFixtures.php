@@ -36,7 +36,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $labelNames = ['A', 'B', 'C', 'D', 'E'];
 

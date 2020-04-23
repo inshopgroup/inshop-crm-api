@@ -13,6 +13,7 @@ use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -125,9 +126,8 @@ class Product implements TranslatableInterface
      *     "product_read_frontend_item"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category")
      * @Groups({
      *     "product_read",
@@ -136,7 +136,7 @@ class Product implements TranslatableInterface
      * })
      * @Assert\NotBlank()
      */
-    private $category;
+    private ?Category $category = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Brand")
@@ -146,7 +146,7 @@ class Product implements TranslatableInterface
      * })
      * @Assert\NotBlank()
      */
-    private $brand;
+    private ?Brand $brand = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -158,7 +158,7 @@ class Product implements TranslatableInterface
      * })
      * @Assert\NotBlank()
      */
-    private $ean;
+    private string $ean;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CompanyProduct", mappedBy="product")
@@ -168,14 +168,14 @@ class Product implements TranslatableInterface
      * })
      * @ApiSubresource()
      */
-    private $companyProducts;
+    private Collection $companyProducts;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProductSellPrice", mappedBy="product")
      * @ORM\OrderBy({"id" = "DESC"})
      * @ApiSubresource()
      */
-    private $productSellPrices;
+    private Collection $productSellPrices;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProductTranslation", mappedBy="translatable", cascade={"persist"}, orphanRemoval=true)
@@ -189,10 +189,10 @@ class Product implements TranslatableInterface
      * @Assert\Valid()
      * @Assert\Count(min=1)
      */
-    private $translations;
+    private Collection $translations;
 
     /**
-     * @var Image[]
+     * @var Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\Image")
      * @Groups({
      *     "product_read",
@@ -205,7 +205,7 @@ class Product implements TranslatableInterface
      * @ApiSubresource()
      * @ORM\OrderBy({"id" = "DESC"})
      */
-    public $images;
+    public Collection $images;
 
     /**
      * Product constructor.
@@ -218,12 +218,17 @@ class Product implements TranslatableInterface
         $this->images = new ArrayCollection();
     }
 
+    public function __sleep()
+    {
+        return [];
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
@@ -380,14 +385,14 @@ class Product implements TranslatableInterface
 
     /**
      * @return string
-     * @throws \Exception
+     * @throws Exception
      * @Groups({
      *     "product_read",
      *     "product_read_frontend",
      *     "product_read_frontend_item"
      * })
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         /** @var ProductTranslation $translation */
         $translation = $this->getTranslation();

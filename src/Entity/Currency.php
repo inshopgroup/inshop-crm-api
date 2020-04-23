@@ -87,7 +87,7 @@ class Currency
      *     "channel_write"
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -105,7 +105,7 @@ class Currency
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -115,7 +115,12 @@ class Currency
      * })
      * @Assert\NotBlank()
      */
-    private $code;
+    private string $code;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {

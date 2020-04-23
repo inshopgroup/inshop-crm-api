@@ -84,7 +84,7 @@ class Language
      *     "text_read",
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -99,7 +99,7 @@ class Language
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -113,7 +113,12 @@ class Language
      * })
      * @Assert\NotBlank()
      */
-    private $code;
+    private string $code;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {

@@ -15,6 +15,7 @@ use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -81,7 +82,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
-class User implements \Serializable, UserInterface
+class User implements Serializable, UserInterface
 {
     use Timestampable;
     use Blameable;
@@ -101,7 +102,8 @@ class User implements \Serializable, UserInterface
      *     "task_write"
      * })
      */
-    private $id;
+    private ?int $id = null;
+
 
     /**
      * @var string
@@ -116,7 +118,7 @@ class User implements \Serializable, UserInterface
      * @Assert\NotBlank()
      * @Assert\Email()
      */
-    private $username;
+    private string $username;
 
     /**
      * @var string
@@ -124,7 +126,7 @@ class User implements \Serializable, UserInterface
      * @ORM\Column(type="string", length=64)
      * @Assert\NotBlank()
      */
-    private $password;
+    private string $password;
 
     /**
      * @var string
@@ -133,7 +135,7 @@ class User implements \Serializable, UserInterface
      *     "user_write"
      * })
      */
-    private $plainPassword;
+    private ?string $plainPassword = null;
 
     /**
      * @var string
@@ -148,7 +150,7 @@ class User implements \Serializable, UserInterface
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
@@ -162,7 +164,7 @@ class User implements \Serializable, UserInterface
      * })
      * @Assert\NotBlank()
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="assignee")
@@ -171,7 +173,7 @@ class User implements \Serializable, UserInterface
      * })
      * @ORM\OrderBy({"id" = "DESC"})
      */
-    private $tasks;
+    private Collection $tasks;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Group")
@@ -180,7 +182,7 @@ class User implements \Serializable, UserInterface
      *     "user_write"
      * })
      */
-    private $groups;
+    private Collection $groups;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
@@ -190,27 +192,27 @@ class User implements \Serializable, UserInterface
      * })
      * @Assert\NotNull()
      */
-    private $language;
+    private ?Language $language = null;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isGoogleSyncEnabled = false;
+    private ?bool $isGoogleSyncEnabled = false;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $googleAccessToken;
+    private ?string $googleAccessToken = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $googleCalendars;
+    private ?string $googleCalendars = null;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $googleCalendarId;
+    private ?string $googleCalendarId = null;
 
     /**
      * User constructor.
@@ -221,17 +223,22 @@ class User implements \Serializable, UserInterface
         $this->groups = new ArrayCollection();
     }
 
-    public function getUsername()
+    public function __sleep()
+    {
+        return [];
+    }
+
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
 
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -239,23 +246,23 @@ class User implements \Serializable, UserInterface
     /**
      * @return array
      */
-    public function getRoles()
+    public function getRoles(): ?array
     {
-        $roles = ['ROLE_USER'];
+        $roles[] = ['ROLE_USER'];
 
         foreach ($this->getGroups() as $group) {
-            $roles = array_merge($roles, $group->getRolesArray());
+            $roles[] = $group->getRolesArray();
         }
 
-        return $roles;
+        return array_merge(...$roles);
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
     /** @see \Serializable::serialize() */
-    public function serialize()
+    public function serialize(): ?string
     {
         return serialize(array(
             $this->id,
@@ -264,62 +271,72 @@ class User implements \Serializable, UserInterface
         ));
     }
 
-    /** @see \Serializable::unserialize() */
-    public function unserialize($serialized)
+    /** @param $serialized
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized): void
     {
-        list (
+        [
             $this->id,
             $this->username,
             $this->password,
-        ) = unserialize($serialized, ['allowed_classes' => false]);
+        ] = unserialize($serialized, ['allowed_classes' => false]);
     }
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     * @return User
      */
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
      * @param string $name
+     * @return User
+     * @return User
      */
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
     /**
      * @param string $email
+     * @return User
      */
-    public function setEmail(string $email): void
+    public function setEmail(string $email): self
     {
         $this->email = $email;
+        return $this;
     }
 
     public function setUsername(string $username): self
@@ -378,10 +395,13 @@ class User implements \Serializable, UserInterface
 
     /**
      * @param string $plainPassword
+     * @return User
      */
-    public function setPlainPassword(string $plainPassword = null): void
+    public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
     }
 
     /**
@@ -410,12 +430,12 @@ class User implements \Serializable, UserInterface
         return $this;
     }
 
-    public function getLanguage(): Language
+    public function getLanguage(): ?Language
     {
         return $this->language;
     }
 
-    public function setLanguage(Language $language): self
+    public function setLanguage(?Language $language): self
     {
         $this->language = $language;
 

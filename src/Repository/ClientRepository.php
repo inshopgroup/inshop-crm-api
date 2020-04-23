@@ -3,9 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Client;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
@@ -22,6 +24,7 @@ class ClientRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $days
      * @return mixed
      */
     public function getSummaryNew($days)
@@ -32,7 +35,8 @@ class ClientRepository extends ServiceEntityRepository
 
         $query = $this
             ->getEntityManager()
-            ->createNativeQuery(<<<SQL
+            ->createNativeQuery(
+                <<<SQL
                 SELECT
                   days.name,
                   tmp.cnt
@@ -55,12 +59,16 @@ class ClientRepository extends ServiceEntityRepository
                 ) tmp ON days.name = tmp.name
                 ORDER BY days.name ASC
 SQL
-                , $rsm);
+                ,
+                $rsm
+            );
 
-        $query->setParameters([
-            'start' => (new \DateTime())->modify(-$days . ' days'),
-            'now'   => new \DateTime(),
-        ]);
+        $query->setParameters(
+            [
+                'start' => (new DateTime())->modify(-$days . ' days'),
+                'now' => new DateTime(),
+            ]
+        );
 
         return $query->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
@@ -68,7 +76,7 @@ SQL
     /**
      * @param string $token
      * @return Client|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findByToken(string $token): ?Client
     {
@@ -77,14 +85,13 @@ SQL
             ->andWhere('c.token is not null')
             ->setParameter('token', $token)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
     /**
      * @param string $email
      * @return Client|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function getClientByEmail(string $email): ?Client
     {
@@ -92,7 +99,6 @@ SQL
             ->where('u.username = :username')
             ->setParameter('username', $email)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 }

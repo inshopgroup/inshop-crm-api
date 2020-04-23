@@ -3,6 +3,7 @@
 namespace App\Controller\Product;
 
 use App\Service\Elastica\Client\ElasticaClientProduct;
+use stdClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -28,9 +29,9 @@ class ProductFrontendGetItemAction
 
     /**
      * @param Request $request
-     * @return \stdClass
+     * @return stdClass
      */
-    public function __invoke(Request $request): \stdClass
+    public function __invoke(Request $request): stdClass
     {
         $item = $this->elastica->findBySlug($request->get('slug'));
 

@@ -72,9 +72,8 @@ class Module
      *     "group_read"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
@@ -85,7 +84,7 @@ class Module
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Role", mappedBy="module")
@@ -95,11 +94,16 @@ class Module
      * })
      * @Assert\NotBlank()
      */
-    private $roles;
+    private Collection $roles;
 
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getId(): ?int

@@ -80,7 +80,8 @@ class Template implements SearchInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Groups({"template_read"})
      */
-    private $id;
+    private ?int $id = null;
+
 
     /**
      * @var string
@@ -89,10 +90,10 @@ class Template implements SearchInterface
      * @Groups({"template_read", "template_write"})
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
-     * @var File[]
+     * @var Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(nullable=true)
      * @ApiProperty(iri="http://schema.org/image")
@@ -100,18 +101,23 @@ class Template implements SearchInterface
      * @Groups({"template_read", "template_write"})
      * @ORM\OrderBy({"id" = "DESC"})
      */
-    public $files;
+    public Collection $files;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TemplateType")
      * @Groups({"template_read", "template_write"})
      * @Assert\NotNull()
      */
-    private $type;
+    private ?TemplateType $type = null;
 
     public function __construct()
     {
         $this->files = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getId(): ?int

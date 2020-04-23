@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -84,9 +85,8 @@ class InvoiceHeader
      *     "invoice_header_read_collection"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var integer
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -97,7 +97,7 @@ class InvoiceHeader
      * })
      * @Assert\NotBlank()
      */
-    private $number;
+    private int $number;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\InvoiceStatus")
@@ -108,7 +108,7 @@ class InvoiceHeader
      * })
      * @Assert\NotBlank()
      */
-    private $status;
+    private ?InvoiceStatus $status = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\InvoiceType")
@@ -119,7 +119,7 @@ class InvoiceHeader
      * })
      * @Assert\NotBlank()
      */
-    private $type;
+    private ?InvoiceType $type = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OrderHeader")
@@ -128,7 +128,7 @@ class InvoiceHeader
      *     "invoice_header_write"
      * })
      */
-    private $orderHeader;
+    private ?OrderHeader $orderHeader = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company")
@@ -139,7 +139,7 @@ class InvoiceHeader
      * })
      * @Assert\NotNull()
      */
-    private $companyFrom;
+    private ?Company $companyFrom = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company")
@@ -149,7 +149,7 @@ class InvoiceHeader
      *     "invoice_header_write"
      * })
      */
-    private $companyTo;
+    private ?Company $companyTo = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Document")
@@ -159,7 +159,7 @@ class InvoiceHeader
      * })
      * @Assert\NotBlank()
      */
-    private $agreement;
+    private ?Document $agreement = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
@@ -169,7 +169,7 @@ class InvoiceHeader
      * })
      * @Assert\NotBlank()
      */
-    private $currency;
+    private ?Currency $currency = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
@@ -179,7 +179,7 @@ class InvoiceHeader
      * })
      * @Assert\NotBlank()
      */
-    private $language;
+    private ?Language $language = null;
 
     /**
      * @ORM\Column(type="date", nullable=false)
@@ -189,7 +189,7 @@ class InvoiceHeader
      * })
      * @Assert\NotBlank()
      */
-    private $dateOfInvoice;
+    private DateTimeInterface $dateOfInvoice;
 
     /**
      * @ORM\Column(type="date", nullable=false)
@@ -199,7 +199,7 @@ class InvoiceHeader
      * })
      * @Assert\NotBlank()
      */
-    private $dateOfSale;
+    private DateTimeInterface $dateOfSale;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -208,7 +208,7 @@ class InvoiceHeader
      *     "invoice_header_write"
      * })
      */
-    private $maturity;
+    private ?string $maturity = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\InvoiceLine", mappedBy="header", cascade={"persist"})
@@ -219,10 +219,10 @@ class InvoiceHeader
      * @Assert\Valid()
      * @ORM\OrderBy({"id" = "DESC"})
      */
-    private $lines;
+    private Collection $lines;
 
     /**
-     * @var File[]
+     * @var Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(nullable=true)
      * @ApiProperty(iri="http://schema.org/image")
@@ -234,12 +234,17 @@ class InvoiceHeader
      * })
      * @ORM\OrderBy({"id" = "DESC"})
      */
-    public $files;
+    public Collection $files;
 
     public function __construct()
     {
         $this->lines = new ArrayCollection();
         $this->files = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getId(): ?int
@@ -259,24 +264,24 @@ class InvoiceHeader
         return $this;
     }
 
-    public function getDateOfInvoice(): ?\DateTimeInterface
+    public function getDateOfInvoice(): ?DateTimeInterface
     {
         return $this->dateOfInvoice;
     }
 
-    public function setDateOfInvoice(\DateTimeInterface $dateOfInvoice): self
+    public function setDateOfInvoice(DateTimeInterface $dateOfInvoice): self
     {
         $this->dateOfInvoice = $dateOfInvoice;
 
         return $this;
     }
 
-    public function getDateOfSale(): ?\DateTimeInterface
+    public function getDateOfSale(): ?DateTimeInterface
     {
         return $this->dateOfSale;
     }
 
-    public function setDateOfSale(\DateTimeInterface $dateOfSale): self
+    public function setDateOfSale(DateTimeInterface $dateOfSale): self
     {
         $this->dateOfSale = $dateOfSale;
 

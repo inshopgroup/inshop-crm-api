@@ -76,9 +76,8 @@ class PaymentType
      *     "order_header_read_collection"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var integer
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -91,14 +90,19 @@ class PaymentType
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private int $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -110,7 +114,7 @@ class PaymentType
      *
      * @return PaymentType
      */
-    public function setName($name)
+    public function setName($name): PaymentType
     {
         $this->name = $name;
 
@@ -122,7 +126,7 @@ class PaymentType
      *
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }

@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -90,7 +88,8 @@ class ShippingNoticeHeader
      *     "shipping_notice_header_read_collection"
      * })
      */
-    private $id;
+    private ?int $id = null;
+
 
     /**
      * @var integer
@@ -103,7 +102,7 @@ class ShippingNoticeHeader
      * })
      * @Assert\NotBlank()
      */
-    private $number;
+    private int $number;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ShippingNoticeStatus")
@@ -114,7 +113,7 @@ class ShippingNoticeHeader
      * })
      * @Assert\NotNull()
      */
-    private $status;
+    private ?ShippingNoticeStatus $status = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company")
@@ -125,7 +124,7 @@ class ShippingNoticeHeader
      * })
      * @Assert\NotNull()
      */
-    private $company;
+    private ?Company $company = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
@@ -136,7 +135,7 @@ class ShippingNoticeHeader
      * })
      * @Assert\NotNull()
      */
-    private $currency;
+    private ?Currency $currency = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PaymentType")
@@ -147,7 +146,7 @@ class ShippingNoticeHeader
      * })
      * @Assert\NotNull()
      */
-    private $paymentType;
+    private ?PaymentType $paymentType = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ShipmentMethod")
@@ -158,7 +157,7 @@ class ShippingNoticeHeader
      * })
      * @Assert\NotNull()
      */
-    private $shipmentMethod;
+    private ?ShipmentMethod $shipmentMethod = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\OrderLine", mappedBy="header", cascade={"persist"})
@@ -169,11 +168,16 @@ class ShippingNoticeHeader
      * @Assert\Valid()
      * @ORM\OrderBy({"id" = "DESC"})
      */
-    private $lines;
+    private Collection $lines;
 
     public function __construct()
     {
         $this->lines = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getId(): ?int

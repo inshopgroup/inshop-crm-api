@@ -5,6 +5,7 @@ namespace App\EventListener;
 use App\Entity\Product;
 use App\Service\Elastica\Client\ElasticaClientProduct;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Exception;
 
 /**
  * Class ElasticaProductListener
@@ -35,6 +36,7 @@ class ElasticaProductListener
      * Looks for new objects that should be indexed.
      *
      * @param LifecycleEventArgs $eventArgs
+     * @throws Exception
      */
     public function postPersist(LifecycleEventArgs $eventArgs): void
     {
@@ -49,6 +51,7 @@ class ElasticaProductListener
      * Looks for objects being updated that should be indexed or removed from the index.
      *
      * @param LifecycleEventArgs $eventArgs
+     * @throws Exception
      */
     public function postUpdate(LifecycleEventArgs $eventArgs): void
     {

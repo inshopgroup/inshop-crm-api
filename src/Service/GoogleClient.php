@@ -4,7 +4,17 @@ namespace App\Service;
 
 use App\Entity\Task;
 use App\Entity\User;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Exception;
+use expectedClass;
+use Google_Client;
+use Google_Http_Request;
+use Google_Service_Calendar;
+use Google_Service_Calendar_CalendarList;
+use Google_Service_Calendar_Event;
 
 /**
  * https://developers.google.com/calendar/quickstart/php
@@ -15,21 +25,21 @@ use Doctrine\ORM\EntityManagerInterface;
 class GoogleClient
 {
     /**
-     * @var \Google_Client
+     * @var Google_Client
      */
-    protected $googleClient;
+    protected Google_Client $googleClient;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * GoogleClient constructor.
-     * @param \Google_Client $googleClient
+     * @param Google_Client $googleClient
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(\Google_Client $googleClient, EntityManagerInterface $entityManager)
+    public function __construct(Google_Client $googleClient, EntityManagerInterface $entityManager)
     {
         $this->googleClient = $googleClient;
         $this->entityManager = $entityManager;
@@ -37,13 +47,13 @@ class GoogleClient
 
     /**
      * @param User $user
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function init(User $user): void
     {
         $this->googleClient->setApplicationName('Google calendar sync');
-        $this->googleClient->setScopes([\Google_Service_Calendar::CALENDAR]);
+        $this->googleClient->setScopes([Google_Service_Calendar::CALENDAR]);
         $this->googleClient->setPrompt('select_account consent');
         $this->googleClient->setRedirectUri('http://localhost:8080');
         $this->googleClient->setAccessType('offline');
@@ -53,8 +63,6 @@ class GoogleClient
 
     /**
      * @param User $user
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function refresh(User $user): void
     {
@@ -63,21 +71,19 @@ class GoogleClient
         if ($accessToken) {
             $this->googleClient->setAccessToken($accessToken);
 
-            if ($this->googleClient->isAccessTokenExpired()) {
-                if ($this->googleClient->getRefreshToken()) {
-                    $this->googleClient->fetchAccessTokenWithRefreshToken($this->googleClient->getAccessToken());
+            if ($this->googleClient->isAccessTokenExpired() && $this->googleClient->getRefreshToken()) {
+                $this->googleClient->fetchAccessTokenWithRefreshToken($this->googleClient->getAccessToken());
 
-                    // Save the token
-                    $user->setGoogleAccessToken(json_encode($this->googleClient->getAccessToken()));
-                    $this->entityManager->flush();
-                }
+                // Save the token
+                $user->setGoogleAccessToken(json_encode($this->googleClient->getAccessToken()));
+                $this->entityManager->flush();
             }
         }
     }
 
     /**
      * @param User $user
-     * @throws \Exception
+     * @throws Exception
      */
     public function auth(User $user): void
     {
@@ -91,23 +97,23 @@ class GoogleClient
 
         // Check to see if there was an error.
         if (array_key_exists('error', $accessToken)) {
-            throw new \Exception(implode(', ', $accessToken));
+            throw new \RuntimeException(implode(', ', $accessToken));
         }
 
         $this->googleClient->setAccessToken($accessToken);
 
         $user->setIsGoogleSyncEnabled(true);
-        $user->setGoogleCalendars(json_encode($this->getCalendars()));
-        $user->setGoogleAccessToken(json_encode($this->googleClient->getAccessToken()));
+        $user->setGoogleCalendars(json_encode($this->getCalendars(), JSON_THROW_ON_ERROR, 512));
+        $user->setGoogleAccessToken(json_encode($this->googleClient->getAccessToken(), JSON_THROW_ON_ERROR, 512));
         $this->entityManager->flush();
     }
 
     /**
-     * @return \Google_Service_Calendar_CalendarList
+     * @return Google_Service_Calendar_CalendarList
      */
-    public function getCalendars(): \Google_Service_Calendar_CalendarList
+    public function getCalendars(): Google_Service_Calendar_CalendarList
     {
-        $service = new \Google_Service_Calendar($this->googleClient);
+        $service = new Google_Service_Calendar($this->googleClient);
 
         return $service->calendarList->listCalendarList();
     }
@@ -115,11 +121,11 @@ class GoogleClient
     /**
      * @param Task $task
      * @param User $user
-     * @return \Google_Service_Calendar_Event|null
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return Google_Service_Calendar_Event|null
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function insertEvent(Task $task, User $user): ?\Google_Service_Calendar_Event
+    public function insertEvent(Task $task, User $user): ?Google_Service_Calendar_Event
     {
         if (!$user->getIsGoogleSyncEnabled() || !$user->getGoogleCalendarId()) {
             return null;
@@ -127,7 +133,7 @@ class GoogleClient
 
         $this->init($user);
 
-        $service = new \Google_Service_Calendar($this->googleClient);
+        $service = new Google_Service_Calendar($this->googleClient);
 
         $googleEvent = $service->events->insert(
             $user->getGoogleCalendarId(),
@@ -143,11 +149,11 @@ class GoogleClient
     /**
      * @param Task $task
      * @param User $user
-     * @return \Google_Service_Calendar_Event|null
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return Google_Service_Calendar_Event|null
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function updateEvent(Task $task, User $user): ?\Google_Service_Calendar_Event
+    public function updateEvent(Task $task, User $user): ?Google_Service_Calendar_Event
     {
         if (!$user->getIsGoogleSyncEnabled() || !$user->getGoogleCalendarId()) {
             return null;
@@ -155,16 +161,14 @@ class GoogleClient
 
         $this->init($user);
 
-        $service = new \Google_Service_Calendar($this->googleClient);
+        $service = new Google_Service_Calendar($this->googleClient);
 
         if ($task->getGoogleEventId()) {
-            $googleEvent = $service->events->update(
+            return $service->events->update(
                 $user->getGoogleCalendarId(),
                 $task->getGoogleEventId(),
                 $this->createGoogleEvent($task)
             );
-
-            return $googleEvent;
         }
 
         return null;
@@ -173,9 +177,9 @@ class GoogleClient
     /**
      * @param Task $task
      * @param User $user
-     * @return \expectedClass|\Google_Http_Request|null
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return expectedClass|Google_Http_Request|null
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function deleteEvent(Task $task, User $user)
     {
@@ -185,15 +189,13 @@ class GoogleClient
 
         $this->init($user);
 
-        $service = new \Google_Service_Calendar($this->googleClient);
+        $service = new Google_Service_Calendar($this->googleClient);
 
         if ($task->getGoogleEventId()) {
-            $response = $service->events->delete(
+            return $service->events->delete(
                 $user->getGoogleCalendarId(),
                 $task->getGoogleEventId()
             );
-
-            return $response;
         }
 
         return null;
@@ -201,14 +203,14 @@ class GoogleClient
 
     /**
      * @param Task $task
-     * @return \Google_Service_Calendar_Event
+     * @return Google_Service_Calendar_Event
      */
-    protected function createGoogleEvent(Task $task): \Google_Service_Calendar_Event
+    protected function createGoogleEvent(Task $task): Google_Service_Calendar_Event
     {
-        $start = \DateTime::createFromFormat('Y-m-d H:i:s', $task->getDeadline()->format('Y-m-d') . ' 09:00:00');
+        $start = DateTime::createFromFormat('Y-m-d H:i:s', $task->getDeadline()->format('Y-m-d') . ' 09:00:00');
         $end = (clone $start)->modify('+1 hour');
 
-        $googleEvent = new \Google_Service_Calendar_Event(array(
+        return new Google_Service_Calendar_Event(array(
             'summary' => sprintf('%s - %s', $task->getName(), $task->getClient()->getName()),
             'description' => $task->getDescription(),
             'start' => array(
@@ -227,7 +229,5 @@ class GoogleClient
                 ),
             ),
         ));
-
-        return $googleEvent;
     }
 }

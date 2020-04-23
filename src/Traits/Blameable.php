@@ -34,7 +34,7 @@ trait Blameable
      * @param  string $createdBy
      * @return $this
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy($createdBy): self
     {
         $this->createdBy = $createdBy;
 
@@ -46,7 +46,7 @@ trait Blameable
      *
      * @return string
      */
-    public function getCreatedBy()
+    public function getCreatedBy(): string
     {
         return $this->createdBy;
     }
@@ -57,7 +57,7 @@ trait Blameable
      * @param  string $updatedBy
      * @return $this
      */
-    public function setUpdatedBy($updatedBy)
+    public function setUpdatedBy($updatedBy): self
     {
         $this->updatedBy = $updatedBy;
 
@@ -69,7 +69,7 @@ trait Blameable
      *
      * @return string
      */
-    public function getUpdatedBy()
+    public function getUpdatedBy(): string
     {
         return $this->updatedBy;
     }

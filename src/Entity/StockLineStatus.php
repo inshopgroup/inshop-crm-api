@@ -74,7 +74,7 @@ class StockLineStatus
      *     "stock_line_status_read"
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @var integer
@@ -86,14 +86,19 @@ class StockLineStatus
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private int $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -105,7 +110,7 @@ class StockLineStatus
      *
      * @return StockLineStatus
      */
-    public function setName($name)
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -117,7 +122,7 @@ class StockLineStatus
      *
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }

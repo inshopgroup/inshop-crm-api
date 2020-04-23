@@ -88,9 +88,8 @@ class ContactType
      *     "company_read",
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var integer
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -105,14 +104,19 @@ class ContactType
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private int $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -124,7 +128,7 @@ class ContactType
      *
      * @return ContactType
      */
-    public function setName($name)
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -136,7 +140,7 @@ class ContactType
      *
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -146,6 +150,6 @@ class ContactType
      */
     public function __toString()
     {
-        return $this->getName();
+        return $this->getName() ?? '';
     }
 }

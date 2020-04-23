@@ -72,7 +72,7 @@ class TemplateType
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Groups({"template_type_read", "project_read", "project_write", "client_read", "client_write", "template_write", "template_read"})
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @var integer
@@ -81,14 +81,19 @@ class TemplateType
      * @Groups({"template_type_read", "template_type_write", "project_read", "client_read", "template_read"})
      * @Assert\NotBlank()
      */
-    private $name;
+    private int $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -100,7 +105,7 @@ class TemplateType
      *
      * @return TemplateType
      */
-    public function setName($name)
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -112,7 +117,7 @@ class TemplateType
      *
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }

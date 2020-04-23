@@ -5,6 +5,7 @@ namespace App\EventListener;
 use App\Entity\Task;
 use App\Service\GoogleClient;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Exception;
 
 /**
  * Class TaskListener
@@ -46,7 +47,7 @@ class TaskListener
                     $this->googleClient->insertEvent($entity, $user);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
         }
     }
@@ -77,7 +78,7 @@ class TaskListener
                     $this->googleClient->updateEvent($entity, $entity->getAssignee());
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
         }
     }
@@ -102,7 +103,7 @@ class TaskListener
                     $this->googleClient->deleteEvent($entity, $user);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
         }
     }

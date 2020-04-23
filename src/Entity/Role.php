@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -71,7 +70,8 @@ class Role
      *     "module_read"
      * })
      */
-    private $id;
+    private ?int $id = null;
+
 
     /**
      * @var string
@@ -85,7 +85,7 @@ class Role
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
@@ -99,7 +99,7 @@ class Role
      * })
      * @Assert\NotBlank()
      */
-    private $role;
+    private string $role;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Module", inversedBy="roles")
@@ -110,12 +110,17 @@ class Role
      * })
      * @Assert\NotBlank()
      */
-    private $module;
+    private ?Module $module = null;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

@@ -2,21 +2,20 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Interfaces\SearchInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * Address
@@ -100,7 +99,7 @@ class Address implements SearchInterface
      *     "company_read_collection"
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Country")
@@ -113,7 +112,7 @@ class Address implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $country;
+    private ?Country $country = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\City")
@@ -126,7 +125,7 @@ class Address implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $city;
+    private ?City $city = null;
 
     /**
      * @var string
@@ -139,7 +138,7 @@ class Address implements SearchInterface
      *     "company_read",
      * })
      */
-    private $region;
+    private ?string $region = null;
 
     /**
      * @var string
@@ -152,7 +151,7 @@ class Address implements SearchInterface
      *     "company_read",
      * })
      */
-    private $district;
+    private ?string $district = null;
 
     /**
      * @var string
@@ -166,7 +165,7 @@ class Address implements SearchInterface
      *     "company_read",
      * })
      */
-    private $postCode;
+    private ?string $postCode = null;
 
     /**
      * @var string
@@ -180,7 +179,7 @@ class Address implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $street;
+    private ?string $street = null;
 
     /**
      * @var string
@@ -194,7 +193,7 @@ class Address implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $building;
+    private ?string $building = null;
 
     /**
      * @var string
@@ -207,7 +206,7 @@ class Address implements SearchInterface
      *     "company_read",
      * })
      */
-    private $apartment;
+    private ?string $apartment = null;
 
     /**
      * @var string
@@ -220,7 +219,7 @@ class Address implements SearchInterface
      *     "company_read",
      * })
      */
-    private $comment;
+    private ?string $comment = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Client", mappedBy="addresses")
@@ -230,7 +229,7 @@ class Address implements SearchInterface
      * })
      * @ORM\OrderBy({"id" = "DESC"})
      */
-    private $clients;
+    private Collection $clients;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Company", mappedBy="addresses")
@@ -240,7 +239,7 @@ class Address implements SearchInterface
      * })
      * @ORM\OrderBy({"id" = "DESC"})
      */
-    private $companies;
+    private Collection $companies;
 
     public function __construct()
     {
@@ -248,26 +247,35 @@ class Address implements SearchInterface
         $this->companies = new ArrayCollection();
     }
 
+    public function __sleep()
+    {
+        return [];
+    }
+
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     * @return Address
+     * @return Address
      */
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
      * @return Country
      */
-    public function getCountry(): Country
+    public function getCountry(): ?Country
     {
         return $this->country;
     }
@@ -283,7 +291,7 @@ class Address implements SearchInterface
     /**
      * @return City
      */
-    public function getCity(): City
+    public function getCity(): ?City
     {
         return $this->city;
     }
@@ -306,10 +314,13 @@ class Address implements SearchInterface
 
     /**
      * @param string $region
+     * @return Address
      */
-    public function setRegion(string $region = null): void
+    public function setRegion(?string $region): self
     {
         $this->region = $region;
+
+        return $this;
     }
 
     /**
@@ -322,10 +333,14 @@ class Address implements SearchInterface
 
     /**
      * @param string $district
+     * @return Address
+     * @return Address
      */
-    public function setDistrict(string $district = null): void
+    public function setDistrict(?string $district): self
     {
         $this->district = $district;
+
+        return $this;
     }
 
     /**
@@ -338,10 +353,14 @@ class Address implements SearchInterface
 
     /**
      * @param string $street
+     * @return Address
+     * @return Address
      */
-    public function setStreet(string $street = null): void
+    public function setStreet(?string $street): self
     {
         $this->street = $street;
+
+        return $this;
     }
 
     /**
@@ -354,10 +373,14 @@ class Address implements SearchInterface
 
     /**
      * @param string $building
+     * @return Address
+     * @return Address
      */
-    public function setBuilding(string $building = null): void
+    public function setBuilding(?string $building): self
     {
         $this->building = $building;
+
+        return $this;
     }
 
     /**
@@ -370,10 +393,14 @@ class Address implements SearchInterface
 
     /**
      * @param string $apartment
+     * @return Address
+     * @return Address
      */
-    public function setApartment(string $apartment = null): void
+    public function setApartment(string $apartment): self
     {
         $this->apartment = $apartment;
+
+        return $this;
     }
 
     /**
@@ -386,10 +413,14 @@ class Address implements SearchInterface
 
     /**
      * @param string $comment
+     * @return Address
+     * @return Address
      */
-    public function setComment(string $comment = null): void
+    public function setComment(string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
     }
 
     /**
@@ -402,8 +433,8 @@ class Address implements SearchInterface
         return implode(
             ' ',
             [
-                $this->getCountry()->getName(),
-                $this->getCity()->getName(),
+                $this->getCountry() ? $this->getCountry()->getName() : null,
+                $this->getCity() ? $this->getCity()->getName() : null,
                 $this->getRegion(),
                 $this->getDistrict(),
                 $this->getStreet(),

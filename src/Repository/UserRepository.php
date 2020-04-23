@@ -3,10 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use App\Entity\TaskStatus;
 use Doctrine\ORM\AbstractQuery;
+use Exception;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,7 +26,7 @@ class UserRepository extends ServiceEntityRepository
     /**
      * @param $days
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function getSummary($days)
     {
@@ -34,21 +36,20 @@ class UserRepository extends ServiceEntityRepository
             ->innerJoin('u.tasks', 't')
             ->where('t.deadline BETWEEN :start AND :now')
             ->andWhere('t.status = :status')
-            ->setParameter('start', (new \DateTime())->modify(-$days . ' days'))
-            ->setParameter('now', new \DateTime())
+            ->setParameter('start', (new DateTime())->modify(-$days . ' days'))
+            ->setParameter('now', new DateTime())
             ->setParameter('status', TaskStatus::STATUS_DONE)
             ->setMaxResults(10)
             ->groupBy('u.id')
             ->orderBy('cnt', 'desc')
             ->getQuery()
-            ->getResult(AbstractQuery::HYDRATE_ARRAY)
-        ;
+            ->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
 
     /**
      * @param $days
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function getTimeSummary($days)
     {
@@ -58,14 +59,13 @@ class UserRepository extends ServiceEntityRepository
             ->innerJoin('u.tasks', 't')
             ->where('t.deadline BETWEEN :start AND :now')
             ->andWhere('t.status = :status')
-            ->setParameter('start', (new \DateTime())->modify(-$days . ' days'))
-            ->setParameter('now', new \DateTime())
+            ->setParameter('start', (new DateTime())->modify(-$days . ' days'))
+            ->setParameter('now', new DateTime())
             ->setParameter('status', TaskStatus::STATUS_DONE)
             ->setMaxResults(20)
             ->groupBy('u.id')
             ->orderBy('cnt', 'desc')
             ->getQuery()
-            ->getResult(AbstractQuery::HYDRATE_ARRAY)
-            ;
+            ->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
 }

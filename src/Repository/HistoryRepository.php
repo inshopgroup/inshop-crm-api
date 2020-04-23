@@ -21,7 +21,6 @@ class HistoryRepository extends ServiceEntityRepository
         parent::__construct($registry, History::class);
     }
 
-
     /**
      * Loads all log entries for the given entity
      *
@@ -29,7 +28,7 @@ class HistoryRepository extends ServiceEntityRepository
      *
      * @return History[]
      */
-    public function getLogEntries($entity)
+    public function getLogEntries($entity): array
     {
         $q = $this->getLogEntriesQuery($entity);
 
@@ -43,17 +42,17 @@ class HistoryRepository extends ServiceEntityRepository
      *
      * @return Query
      */
-    public function getLogEntriesQuery($entity)
+    public function getLogEntriesQuery($entity): Query
     {
         $wrapped = new EntityWrapper($entity, $this->_em);
         $objectClass = $wrapped->getMetadata()->name;
         $meta = $this->getClassMetadata();
         $dql = "SELECT log FROM {$meta->name} log";
-        $dql .= " WHERE log.objectId = :objectId";
-        $dql .= " AND log.objectClass = :objectClass";
-        $dql .= " ORDER BY log.version DESC";
+        $dql .= ' WHERE log.objectId = :objectId';
+        $dql .= ' AND log.objectClass = :objectClass';
+        $dql .= ' ORDER BY log.version DESC';
 
-        $objectId = (string)$wrapped->getIdentifier();
+        $objectId = (string) $wrapped->getIdentifier();
         $q = $this->_em->createQuery($dql);
         $q->setParameters(compact('objectId', 'objectClass'));
 

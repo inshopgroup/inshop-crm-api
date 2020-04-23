@@ -5,11 +5,15 @@ namespace App\Command;
 use App\Entity\Product;
 use App\Repository\ProductRepository;
 use App\Service\Elastica\Client\ElasticaClientProduct;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
+use function count;
 
 /**
  * Class ElasticaIndexProductCommand
@@ -51,7 +55,7 @@ class ElasticaIndexProductCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|void
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -60,18 +64,17 @@ class ElasticaIndexProductCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
         $io->note('Indexing products');
-        $io->note((new \DateTime())->format('Y-m-d H:i:s'));
+        $io->note((new DateTime())->format('Y-m-d H:i:s'));
 
         /** @var ProductRepository $repository */
         $repository = $this->entityManager->getRepository(Product::class);
         $entities = $repository->findAll();
-        $entitiesCount = \count($entities);
+        $entitiesCount = count($entities);
 
         $io->progressStart($entitiesCount);
 
         $objects = [];
 
-        /** @var Product $entity */
         foreach ($entities as $entity) {
             $objects[] = $this->search->toArray($entity);
             $io->progressAdvance();
@@ -82,7 +85,7 @@ class ElasticaIndexProductCommand extends Command
         }
 
         $io->progressFinish();
-        $io->note((new \DateTime())->format('Y-m-d H:i:s'));
+        $io->note((new DateTime())->format('Y-m-d H:i:s'));
 
         $io->success('Search index updated successfully');
 

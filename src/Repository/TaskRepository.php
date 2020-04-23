@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Task;
 use App\Entity\TaskStatus;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\AbstractQuery;
@@ -31,16 +32,16 @@ class TaskRepository extends ServiceEntityRepository
             ->createQueryBuilder('t')
             ->where('t.deadline <= :now')
             ->andWhere('t.status != :status')
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new DateTime())
             ->setParameter('status', TaskStatus::STATUS_DONE)
             ->orderBy('t.deadline', 'ASC')
             ->setMaxResults(20)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /**
+     * @param $days
      * @return mixed
      */
     public function getSummary($days)
@@ -51,7 +52,8 @@ class TaskRepository extends ServiceEntityRepository
 
         $query = $this
             ->getEntityManager()
-            ->createNativeQuery(<<<SQL
+            ->createNativeQuery(
+                <<<SQL
                 SELECT
                   days.name,
                   tmp.cnt
@@ -75,13 +77,17 @@ class TaskRepository extends ServiceEntityRepository
                 ) tmp ON days.name = tmp.name
                 ORDER BY days.name ASC
 SQL
-                , $rsm);
+                ,
+                $rsm
+            );
 
-        $query->setParameters([
-            'start'  => (new \DateTime())->modify(-$days . ' days'),
-            'now'    => new \DateTime(),
-            'status' => TaskStatus::STATUS_DONE,
-        ]);
+        $query->setParameters(
+            [
+                'start' => (new DateTime())->modify(-$days . ' days'),
+                'now' => new DateTime(),
+                'status' => TaskStatus::STATUS_DONE,
+            ]
+        );
 
         return $query->getResult(AbstractQuery::HYDRATE_ARRAY);
     }

@@ -83,7 +83,7 @@ class Country implements SearchInterface
      *     "company_read",
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -98,7 +98,7 @@ class Country implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\City", mappedBy="country")
@@ -108,11 +108,16 @@ class Country implements SearchInterface
      *     "address_read"
      * })
      */
-    private $cities;
+    private Collection $cities;
 
     public function __construct()
     {
         $this->cities = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getId(): ?int

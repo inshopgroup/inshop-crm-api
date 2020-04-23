@@ -6,6 +6,7 @@ use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use App\Entity\Image;
 use App\Form\ImageType;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Exception;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -60,7 +61,7 @@ final class CreateImageAction
     /**
      * @param Request $request
      * @return Image
-     * @throws \Exception
+     * @throws Exception
      */
     public function __invoke(Request $request): Image
     {
@@ -88,7 +89,7 @@ final class CreateImageAction
 
     /**
      * @param Image $image
-     * @throws \Exception
+     * @throws Exception
      */
     protected function makeThumbNail(Image $image): void
     {

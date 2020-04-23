@@ -11,6 +11,7 @@ use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -103,7 +104,7 @@ class Category implements TranslatableInterface
      *     "category_read_frontend"
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="subCategories")
@@ -114,7 +115,7 @@ class Category implements TranslatableInterface
      *     "category_read_frontend"
      * })
      */
-    private $parent;
+    private ?Category $parent = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="parent")
@@ -125,7 +126,7 @@ class Category implements TranslatableInterface
      * })
      * @Assert\Valid()
      */
-    private $subCategories;
+    private Collection $subCategories;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CategoryTranslation", mappedBy="translatable", cascade={"persist"}, orphanRemoval=true)
@@ -138,7 +139,7 @@ class Category implements TranslatableInterface
      * @Assert\Valid()
      * @Assert\Count(min=1)
      */
-    private $translations;
+    private Collection $translations;
 
     /**
      * @var boolean
@@ -155,6 +156,11 @@ class Category implements TranslatableInterface
     {
         $this->subCategories = new ArrayCollection();
         $this->translations = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getId(): ?int
@@ -250,7 +256,7 @@ class Category implements TranslatableInterface
 
     /**
      * @return string
-     * @throws \Exception
+     * @throws Exception
      * @Groups({
      *     "category_read",
      *     "product_read",

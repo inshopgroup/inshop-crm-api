@@ -14,9 +14,11 @@ use App\Entity\Project;
 use App\Entity\ProjectStatus;
 use App\Entity\ProjectType;
 use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 use Faker;
 
 /**
@@ -40,9 +42,9 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
 
     /**
      * @param ObjectManager $manager
-     * @throws \Exception
+     * @throws Exception
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $addresses = $manager->getRepository(Address::class)->findAll();
         $users = $manager->getRepository(User::class)->findAll();
@@ -58,7 +60,7 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
             $client->setUsername($this->faker->email);
             $client->setPassword(md5($this->faker->email));
             $client->setToken($this->faker->ean13);
-            $client->setTokenCreatedAt(new \DateTime());
+            $client->setTokenCreatedAt(new DateTime());
             $client->setName(sprintf('%s %s', $this->faker->firstName, $this->faker->lastName));
             $client->setDescription($this->faker->text);
             $client->addAddress($this->faker->randomElement($addresses));

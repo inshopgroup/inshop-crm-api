@@ -80,38 +80,37 @@ class Document implements SearchInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Groups({"document_read", "project_read", "invoice_header_read", "invoice_header_write", "invoice_header_read", "company_read"})
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({"document_read", "document_write", "project_read", "invoice_header_read", "company_read"})
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Client", inversedBy="documents")
      * @Groups({"document_read", "document_write"})
      */
-    private $clients;
+    private Collection $clients;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Company", inversedBy="documents")
      * @Groups({"document_read", "document_write"})
      */
-    private $companies;
+    private Collection $companies;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="documents")
      * @Groups({"document_read", "document_write"})
      * @ORM\OrderBy({"id" = "DESC"})
      */
-    private $projects;
+    private Collection $projects;
 
     /**
-     * @var File[]
+     * @var Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\File")
      * @ORM\JoinColumn(nullable=true)
      * @ApiProperty(iri="http://schema.org/image")
@@ -119,7 +118,7 @@ class Document implements SearchInterface
      * @Groups({"document_read", "document_write", "project_read"})
      * @ORM\OrderBy({"id" = "DESC"})
      */
-    public $files;
+    public Collection $files;
 
     public function __construct()
     {
@@ -127,6 +126,11 @@ class Document implements SearchInterface
         $this->companies = new ArrayCollection();
         $this->projects = new ArrayCollection();
         $this->files = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     /**

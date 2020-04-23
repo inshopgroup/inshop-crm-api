@@ -3,12 +3,19 @@
 namespace App\Service;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ArrayIterator;
+use Countable;
+use Exception;
+use Iterator;
+use IteratorAggregate;
+use JsonSerializable;
+use Traversable;
 
 /**
  * Class ElasticaPaginator
  * @package App\Service
  */
-class ElasticaPaginator implements \Countable, \IteratorAggregate, \JsonSerializable, PaginatorInterface
+class ElasticaPaginator implements Countable, IteratorAggregate, JsonSerializable, PaginatorInterface
 {
     /**
      * @var array
@@ -44,22 +51,22 @@ class ElasticaPaginator implements \Countable, \IteratorAggregate, \JsonSerializ
     }
 
     /**
-     * @return \ArrayIterator|mixed|\Traversable
-     * @throws \Exception
+     * @return ArrayIterator|mixed|Traversable
+     * @throws Exception
      */
     public function getIterator()
     {
         $results = $this->getResults();
 
-        if ($results instanceof \Iterator) {
+        if ($results instanceof Iterator) {
             return $results;
         }
 
-        if ($results instanceof \IteratorAggregate) {
+        if ($results instanceof IteratorAggregate) {
             return $results->getIterator();
         }
 
-        return new \ArrayIterator($results);
+        return new ArrayIterator($results);
     }
 
     /**
@@ -68,7 +75,7 @@ class ElasticaPaginator implements \Countable, \IteratorAggregate, \JsonSerializ
     public function jsonSerialize()
     {
         $results = $this->getResults();
-        if ($results instanceof \Traversable) {
+        if ($results instanceof Traversable) {
             return iterator_to_array($results);
         }
 

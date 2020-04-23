@@ -83,9 +83,8 @@ class Vat
      *     "product_sell_price_write"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "vat_read",
@@ -97,14 +96,19 @@ class Vat
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="float", nullable=false)
      * @Groups({"vat_read", "vat_write"})
      * @Assert\NotBlank()
      */
-    private $value;
+    private float $value;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {

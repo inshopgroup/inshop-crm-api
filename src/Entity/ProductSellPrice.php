@@ -3,12 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use App\Interfaces\SearchInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -79,7 +76,8 @@ class ProductSellPrice
      *     "order_header_write"
      * })
      */
-    private $id;
+    private ?int $id = null;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="productSellPrices")
@@ -90,7 +88,7 @@ class ProductSellPrice
      * })
      * @Assert\NotNull()
      */
-    private $product;
+    private ?Product $product = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Channel")
@@ -100,7 +98,7 @@ class ProductSellPrice
      * })
      * @Assert\NotNull()
      */
-    private $channel;
+    private ?Channel $channel = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Vat")
@@ -110,7 +108,7 @@ class ProductSellPrice
      * })
      * @Assert\NotBlank()
      */
-    private $vat;
+    private ?Vat $vat = null;
 
     /**
      * @ORM\Column(type="float", nullable=false)
@@ -120,7 +118,7 @@ class ProductSellPrice
      * })
      * @Assert\NotBlank()
      */
-    private $priceSellBrutto;
+    private float $priceSellBrutto;
 
     /**
      * @ORM\Column(type="float", nullable=false)
@@ -130,7 +128,7 @@ class ProductSellPrice
      * })
      * @Assert\NotBlank()
      */
-    private $priceOldSellBrutto;
+    private float $priceOldSellBrutto;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
@@ -140,7 +138,7 @@ class ProductSellPrice
      * })
      * @Assert\NotBlank()
      */
-    private $activeFrom;
+    private DateTimeInterface $activeFrom;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
@@ -150,7 +148,7 @@ class ProductSellPrice
      * })
      * @Assert\NotBlank()
      */
-    private $activeTo;
+    private DateTimeInterface $activeTo;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CompanyProduct")
@@ -160,79 +158,84 @@ class ProductSellPrice
      * })
      * @Assert\NotNull()
      */
-    private $companyProduct;
+    private ?CompanyProduct $companyProduct = null;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getActiveFrom(): ?\DateTimeInterface
+    public function getActiveFrom(): ?DateTimeInterface
     {
         return $this->activeFrom;
     }
 
-    public function setActiveFrom(\DateTimeInterface $activeFrom): self
+    public function setActiveFrom(DateTimeInterface $activeFrom): self
     {
         $this->activeFrom = $activeFrom;
 
         return $this;
     }
 
-    public function getActiveTo(): ?\DateTimeInterface
+    public function getActiveTo(): ?DateTimeInterface
     {
         return $this->activeTo;
     }
 
-    public function setActiveTo(\DateTimeInterface $activeTo): self
+    public function setActiveTo(DateTimeInterface $activeTo): self
     {
         $this->activeTo = $activeTo;
 
         return $this;
     }
 
-    public function getProduct(): Product
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProduct(Product $product): self
+    public function setProduct(?Product $product): self
     {
         $this->product = $product;
 
         return $this;
     }
 
-    public function getChannel(): Channel
+    public function getChannel(): ?Channel
     {
         return $this->channel;
     }
 
-    public function setChannel(Channel $channel): self
+    public function setChannel(?Channel $channel): self
     {
         $this->channel = $channel;
 
         return $this;
     }
 
-    public function getCompanyProduct(): CompanyProduct
+    public function getCompanyProduct(): ?CompanyProduct
     {
         return $this->companyProduct;
     }
 
-    public function setCompanyProduct(CompanyProduct $companyProduct): self
+    public function setCompanyProduct(?CompanyProduct $companyProduct): self
     {
         $this->companyProduct = $companyProduct;
 
         return $this;
     }
 
-    public function getVat(): Vat
+    public function getVat(): ?Vat
     {
         return $this->vat;
     }
 
-    public function setVat(Vat $vat): self
+    public function setVat(?Vat $vat): self
     {
         $this->vat = $vat;
 
@@ -269,13 +272,13 @@ class ProductSellPrice
      *     "order_header_read"
      * })
      */
-    public function getName()
+    public function getName(): ?string
     {
         return sprintf(
             '%s - %s %s',
-            $this->getCompanyProduct()->getCompanyName(),
+            $this->getCompanyProduct() ?  $this->getCompanyProduct()->getCompanyName() : null,
             $this->getPriceSellBrutto(),
-            $this->getChannel()->getCurrency()->getCode()
+            $this->getChannel() ? $this->getChannel()->getCurrency()->getCode() : null
         );
     }
 }

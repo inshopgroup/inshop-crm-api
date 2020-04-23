@@ -119,6 +119,9 @@
     "firebase/php-jwt": {
         "version": "v5.0.0"
     },
+    "fzaninotto/faker": {
+        "version": "v1.9.1"
+    },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.35"
     },
@@ -221,6 +224,9 @@
             "ref": "fe60ce509ef04a3f40da96e3979bc8d9b13b2372"
         }
     },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.0.3"
+    },
     "lcobucci/jwt": {
         "version": "3.2.2"
     },
@@ -288,7 +294,7 @@
         "version": "v9.99.99"
     },
     "php": {
-        "version": "7.2"
+        "version": "7.4"
     },
     "php-http/client-common": {
         "version": "2.1.0"
@@ -451,6 +457,12 @@
             "version": "3.3",
             "ref": "137a14eeb6b3f5370e7147af8aff6518504f50c7"
         }
+    },
+    "symfony/http-client": {
+        "version": "v5.0.7"
+    },
+    "symfony/http-client-contracts": {
+        "version": "v2.0.1"
     },
     "symfony/http-foundation": {
         "version": "v4.0.3"
@@ -632,6 +644,18 @@
     "symfony/yaml": {
         "version": "v4.0.3"
     },
+    "twig/extensions": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "a86723ee8d8b2f9437c8ce60a5546a1c267da5ed"
+        },
+        "files": [
+            "config/packages/twig_extensions.yaml"
+        ]
+    },
     "twig/twig": {
         "version": "v2.4.4"
     },
@@ -643,6 +667,9 @@
             "version": "1.5",
             "ref": "c4f5755b37fb65b9c6a3cbdae91205c15a137ed4"
         }
+    },
+    "webimpress/safe-writer": {
+        "version": "2.0.1"
     },
     "webmozart/assert": {
         "version": "1.2.0"

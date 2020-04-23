@@ -82,7 +82,7 @@ class Label
      *     "client_write",
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -97,7 +97,12 @@ class Label
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {

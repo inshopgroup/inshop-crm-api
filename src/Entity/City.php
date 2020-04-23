@@ -83,9 +83,8 @@ class City implements SearchInterface
      *     "company_read",
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "city_read",
@@ -98,7 +97,7 @@ class City implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="cities")
@@ -108,14 +107,19 @@ class City implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $country;
+    private ?Country $country = null;
 
-    public function getId(): int
+    public function __sleep()
+    {
+        return [];
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -127,12 +131,12 @@ class City implements SearchInterface
         return $this;
     }
 
-    public function getCountry(): Country
+    public function getCountry(): ?Country
     {
         return $this->country;
     }
 
-    public function setCountry(Country $country): self
+    public function setCountry(?Country $country): self
     {
         $this->country = $country;
 
@@ -150,7 +154,7 @@ class City implements SearchInterface
             ' ',
             [
                 $this->getName(),
-                $this->getCountry()->getName(),
+                $this->getCountry() ? $this->getCountry()->getName() : null,
             ]
         );
     }

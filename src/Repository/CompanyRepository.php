@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Company;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @method Company|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,14 +22,13 @@ class CompanyRepository extends ServiceEntityRepository
 
     /**
      * @return Company|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findLast(): ?Company
     {
         $qb = $this->createQueryBuilder('c')
             ->addOrderBy('c.code', 'DESC')
-            ->setMaxResults(1)
-        ;
+            ->setMaxResults(1);
 
         return $qb->getQuery()->getOneOrNullResult();
     }

@@ -74,7 +74,8 @@ class StockLine
      *     "stock_line_read"
      * })
      */
-    private $id;
+    private ?int $id = null;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\StockLineStatus")
@@ -84,7 +85,7 @@ class StockLine
      * })
      * @Assert\NotNull()
      */
-    private $status;
+    private ?StockLineStatus $status = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product")
@@ -94,7 +95,7 @@ class StockLine
      * })
      * @Assert\NotNull()
      */
-    private $product;
+    private ?Product $product = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ShippingNoticeLine")
@@ -104,7 +105,7 @@ class StockLine
      * })
      * @Assert\NotNull()
      */
-    private $shippingNoticeLine;
+    private ?ShippingNoticeLine $shippingNoticeLine = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Warehouse")
@@ -114,7 +115,7 @@ class StockLine
      * })
      * @Assert\NotNull()
      */
-    private $warehouse;
+    private ?Warehouse $warehouse = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\OrderLine", mappedBy="stockLine")
@@ -123,7 +124,7 @@ class StockLine
      *     "stock_line_write",
      * })
      */
-    private $orderLine;
+    private ?OrderLine $orderLine = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
@@ -133,7 +134,7 @@ class StockLine
      * })
      * @Assert\NotNull()
      */
-    private $currency;
+    private ?Currency $currency = null;
 
     /**
      * @ORM\Column(type="float", nullable=false)
@@ -143,7 +144,7 @@ class StockLine
      * })
      * @Assert\NotBlank()
      */
-    private $priceBuyNetto;
+    private float $priceBuyNetto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CompanyProduct")
@@ -153,7 +154,12 @@ class StockLine
      * })
      * @Assert\NotNull()
      */
-    private $companyProduct;
+    private ?CompanyProduct $companyProduct = null;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {

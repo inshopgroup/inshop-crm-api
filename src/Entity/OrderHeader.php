@@ -93,9 +93,8 @@ class OrderHeader
      *     "order_header_read_collection"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var integer
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -108,7 +107,7 @@ class OrderHeader
      * })
      * @Assert\NotBlank()
      */
-    private $number;
+    private int $number;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OrderStatus")
@@ -119,7 +118,7 @@ class OrderHeader
      * })
      * @Assert\NotNull()
      */
-    private $status;
+    private ?OrderStatus $status = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Channel")
@@ -130,7 +129,7 @@ class OrderHeader
      * })
      * @Assert\NotNull()
      */
-    private $channel;
+    private ?Channel $channel = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Client")
@@ -141,7 +140,7 @@ class OrderHeader
      * })
      * @Assert\NotNull()
      */
-    private $client;
+    private ?Client $client = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PaymentType")
@@ -152,7 +151,7 @@ class OrderHeader
      * })
      * @Assert\NotNull()
      */
-    private $paymentType;
+    private ?PaymentType $paymentType = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ShipmentMethod")
@@ -163,7 +162,7 @@ class OrderHeader
      * })
      * @Assert\NotNull()
      */
-    private $shipmentMethod;
+    private ?ShipmentMethod $shipmentMethod = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\OrderLine", mappedBy="header", cascade={"persist"})
@@ -174,12 +173,17 @@ class OrderHeader
      * @Assert\Valid()
      * @ORM\OrderBy({"id" = "DESC"})
      */
-    private $lines;
+    private Collection $lines;
 
     public function __construct()
     {
         $this->lines = new ArrayCollection();
     }
+    public function __sleep()
+    {
+        return [];
+    }
+
 
     public function getId(): ?int
     {

@@ -82,19 +82,18 @@ class TextTranslation
      *     "text_write"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(length=128)
      */
-    private $slug;
+    private string $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Text", inversedBy="translations")
      * @Assert\NotBlank()
      */
-    protected $translatable;
+    protected ?Text $translatable = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
@@ -105,7 +104,7 @@ class TextTranslation
      *     "text_read_frontend"
      * })
      */
-    protected $language;
+    protected ?Language $language = null;
 
     /**
      * @var string
@@ -119,7 +118,7 @@ class TextTranslation
      * })
      * @Assert\NotBlank()
      */
-    protected $title = '';
+    protected string $title = '';
 
     /**
      * @var string
@@ -132,7 +131,7 @@ class TextTranslation
      * })
      * @Assert\NotBlank()
      */
-    protected $content = '';
+    protected string $content = '';
 
     /**
      * @var string
@@ -144,7 +143,7 @@ class TextTranslation
      *     "text_read_frontend",
      * })
      */
-    protected $seoTitle = '';
+    protected string $seoTitle = '';
 
     /**
      * @var string
@@ -156,7 +155,7 @@ class TextTranslation
      *     "text_read_frontend",
      * })
      */
-    protected $seoDescription = '';
+    protected string $seoDescription = '';
 
     /**
      * @var string
@@ -168,7 +167,12 @@ class TextTranslation
      *     "text_read_frontend",
      * })
      */
-    protected $seoKeywords = '';
+    protected string $seoKeywords = '';
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {
@@ -259,7 +263,7 @@ class TextTranslation
         return $this;
     }
 
-    public function getLanguage(): Language
+    public function getLanguage(): ?Language
     {
         return $this->language;
     }

@@ -82,9 +82,8 @@ class InvoiceStatus
      *     "invoice_header_read_collection"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var integer
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -96,7 +95,12 @@ class InvoiceStatus
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private int $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {

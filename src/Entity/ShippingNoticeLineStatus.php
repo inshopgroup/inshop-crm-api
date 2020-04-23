@@ -77,9 +77,8 @@ class ShippingNoticeLineStatus
      *     "shipping_notice_header_write"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var integer
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -90,7 +89,12 @@ class ShippingNoticeLineStatus
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private int $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {

@@ -4,7 +4,9 @@ namespace App\EventListener;
 
 use App\Entity\History;
 use App\Entity\User;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 
 /**
@@ -29,7 +31,7 @@ class AuthenticationSuccessListener
 
     /**
      * @param AuthenticationSuccessEvent $event
-     * @throws \Exception
+     * @throws Exception
      */
     public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event): void
     {
@@ -47,7 +49,7 @@ class AuthenticationSuccessListener
         $history->setObjectClass('');
         $history->setObjectId(null);
         $history->setLoggedAt();
-        $history->setVersion((new \DateTime())->getTimestamp());
+        $history->setVersion((new DateTime())->getTimestamp());
 
         $this->em->persist($history);
         $this->em->flush();

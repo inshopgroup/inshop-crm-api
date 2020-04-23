@@ -80,7 +80,7 @@ class Channel
      *     "order_header_write"
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -93,7 +93,7 @@ class Channel
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
@@ -106,7 +106,7 @@ class Channel
      * })
      * @Assert\NotNull()
      */
-    private $currency;
+    private ?Currency $currency = null;
 
     /**
      * @var boolean
@@ -117,14 +117,19 @@ class Channel
      *     "channel_write"
      * })
      */
-    private $isPublic;
+    private bool $isPublic;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -136,12 +141,12 @@ class Channel
         return $this;
     }
 
-    public function getCurrency(): Currency
+    public function getCurrency(): ?Currency
     {
         return $this->currency;
     }
 
-    public function setCurrency(Currency $currency): self
+    public function setCurrency(?Currency $currency): self
     {
         $this->currency = $currency;
 

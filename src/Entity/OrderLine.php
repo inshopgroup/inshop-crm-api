@@ -61,16 +61,15 @@ class OrderLine
      *     "order_header_write"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @ORM\ManyToOne(targetEntity="App\Entity\OrderHeader", inversedBy="lines")
      * @Groups({
      *     "order_line_write"
      * })
      * @Assert\NotNull()
      */
-    private $header;
+    private ?OrderHeader $header = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OrderLineStatus")
@@ -82,7 +81,7 @@ class OrderLine
      * })
      * @Assert\NotNull()
      */
-    private $status;
+    private ?OrderLineStatus $status = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProductSellPrice")
@@ -94,7 +93,7 @@ class OrderLine
      * })
      * @Assert\NotNull()
      */
-    private $productSellPrice;
+    private ?ProductSellPrice $productSellPrice = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\StockLine", inversedBy="orderLine")
@@ -105,7 +104,7 @@ class OrderLine
      *     "order_header_write"
      * })
      */
-    private $stockLine;
+    private ?StockLine $stockLine = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\PurchaseOrderLine", mappedBy="orderLine")
@@ -116,7 +115,7 @@ class OrderLine
      *     "order_header_write"
      * })
      */
-    private $purchaseOrderLines;
+    private Collection $purchaseOrderLines;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -128,7 +127,7 @@ class OrderLine
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="float", nullable=false)
@@ -140,7 +139,7 @@ class OrderLine
      * })
      * @Assert\NotBlank()
      */
-    private $priceSellBrutto;
+    private float $priceSellBrutto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Vat")
@@ -152,11 +151,16 @@ class OrderLine
      * })
      * @Assert\NotNull()
      */
-    private $vat;
+    private ?Vat $vat = null;
 
     public function __construct()
     {
         $this->purchaseOrderLines = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getId(): ?int

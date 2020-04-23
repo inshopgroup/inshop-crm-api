@@ -74,9 +74,8 @@ class Warehouse
      *     "warehouse_read"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var integer
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -86,14 +85,19 @@ class Warehouse
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private int $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -105,7 +109,7 @@ class Warehouse
      *
      * @return Warehouse
      */
-    public function setName($name)
+    public function setName($name): Warehouse
     {
         $this->name = $name;
 

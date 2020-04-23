@@ -31,7 +31,7 @@ class AddressFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $countries = $manager->getRepository(Country::class)->findAll();
 

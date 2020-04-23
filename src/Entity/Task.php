@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Interfaces\ClientInterface;
 use App\Interfaces\SearchInterface;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -101,7 +102,8 @@ class Task implements ClientInterface, SearchInterface
      *     "project_write"
      * })
      */
-    private $id;
+    private ?int $id = null;
+
 
     /**
      * @var integer
@@ -116,7 +118,7 @@ class Task implements ClientInterface, SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private int $name;
 
     /**
      * @var integer
@@ -129,7 +131,7 @@ class Task implements ClientInterface, SearchInterface
      *     "project_read"
      * })
      */
-    private $description;
+    private ?int $description = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="tasks")
@@ -140,7 +142,7 @@ class Task implements ClientInterface, SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $project;
+    private ?Project $project = null;
 
     /**
      * @ORM\Column(type="date", nullable=false)
@@ -153,7 +155,7 @@ class Task implements ClientInterface, SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $deadline;
+    private DateTime $deadline;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
@@ -163,7 +165,7 @@ class Task implements ClientInterface, SearchInterface
      *     "project_read"
      * })
      */
-    private $assignee;
+    private ?User $assignee = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TaskStatus")
@@ -176,7 +178,7 @@ class Task implements ClientInterface, SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $status;
+    private ?TaskStatus $status = null;
 
     /**
      * Estimated time in minutes
@@ -189,7 +191,7 @@ class Task implements ClientInterface, SearchInterface
      *     "project_write"
      * })
      */
-    private $timeEstimated = 0;
+    private int $timeEstimated = 0;
 
     /**
      * Spent time in minutes
@@ -202,12 +204,17 @@ class Task implements ClientInterface, SearchInterface
      *     "project_write"
      * })
      */
-    private $timeSpent = 0;
+    private int $timeSpent = 0;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $googleEventId;
+    private ?string $googleEventId = null;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * @return int|null
@@ -241,12 +248,12 @@ class Task implements ClientInterface, SearchInterface
         return $this;
     }
 
-    public function getProject(): Project
+    public function getProject(): ?Project
     {
         return $this->project;
     }
 
-    public function setProject(Project $project): self
+    public function setProject(?Project $project): self
     {
         $this->project = $project;
 
@@ -254,17 +261,17 @@ class Task implements ClientInterface, SearchInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDeadline(): \DateTime
+    public function getDeadline(): DateTime
     {
         return $this->deadline;
     }
 
     /**
-     * @param \DateTime $deadline
+     * @param DateTime $deadline
      */
-    public function setDeadline(\DateTime $deadline): void
+    public function setDeadline(DateTime $deadline): void
     {
         $this->deadline = $deadline;
     }
@@ -279,34 +286,40 @@ class Task implements ClientInterface, SearchInterface
 
     /**
      * @param User $assignee
+     * @return Task
      */
-    public function setAssignee(User $assignee = null): void
+    public function setAssignee(?User $assignee): self
     {
         $this->assignee = $assignee;
+
+        return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getStatus()
+    public function getStatus(): ?TaskStatus
     {
         return $this->status;
     }
 
     /**
      * @param mixed $status
+     * @return Task
      */
-    public function setStatus($status): void
+    public function setStatus(?TaskStatus $status): self
     {
         $this->status = $status;
+
+        return $this;
     }
 
     /**
      * @return Client
      */
-    public function getClient(): Client
+    public function getClient(): ?Client
     {
-        return $this->getProject()->getClient();
+        return $this->getProject() ? $this->getProject()->getClient() : null;
     }
 
     /**

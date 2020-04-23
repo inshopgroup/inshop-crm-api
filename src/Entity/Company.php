@@ -114,9 +114,8 @@ class Company implements SearchInterface
      *     "company_read_collection"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -133,7 +132,7 @@ class Company implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
@@ -144,7 +143,7 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $fullName;
+    private ?string $fullName = null;
 
     /**
      * @var string
@@ -155,7 +154,7 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $krs;
+    private ?string $krs = null;
 
     /**
      * @var string
@@ -166,7 +165,7 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $nip;
+    private ?string $nip = null;
 
     /**
      * @var string
@@ -177,7 +176,7 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $bankName;
+    private ?string $bankName = null;
 
     /**
      * @var string
@@ -188,7 +187,7 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $bankAccountNumber;
+    private ?string $bankAccountNumber = null;
 
     /**
      * @var string
@@ -199,7 +198,7 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $isVat;
+    private ?string $isVat = null;
 
     /**
      * @var string
@@ -210,7 +209,7 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $vatComment;
+    private ?string $vatComment = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Address", inversedBy="companies")
@@ -221,7 +220,7 @@ class Company implements SearchInterface
      *     "company_read",
      * })
      */
-    private $addresses;
+    private Collection $addresses;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Document", mappedBy="companies", orphanRemoval=true)
@@ -231,7 +230,7 @@ class Company implements SearchInterface
      * })
      * @ApiSubresource()
      */
-    private $documents;
+    private Collection $documents;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Contact", inversedBy="companies", cascade={"persist"}, orphanRemoval=true)
@@ -244,7 +243,7 @@ class Company implements SearchInterface
      * @ApiSubresource()
      * @Assert\Valid()
      */
-    private $contacts;
+    private Collection $contacts;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CompanyProduct", mappedBy="company")
@@ -254,7 +253,7 @@ class Company implements SearchInterface
      * })
      * @ApiSubresource()
      */
-    private $companyProducts;
+    private Collection $companyProducts;
 
     /**
      * @var string
@@ -266,7 +265,7 @@ class Company implements SearchInterface
      *     "company_read_collection"
      * })
      */
-    private $contactPerson;
+    private ?string $contactPerson = null;
 
     /**
      * @var string
@@ -277,7 +276,7 @@ class Company implements SearchInterface
      *     "company_write"
      * })
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Label")
@@ -288,7 +287,7 @@ class Company implements SearchInterface
      *     "company_write"
      * })
      */
-    private $labels;
+    private Collection $labels;
 
     public function __construct()
     {
@@ -297,6 +296,11 @@ class Company implements SearchInterface
         $this->contacts = new ArrayCollection();
         $this->companyProducts = new ArrayCollection();
         $this->labels = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     /**
@@ -511,7 +515,7 @@ class Company implements SearchInterface
         return $this->description;
     }
 
-    public function setDescription(string $description = null): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
