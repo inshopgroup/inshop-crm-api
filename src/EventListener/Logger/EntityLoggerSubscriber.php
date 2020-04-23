@@ -275,10 +275,8 @@ class EntityLoggerSubscriber implements EventSubscriber
                 $type = $this->getColumnTypeFromAnnotations($annotations);
             }
 
-            [
-                $oldValueRaw,
-                $newValueRaw,
-            ] = [...];
+            $oldValueRaw = $change[0];
+            $newValueRaw = $change[1];
 
             switch ($type) {
                 case 'boolean':
