@@ -66,7 +66,7 @@ final class ElasticaCollectionNormalizer implements NormalizerInterface, Normali
 
         $data['hydra:member'] = [];
         foreach ($object as $obj) {
-            $data['hydra:member'] = [$this->normalizer->normalize($obj, $format, $context)];
+            $data['hydra:member'][] = $this->normalizer->normalize($obj, $format, $context);
         }
 
         $data['hydra:totalItems'] = $object->getTotalItems();
