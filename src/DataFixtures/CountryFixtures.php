@@ -37,14 +37,6 @@ class CountryFixtures extends Fixture
             $country->setName($this->faker->country);
 
             $manager->persist($country);
-
-            for ($j = 0; $j < 10; $j++) {
-                $city = new City();
-                $city->setName($this->faker->city);
-                $city->setCountry($country);
-
-                $manager->persist($city);
-            }
         }
 
         $manager->flush();

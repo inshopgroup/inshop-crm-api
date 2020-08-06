@@ -41,7 +41,7 @@ class AddressFixtures extends Fixture implements DependentFixtureInterface
 
             $address = new Address();
             $address->setCountry($country);
-            $address->setCity($country->getCities()->first());
+            $address->setCity($this->faker->city);
             $address->setRegion($this->faker->address);
             $address->setDistrict($this->faker->address);
             $address->setPostCode($this->faker->postcode);

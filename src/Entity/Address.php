@@ -53,7 +53,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     "id": "exact",
  *     "postCode": "ipartial",
  *     "country.name": "ipartial",
- *     "city.name": "ipartial",
+ *     "city": "ipartial",
  *     "region": "ipartial",
  *     "district": "ipartial",
  *     "street": "ipartial",
@@ -67,7 +67,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *          "id",
  *          "postCode",
  *          "country.name",
- *          "city.name",
+ *          "city",
  *          "region",
  *          "district",
  *          "street",
@@ -116,7 +116,7 @@ class Address implements SearchInterface
     private $country;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\City")
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
      *     "client_read",
      *     "address_read",
@@ -124,7 +124,6 @@ class Address implements SearchInterface
      *     "company_read_collection",
      *     "company_read",
      * })
-     * @Assert\NotBlank()
      */
     private $city;
 
@@ -281,22 +280,6 @@ class Address implements SearchInterface
     }
 
     /**
-     * @return City
-     */
-    public function getCity(): City
-    {
-        return $this->city;
-    }
-
-    /**
-     * @param City $city
-     */
-    public function setCity(?City $city): void
-    {
-        $this->city = $city;
-    }
-
-    /**
      * @return string
      */
     public function getRegion(): ?string
@@ -403,7 +386,7 @@ class Address implements SearchInterface
             ' ',
             [
                 $this->getCountry()->getName(),
-                $this->getCity()->getName(),
+                $this->getCity(),
                 $this->getRegion(),
                 $this->getDistrict(),
                 $this->getStreet(),
@@ -478,6 +461,18 @@ class Address implements SearchInterface
     public function setPostCode(?string $postCode): self
     {
         $this->postCode = $postCode;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

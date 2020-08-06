@@ -74,8 +74,6 @@ class Country implements SearchInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Groups({
      *     "country_read",
-     *     "city_read",
-     *     "city_write",
      *     "address_read",
      *     "address_write",
      *     "company_read_collection",
@@ -90,7 +88,6 @@ class Country implements SearchInterface
      * @Groups({
      *     "country_read",
      *     "country_write",
-     *     "city_read",
      *     "address_read",
      *     "company_read_collection",
      *     "client_read",
@@ -99,21 +96,6 @@ class Country implements SearchInterface
      * @Assert\NotBlank()
      */
     private $name;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\City", mappedBy="country")
-     * @Groups({
-     *     "country_read",
-     *     "country_write",
-     *     "address_read"
-     * })
-     */
-    private $cities;
-
-    public function __construct()
-    {
-        $this->cities = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -128,37 +110,6 @@ class Country implements SearchInterface
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|City[]
-     */
-    public function getCities(): Collection
-    {
-        return $this->cities;
-    }
-
-    public function addCity(City $city): self
-    {
-        if (!$this->cities->contains($city)) {
-            $this->cities[] = $city;
-            $city->setCountry($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCity(City $city): self
-    {
-        if ($this->cities->contains($city)) {
-            $this->cities->removeElement($city);
-            // set the owning side to null (unless already changed)
-            if ($city->getCountry() === $this) {
-                $city->setCountry(null);
-            }
-        }
 
         return $this;
     }

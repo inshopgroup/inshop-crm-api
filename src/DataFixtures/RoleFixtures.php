@@ -20,7 +20,6 @@ class RoleFixtures extends Fixture
     {
         $modules = [
             'Address' => [],
-            'City' => [],
             'Client' => [],
             'Contact' => [],
             'Contact type' => [],
