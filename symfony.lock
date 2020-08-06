@@ -119,6 +119,9 @@
     "firebase/php-jwt": {
         "version": "v5.0.0"
     },
+    "fzaninotto/faker": {
+        "version": "v1.9.1"
+    },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.35"
     },
@@ -288,7 +291,7 @@
         "version": "v9.99.99"
     },
     "php": {
-        "version": "7.2"
+        "version": "7.4"
     },
     "php-http/client-common": {
         "version": "2.1.0"
