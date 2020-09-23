@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Entity\Address;
-use App\Entity\City;
 use App\Entity\Client;
 use App\Entity\Company;
 use App\Entity\Contact;
@@ -71,7 +70,6 @@ class ElasticaIndexSearchCommand extends Command
         $searchableEntities = [
             Client::class,
             Company::class,
-            City::class,
             Country::class,
             Contact::class,
             Address::class,
