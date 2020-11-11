@@ -58,8 +58,6 @@ class File
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Groups({
-     *     "template_write",
-     *     "template_read",
      *     "document_write",
      *     "document_read",
      *     "project_read"
@@ -85,8 +83,6 @@ class File
      * @ORM\Column(nullable=true)
      * @ApiProperty(iri="http://schema.org/contentUrl")
      * @Groups({
-     *     "template_write",
-     *     "template_read",
      *     "document_write",
      *     "document_read",
      *     "project_read"
@@ -98,7 +94,6 @@ class File
      * @var string|null
      * @ORM\Column(nullable=true)
      * @Groups({
-     *     "template_read",
      *     "document_read",
      *     "project_read"
      * })
@@ -109,7 +104,6 @@ class File
      * @var string|null
      * @ORM\Column(nullable=true)
      * @Groups({
-     *     "template_read",
      *     "document_read",
      *     "project_read"
      * })
@@ -120,7 +114,6 @@ class File
      * @var string|null
      * @ORM\Column(nullable=true)
      * @Groups({
-     *     "template_read",
      *     "document_read",
      *     "project_read"
      * })

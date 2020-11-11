@@ -106,8 +106,6 @@ class Company implements SearchInterface
      *     "invoice_header_read_collection",
      *     "address_write",
      *     "contact_write",
-     *     "document_read",
-     *     "document_write",
      *     "company_product_read",
      *     "company_product_write",
      *     "product_sell_price_read",
@@ -224,16 +222,6 @@ class Company implements SearchInterface
     private $addresses;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Document", mappedBy="companies", orphanRemoval=true)
-     * @ORM\OrderBy({"id" = "DESC"})
-     * @Groups({
-     *     "invoice_header_read"
-     * })
-     * @ApiSubresource()
-     */
-    private $documents;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Contact", inversedBy="companies", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"id" = "ASC"})
      * @Groups({
@@ -293,7 +281,6 @@ class Company implements SearchInterface
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
-        $this->documents = new ArrayCollection();
         $this->contacts = new ArrayCollection();
         $this->companyProducts = new ArrayCollection();
         $this->labels = new ArrayCollection();
@@ -416,34 +403,6 @@ class Company implements SearchInterface
     {
         if ($this->addresses->contains($address)) {
             $this->addresses->removeElement($address);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Document[]
-     */
-    public function getDocuments(): Collection
-    {
-        return $this->documents;
-    }
-
-    public function addDocument(Document $document): self
-    {
-        if (!$this->documents->contains($document)) {
-            $this->documents[] = $document;
-            $document->addCompany($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDocument(Document $document): self
-    {
-        if ($this->documents->contains($document)) {
-            $this->documents->removeElement($document);
-            $document->removeCompany($this);
         }
 
         return $this;

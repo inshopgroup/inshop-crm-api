@@ -152,16 +152,6 @@ class InvoiceHeader
     private $companyTo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Document")
-     * @Groups({
-     *     "invoice_header_read",
-     *     "invoice_header_write"
-     * })
-     * @Assert\NotBlank()
-     */
-    private $agreement;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
      * @Groups({
      *     "invoice_header_read",
@@ -315,18 +305,6 @@ class InvoiceHeader
     public function setCompanyTo(?Company $companyTo): self
     {
         $this->companyTo = $companyTo;
-
-        return $this;
-    }
-
-    public function getAgreement(): ?Document
-    {
-        return $this->agreement;
-    }
-
-    public function setAgreement(?Document $agreement): self
-    {
-        $this->agreement = $agreement;
 
         return $this;
     }

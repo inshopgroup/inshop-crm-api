@@ -243,7 +243,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     private $projects;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Document", mappedBy="clients", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="client", orphanRemoval=true)
      * @ORM\OrderBy({"id" = "DESC"})
      * @ApiSubresource()
      */

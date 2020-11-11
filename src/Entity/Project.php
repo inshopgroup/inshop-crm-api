@@ -80,7 +80,14 @@ class Project implements ClientInterface, SearchInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"project_read", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
+     * @Groups({
+     *     "project_read",
+     *     "user_read",
+     *     "task_read",
+     *     "task_write",
+     *     "client_read",
+     *     "client_write"
+     * })
      */
     private $id;
 
@@ -88,7 +95,15 @@ class Project implements ClientInterface, SearchInterface
      * @var integer
      *
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Groups({"project_read", "project_write", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
+     * @Groups({
+     *     "project_read",
+     *     "project_write",
+     *     "user_read",
+     *     "task_read",
+     *     "task_write",
+     *     "client_read",
+     *     "client_write"
+     * })
      * @Assert\NotBlank()
      */
     private $name;
@@ -97,7 +112,10 @@ class Project implements ClientInterface, SearchInterface
      * @var integer
      *
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"project_read", "project_write", "document_read"})
+     * @Groups({
+     *     "project_read",
+     *     "project_write",
+     * })
      */
     private $description;
 
@@ -110,7 +128,12 @@ class Project implements ClientInterface, SearchInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProjectStatus")
-     * @Groups({"project_read", "project_write", "document_read", "client_read", "client_write"})
+     * @Groups({
+     *     "project_read",
+     *     "project_write",
+     *     "client_read",
+     *     "client_write"
+     * })
      * @Assert\NotBlank()
      */
     private $status;
@@ -131,19 +154,11 @@ class Project implements ClientInterface, SearchInterface
     private $tasks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Document", inversedBy="projects")
-     * @Groups({"project_read"})
-     * @ORM\OrderBy({"id" = "DESC"})
-     */
-    private $documents;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->documents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tasks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -229,32 +244,6 @@ class Project implements ClientInterface, SearchInterface
             if ($task->getProject() === $this) {
                 $task->setProject(null);
             }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Document[]
-     */
-    public function getDocuments(): Collection
-    {
-        return $this->documents;
-    }
-
-    public function addDocument(Document $document): self
-    {
-        if (!$this->documents->contains($document)) {
-            $this->documents[] = $document;
-        }
-
-        return $this;
-    }
-
-    public function removeDocument(Document $document): self
-    {
-        if ($this->documents->contains($document)) {
-            $this->documents->removeElement($document);
         }
 
         return $this;

@@ -17,8 +17,8 @@ services:
         class: App\DataFixtures\CompanyFixtures
         tags: ['doctrine.fixture.orm']
 
-    template.fixtures:
-        class: App\DataFixtures\TemplateFixtures
+    file.fixtures:
+        class: App\DataFixtures\FileFixtures
         tags: ['doctrine.fixture.orm']
 
     client.fixtures:

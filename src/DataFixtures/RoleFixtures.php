@@ -58,8 +58,6 @@ class RoleFixtures extends Fixture
                 'DEADLINE',
             ],
             'Task status' => [],
-            'Template' => [],
-            'Template type' => [],
             'User' => [
                 'LIST',
 //                'CREATE',

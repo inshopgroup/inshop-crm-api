@@ -6,7 +6,6 @@ use App\Entity\Address;
 use App\Entity\Company;
 use App\Entity\Contact;
 use App\Entity\ContactType;
-use App\Entity\Document;
 use App\Entity\File;
 use App\Entity\Label;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -81,14 +80,6 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($email);
 
             $manager->persist($company);
-
-            for ($n = 0; $n < 3; $n++) {
-                $document = new Document();
-                $document->setName($this->faker->colorName);
-                $document->addFile($this->faker->randomElement($files));
-                $document->addCompany($company);
-                $manager->persist($document);
-            }
         }
 
         $manager->flush();

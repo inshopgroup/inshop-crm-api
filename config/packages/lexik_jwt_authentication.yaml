@@ -3,6 +3,12 @@ lexik_jwt_authentication:
   public_key:       '%kernel.project_dir%/config/jwt/public.pem'  # required for token verification
   pass_phrase: '%env(JWT_PASSPHRASE)%'
   token_ttl: 28800
+  encoder:
+    # token encoder/decoder service - default implementation based on the lcobucci/jwt library
+    service: lexik_jwt_authentication.encoder.lcobucci
+
+    # encryption algorithm used by the encoder service
+    signature_algorithm: RS256
 
 gesdinet_jwt_refresh_token:
   ttl: 28800
