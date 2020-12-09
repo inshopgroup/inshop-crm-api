@@ -30,15 +30,15 @@
         "symfony/twig-bundle": "^5.2",
         "symfony/validator": "^5.2",
         "symfony/yaml": "^5.2",
-        "vich/uploader-bundle": "^1.12",
+        "vich/uploader-bundle": "^1.16",
         "fzaninotto/faker": "^1.9"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
-        "symfony/dotenv": "^5.0",
-        "symfony/maker-bundle": "^1.14",
+        "symfony/dotenv": "^5.2",
+        "symfony/maker-bundle": "^1.25",
         "symfony/profiler-pack": "^1.0",
-        "symfony/var-dumper": "^5.0"
+        "symfony/var-dumper": "^5.2"
     },
     "config": {
         "preferred-install": {

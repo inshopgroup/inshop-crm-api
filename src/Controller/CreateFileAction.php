@@ -2,11 +2,8 @@
 
 namespace App\Controller;
 
-use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use App\Entity\File;
-use App\Form\FileType;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\Form\FormFactoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -16,23 +13,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class CreateFileAction
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private EntityManagerInterface $em;
+
+    /**
+     * @var ValidatorInterface
+     */
     private ValidatorInterface $validator;
-
-    private ManagerRegistry $doctrine;
-
-    private FormFactoryInterface $factory;
 
     /**
      * CreateFileAction constructor.
-     * @param ManagerRegistry $doctrine
-     * @param FormFactoryInterface $factory
+     * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
      */
-    public function __construct(ManagerRegistry $doctrine, FormFactoryInterface $factory, ValidatorInterface $validator)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        ValidatorInterface $validator
+    ) {
+        $this->em = $em;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;
-        $this->factory = $factory;
     }
 
     /**
@@ -41,22 +42,16 @@ final class CreateFileAction
      */
     public function __invoke(Request $request): File
     {
+        $uploadedFile = $request->files->get('file');
         $file = new File();
+        $file->setFile($uploadedFile);
+        $this->validator->validate($file);
 
-        $form = $this->factory->create(FileType::class, $file);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->doctrine->getManager();
-            $em->persist($file);
-            $em->flush();
+        $this->em->persist($file);
+        $this->em->flush();
 
-            // Prevent the serialization of the file property
-            $file->file = null;
+        $file->file = null;
 
-            return $file;
-        }
-
-        // This will be handled by API Platform and returns a validation error.
-        throw new ValidationException($this->validator->validate($file));
+        return $file;
     }
 }

@@ -765,13 +765,18 @@
             "branch": "master",
             "version": "3.3",
             "ref": "6bdfa1a95f6b2e677ab985cd1af2eae35d62e0f6"
-        }
+        },
+        "files": [
+            "config/packages/dev/web_profiler.yaml",
+            "config/packages/test/web_profiler.yaml",
+            "config/routes/dev/web_profiler.yaml"
+        ]
     },
     "symfony/yaml": {
         "version": "v5.2.0"
     },
     "twig/twig": {
-        "version": "v2.14.1"
+        "version": "v3.1.1"
     },
     "vich/uploader-bundle": {
         "version": "1.5",
@@ -780,7 +785,10 @@
             "branch": "master",
             "version": "1.5",
             "ref": "c4f5755b37fb65b9c6a3cbdae91205c15a137ed4"
-        }
+        },
+        "files": [
+            "config/packages/vich_uploader.yaml"
+        ]
     },
     "webimpress/safe-writer": {
         "version": "2.1.0"

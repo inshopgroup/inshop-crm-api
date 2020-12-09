@@ -28,7 +28,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *              "access_control"="is_granted('ROLE_IMAGE_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_IMAGE_CREATE')",
+ *              "access_control"="is_granted('ROLE_USER')",
  *              "method"="POST",
  *              "path"="/images",
  *              "controller"=CreateImageAction::class,
