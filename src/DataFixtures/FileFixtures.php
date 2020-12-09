@@ -3,16 +3,15 @@
 namespace App\DataFixtures;
 
 use App\Entity\File;
-use App\Entity\Template;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
 /**
- * Class TemplateFixtures
+ * Class FileFixtures
  * @package App\DataFixtures
  */
-class TemplateFixtures extends Fixture
+class FileFixtures extends Fixture
 {
     /**
      * @var Faker\Generator
@@ -40,16 +39,6 @@ class TemplateFixtures extends Fixture
             $file->setSize($this->faker->numberBetween(111, 123123123123));
 
             $manager->persist($file);
-        }
-
-        $manager->flush();
-
-        for ($i = 0; $i < 20; $i++) {
-            $template = new Template();
-            $template->setName($this->faker->jobTitle);
-            $template->addFile($file);
-
-            $manager->persist($template);
         }
 
         $manager->flush();

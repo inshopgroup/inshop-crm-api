@@ -53,8 +53,6 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
         $taskStatuses = $manager->getRepository(TaskStatus::class)->findAll();
         $files = $manager->getRepository(File::class)->findAll();
 
-        $clients = [];
-
         for ($j = 0; $j < 10; $j++) {
             $client = new Client();
             $client->setUsername($this->faker->email);
@@ -103,9 +101,8 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
                 for ($n = 0; $n < 3; $n++) {
                     $document = new Document();
                     $document->setName($this->faker->colorName);
-                    $document->addProject($project);
                     $document->addFile($this->faker->randomElement($files));
-                    $document->addClient($client);
+                    $document->setClient($client);
                     $manager->persist($document);
                 }
             }
@@ -120,7 +117,7 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return array(
-            TemplateFixtures::class,
+            FileFixtures::class,
             AddressFixtures::class,
             UserFixtures::class,
         );

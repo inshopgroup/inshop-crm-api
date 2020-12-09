@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\City;
 use App\Entity\Country;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -37,14 +36,6 @@ class CountryFixtures extends Fixture
             $country->setName($this->faker->country);
 
             $manager->persist($country);
-
-            for ($j = 0; $j < 10; $j++) {
-                $city = new City();
-                $city->setName($this->faker->city);
-                $city->setCountry($country);
-
-                $manager->persist($city);
-            }
         }
 
         $manager->flush();

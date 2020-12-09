@@ -60,7 +60,6 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             $ih = new InvoiceHeader();
             $ih->setCompanyFrom($this->faker->randomElement($companies));
             $ih->setCompanyTo($this->faker->randomElement($companies));
-            $ih->setAgreement($company->getDocuments()->first());
             $ih->setCurrency($this->faker->randomElement($currencies));
             $ih->setLanguage($this->faker->randomElement($languages));
             $ih->setStatus($this->faker->randomElement($invoiceStatuses));
