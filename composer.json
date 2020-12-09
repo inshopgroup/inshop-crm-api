@@ -10,7 +10,6 @@
         "doctrine/doctrine-migrations-bundle": "^2.1",
         "gesdinet/jwt-refresh-token-bundle": "^0.9",
         "google/apiclient": "^2.4",
-        "guzzlehttp/guzzle": "^6.5",
         "jms/serializer-bundle": "^3.5",
         "league/flysystem-aws-s3-v3": "^1.0",
         "lexik/jwt-authentication-bundle": "^2.6",
@@ -36,6 +35,8 @@
         "fzaninotto/faker": "^1.9"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-master"
+        ,
         "symfony/dotenv": "^5.0",
         "symfony/maker-bundle": "^1.14",
         "symfony/profiler-pack": "^1.0",
@@ -66,7 +67,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install": "symfony-cmd"
+            "assets:install": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
