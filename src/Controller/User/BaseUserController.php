@@ -15,7 +15,7 @@ abstract class BaseUserController extends AbstractController
     /**
      * @var UserPasswordEncoderInterface
      */
-    protected $encoder;
+    protected UserPasswordEncoderInterface $encoder;
 
     /**
      * BaseController constructor.

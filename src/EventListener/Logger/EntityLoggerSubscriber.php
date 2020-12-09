@@ -17,6 +17,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\PersistentCollection;
 use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
+use JsonException;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -98,7 +99,7 @@ class EntityLoggerSubscriber implements EventSubscriber
     /**
      * @param LifecycleEventArgs $args
      * @throws ReflectionException
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function preUpdate(LifecycleEventArgs $args): void
     {
@@ -110,7 +111,7 @@ class EntityLoggerSubscriber implements EventSubscriber
     /**
      * @param LifecycleEventArgs $args
      * @throws ReflectionException
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function postPersist(LifecycleEventArgs $args): void
     {
@@ -236,7 +237,7 @@ class EntityLoggerSubscriber implements EventSubscriber
      * @param $entity
      * @param string $action
      * @throws ReflectionException
-     * @throws \JsonException
+     * @throws JsonException
      */
     protected function calculateChanges(EntityManagerInterface $em, $entity, string $action): void
     {
@@ -361,15 +362,12 @@ class EntityLoggerSubscriber implements EventSubscriber
             switch (get_class($annotation)) {
                 case Column::class:
                     return $annotation->type;
-                    break;
 
                 case ManyToOne::class:
                     return ManyToOne::class;
-                    break;
 
                 case OneToOne::class:
                     return OneToOne::class;
-                    break;
 
                 default:
                     return null;

@@ -85,7 +85,7 @@ class Address implements SearchInterface
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -128,7 +128,7 @@ class Address implements SearchInterface
     private ?City $city = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -141,7 +141,7 @@ class Address implements SearchInterface
     private ?string $region = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -154,7 +154,7 @@ class Address implements SearchInterface
     private ?string $district = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -168,7 +168,7 @@ class Address implements SearchInterface
     private ?string $postCode = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -182,7 +182,7 @@ class Address implements SearchInterface
     private ?string $street = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -196,7 +196,7 @@ class Address implements SearchInterface
     private ?string $building = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -209,7 +209,7 @@ class Address implements SearchInterface
     private ?string $apartment = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -281,7 +281,7 @@ class Address implements SearchInterface
     }
 
     /**
-     * @param Country $country
+     * @param Country|null $country
      */
     public function setCountry(?Country $country): void
     {
@@ -297,7 +297,7 @@ class Address implements SearchInterface
     }
 
     /**
-     * @param City $city
+     * @param City|null $city
      */
     public function setCity(?City $city): void
     {
@@ -313,7 +313,7 @@ class Address implements SearchInterface
     }
 
     /**
-     * @param string $region
+     * @param string|null $region
      * @return Address
      */
     public function setRegion(?string $region): self
@@ -332,8 +332,7 @@ class Address implements SearchInterface
     }
 
     /**
-     * @param string $district
-     * @return Address
+     * @param string|null $district
      * @return Address
      */
     public function setDistrict(?string $district): self
@@ -352,8 +351,7 @@ class Address implements SearchInterface
     }
 
     /**
-     * @param string $street
-     * @return Address
+     * @param string|null $street
      * @return Address
      */
     public function setStreet(?string $street): self
@@ -372,8 +370,7 @@ class Address implements SearchInterface
     }
 
     /**
-     * @param string $building
-     * @return Address
+     * @param string|null $building
      * @return Address
      */
     public function setBuilding(?string $building): self

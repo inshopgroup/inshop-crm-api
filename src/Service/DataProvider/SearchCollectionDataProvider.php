@@ -18,12 +18,12 @@ final class SearchCollectionDataProvider implements CollectionDataProviderInterf
     /**
      * @var ElasticaClientSearch
      */
-    private $elastica;
+    private ElasticaClientSearch $elastica;
 
     /**
      * @var RequestStack
      */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * SearchCollectionDataProvider constructor.

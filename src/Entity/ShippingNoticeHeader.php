@@ -78,7 +78,7 @@ class ShippingNoticeHeader
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id

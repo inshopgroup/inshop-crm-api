@@ -17,7 +17,7 @@ final class CompanyLastAction
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    private EntityManagerInterface $em;
 
     /**
      * EventDeadlineAction constructor.

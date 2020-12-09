@@ -24,12 +24,12 @@ class ElasticaIndexProductCommand extends Command
     /**
      * @var ElasticaClientProduct
      */
-    protected $search;
+    protected ElasticaClientProduct $search;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * ElasticaIndexProductCommand constructor.

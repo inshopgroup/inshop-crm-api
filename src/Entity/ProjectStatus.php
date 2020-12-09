@@ -8,7 +8,6 @@ use App\Traits\IsActive;
 use App\Traits\Timestampable;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -70,7 +69,7 @@ class ProjectStatus
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -109,7 +108,7 @@ class ProjectStatus
      *
      * @return ProjectStatus
      */
-    public function setName($name): ProjectStatus
+    public function setName(string $name): ProjectStatus
     {
         $this->name = $name;
 

@@ -160,7 +160,7 @@ class ProductTranslation
     }
 
     /**
-     * @param string
+     * @param string|null $description
      * @return ProductTranslation|null
      */
     public function setDescription(?string $description): self

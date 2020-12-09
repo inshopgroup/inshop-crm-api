@@ -22,17 +22,17 @@ abstract class ElasticaClientBase
     /**
      * @var ElasticaClient
      */
-    protected $client;
+    protected ElasticaClient $client;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $em;
+    protected EntityManagerInterface $em;
 
     /**
      * @var IriConverterInterface
      */
-    protected $iriConverter;
+    protected IriConverterInterface $iriConverter;
 
     /**
      * ElasticaClientBase constructor.

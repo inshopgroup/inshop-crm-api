@@ -18,7 +18,7 @@ class AuthenticationSuccessListener
     /**
      * @var EntityManagerInterface
      */
-    protected $em;
+    protected EntityManagerInterface $em;
 
     /**
      * AuthenticationSuccessListener constructor.

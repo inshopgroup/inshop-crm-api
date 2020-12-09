@@ -65,7 +65,7 @@ class ShipmentMethod
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -114,7 +114,7 @@ class ShipmentMethod
      *
      * @return ShipmentMethod
      */
-    public function setName($name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 

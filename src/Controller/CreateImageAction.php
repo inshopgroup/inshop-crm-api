@@ -22,22 +22,22 @@ final class CreateImageAction
     /**
      * @var ValidatorInterface
      */
-    private $validator;
+    private ValidatorInterface $validator;
 
     /**
      * @var ManagerRegistry
      */
-    private $doctrine;
+    private ManagerRegistry $doctrine;
 
     /**
      * @var FormFactoryInterface
      */
-    private $factory;
+    private FormFactoryInterface $factory;
 
     /**
      * @var ContainerInterface
      */
-    private $container;
+    private ContainerInterface $container;
 
     /**
      * CreateImageAction constructor.

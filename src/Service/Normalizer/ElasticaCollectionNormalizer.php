@@ -55,7 +55,7 @@ final class ElasticaCollectionNormalizer implements NormalizerInterface, Normali
      * @return array|bool|float|int|string
      * @throws ExceptionInterface
      */
-    public function normalize($object, ?string $format = null, array $context = [])
+    public function normalize(ElasticaPaginator $object, ?string $format = null, array $context = [])
     {
         $resourceClass =
             $this->resourceClassResolver->getResourceClass($object, $context['resource_class'] ?? null, true);

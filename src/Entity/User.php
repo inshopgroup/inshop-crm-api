@@ -89,7 +89,7 @@ class User implements Serializable, UserInterface
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -129,7 +129,7 @@ class User implements Serializable, UserInterface
     private string $password;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @Groups({
      *     "user_write"
@@ -394,7 +394,7 @@ class User implements Serializable, UserInterface
     }
 
     /**
-     * @param string $plainPassword
+     * @param string|null $plainPassword
      * @return User
      */
     public function setPlainPassword(?string $plainPassword): self

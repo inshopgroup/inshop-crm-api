@@ -18,7 +18,7 @@ class TextFixtures extends Fixture
     /**
      * @var Faker\Generator
      */
-    protected $faker;
+    protected Faker\Generator $faker;
 
     /**
      * TextFixtures constructor.

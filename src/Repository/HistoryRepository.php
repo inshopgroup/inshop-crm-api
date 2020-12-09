@@ -28,7 +28,7 @@ class HistoryRepository extends ServiceEntityRepository
      *
      * @return History[]
      */
-    public function getLogEntries($entity): array
+    public function getLogEntries(object $entity): array
     {
         $q = $this->getLogEntriesQuery($entity);
 
@@ -42,7 +42,7 @@ class HistoryRepository extends ServiceEntityRepository
      *
      * @return Query
      */
-    public function getLogEntriesQuery($entity): Query
+    public function getLogEntriesQuery(object $entity): Query
     {
         $wrapped = new EntityWrapper($entity, $this->_em);
         $objectClass = $wrapped->getMetadata()->name;

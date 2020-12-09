@@ -90,7 +90,7 @@ class Task implements ClientInterface, SearchInterface
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -121,7 +121,7 @@ class Task implements ClientInterface, SearchInterface
     private int $name;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="text", nullable=true)
      * @Groups({
@@ -285,7 +285,7 @@ class Task implements ClientInterface, SearchInterface
     }
 
     /**
-     * @param User $assignee
+     * @param User|null $assignee
      * @return Task
      */
     public function setAssignee(?User $assignee): self

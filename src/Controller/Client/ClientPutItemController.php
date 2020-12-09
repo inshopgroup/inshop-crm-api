@@ -6,6 +6,7 @@ use ApiPlatform\Core\Validator\ValidatorInterface;
 use App\Controller\User\BaseUserController;
 use App\Entity\Client;
 use Doctrine\ORM\EntityManagerInterface;
+use JsonException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ class ClientPutItemController extends BaseUserController
      * @param ValidatorInterface $validator
      * @param EntityManagerInterface $em
      * @return JsonResponse
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function __invoke(
         UserInterface $data,

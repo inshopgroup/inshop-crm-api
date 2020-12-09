@@ -16,7 +16,7 @@ class TaskListener
     /**
      * @var GoogleClient
      */
-    protected $googleClient;
+    protected GoogleClient $googleClient;
 
     /**
      * TaskListener constructor.

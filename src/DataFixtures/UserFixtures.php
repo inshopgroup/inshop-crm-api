@@ -21,12 +21,12 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @var UserPasswordEncoderInterface
      */
-    protected $encoder;
+    protected UserPasswordEncoderInterface $encoder;
 
     /**
      * @var Faker\Generator
      */
-    protected $faker;
+    protected Faker\Generator $faker;
 
     /**
      * UserFixtures constructor.

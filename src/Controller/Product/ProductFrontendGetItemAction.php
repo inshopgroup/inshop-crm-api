@@ -16,7 +16,7 @@ class ProductFrontendGetItemAction
     /**
      * @var ElasticaClientProduct
      */
-    private $elastica;
+    private ElasticaClientProduct $elastica;
 
     /**
      * ProductFrontendGetItemAction constructor.

@@ -17,30 +17,15 @@ use Traversable;
  */
 class ElasticaPaginator implements Countable, IteratorAggregate, JsonSerializable, PaginatorInterface
 {
-    /**
-     * @var array
-     */
-    protected $aggregations = [];
+    protected array $aggregations = [];
 
-    /**
-     * @var array
-     */
-    protected $results = [];
+    protected array $results = [];
 
-    /**
-     * @var int
-     */
-    protected $totalItems = 0;
+    protected int $totalItems = 0;
 
-    /**
-     * @var int
-     */
-    protected $currentPage = 1;
+    protected int $currentPage = 1;
 
-    /**
-     * @var
-     */
-    protected $itemsPerPage = 30;
+    protected int $itemsPerPage = 30;
 
     /**
      * @return float|int

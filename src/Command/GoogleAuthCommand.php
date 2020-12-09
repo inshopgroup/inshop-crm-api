@@ -21,12 +21,12 @@ class GoogleAuthCommand extends Command
     /**
      * @var UserRepository
      */
-    protected $userRepository;
+    protected UserRepository $userRepository;
 
     /**
      * @var GoogleClient
      */
-    protected $googleClient;
+    protected GoogleClient $googleClient;
 
     /**
      * GoogleAuthCommand constructor.

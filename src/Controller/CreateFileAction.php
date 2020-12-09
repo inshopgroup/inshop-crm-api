@@ -16,9 +16,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class CreateFileAction
 {
-    private $validator;
-    private $doctrine;
-    private $factory;
+    private ValidatorInterface $validator;
+
+    private ManagerRegistry $doctrine;
+
+    private FormFactoryInterface $factory;
 
     /**
      * CreateFileAction constructor.

@@ -6,7 +6,6 @@ use App\Interfaces\SearchInterface;
 use App\Service\ElasticaPaginator;
 use Elastica\Document;
 use Elastica\Query;
-use Elastica\ResultSet;
 use Elastica\Type\Mapping;
 
 use function get_class;

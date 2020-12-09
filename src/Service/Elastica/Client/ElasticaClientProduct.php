@@ -7,12 +7,8 @@ use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\ProductTranslation;
 use App\Service\ElasticaPaginator;
-use Elastica\Aggregation\Nested;
-use Elastica\Aggregation\Range;
-use Elastica\Aggregation\Terms;
 use Elastica\Document;
 use Elastica\Query;
-use Elastica\Script\Script;
 use Elastica\Type\Mapping;
 use Exception;
 

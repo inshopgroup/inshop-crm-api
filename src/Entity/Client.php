@@ -133,7 +133,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -197,7 +197,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     private Collection $addresses;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
      * @Groups({
@@ -282,13 +282,13 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     private ?string $plainPassword = null;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Column(type="text", nullable=true)
      */
     protected ?string $token = null;
 
     /**
-     * @var DateTime
+     * @var DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -573,7 +573,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     }
 
     /**
-     * @param DateTime $tokenCreatedAt
+     * @param DateTime|null $tokenCreatedAt
      */
     public function setTokenCreatedAt(?DateTime $tokenCreatedAt): void
     {

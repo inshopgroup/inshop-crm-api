@@ -19,7 +19,7 @@ trait Timestampable
      * @ORM\Column(type="datetime")
      * @Groups({"read"})
      */
-    protected $createdAt;
+    protected DateTime $createdAt;
 
     /**
      * @var DateTime
@@ -27,7 +27,7 @@ trait Timestampable
      * @ORM\Column(type="datetime")
      * @Groups({"read"})
      */
-    protected $updatedAt;
+    protected DateTime $updatedAt;
 
     /**
      * Sets createdAt.

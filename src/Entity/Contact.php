@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -72,7 +71,7 @@ class Contact implements SearchInterface
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -165,7 +164,7 @@ class Contact implements SearchInterface
      *
      * @return Contact
      */
-    public function setValue($value): self
+    public function setValue(string $value): self
     {
         $this->value = $value;
 
@@ -185,7 +184,7 @@ class Contact implements SearchInterface
     /**
      * Set contactType
      *
-     * @param ContactType $contactType
+     * @param ContactType|null $contactType
      *
      * @return Contact
      */

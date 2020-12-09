@@ -65,7 +65,7 @@ class StockLineStatus
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -110,7 +110,7 @@ class StockLineStatus
      *
      * @return StockLineStatus
      */
-    public function setName($name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 

@@ -18,8 +18,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
-use function Symfony\Component\String\u;
-
 /**
  * Project
  *
@@ -77,7 +75,7 @@ class Project implements ClientInterface, SearchInterface
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -97,7 +95,7 @@ class Project implements ClientInterface, SearchInterface
     private int $name;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="text", nullable=true)
      * @Groups({"project_read", "project_write", "document_read"})
@@ -204,7 +202,7 @@ class Project implements ClientInterface, SearchInterface
     }
 
     /**
-     * @param ProjectStatus $status
+     * @param ProjectStatus|null $status
      * @return Project
      */
     public function setStatus(?ProjectStatus $status): self

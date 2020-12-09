@@ -92,7 +92,7 @@ class Company implements SearchInterface
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -135,7 +135,7 @@ class Company implements SearchInterface
     private string $name;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -146,7 +146,7 @@ class Company implements SearchInterface
     private ?string $fullName = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -157,7 +157,7 @@ class Company implements SearchInterface
     private ?string $krs = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -168,7 +168,7 @@ class Company implements SearchInterface
     private ?string $nip = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -179,7 +179,7 @@ class Company implements SearchInterface
     private ?string $bankName = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -190,7 +190,7 @@ class Company implements SearchInterface
     private ?string $bankAccountNumber = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="boolean", nullable=true)
      * @Groups({
@@ -201,7 +201,7 @@ class Company implements SearchInterface
     private ?string $isVat = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -256,7 +256,7 @@ class Company implements SearchInterface
     private Collection $companyProducts;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -268,7 +268,7 @@ class Company implements SearchInterface
     private ?string $contactPerson = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({

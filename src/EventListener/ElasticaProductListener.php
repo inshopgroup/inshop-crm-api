@@ -16,12 +16,12 @@ class ElasticaProductListener
     /**
      * @var ElasticaClientProduct
      */
-    protected $search;
+    protected ElasticaClientProduct $search;
 
     /**
      * @var bool
      */
-    protected $enabled = true;
+    protected bool $enabled = true;
 
     /**
      * ElasticaProductListener constructor.

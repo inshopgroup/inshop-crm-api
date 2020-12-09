@@ -18,7 +18,7 @@ trait IsActive
      *     "is_active_write"
      * })
      */
-    protected $isActive = true;
+    protected bool $isActive = true;
 
     /**
      * @return bool

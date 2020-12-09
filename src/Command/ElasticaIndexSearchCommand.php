@@ -32,12 +32,12 @@ class ElasticaIndexSearchCommand extends Command
     /**
      * @var ElasticaClientSearch
      */
-    protected $search;
+    protected ElasticaClientSearch $search;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * ElasticaIndexSearchCommand constructor.

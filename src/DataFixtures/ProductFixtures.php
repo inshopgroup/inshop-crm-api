@@ -31,7 +31,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @var Faker\Generator
      */
-    protected $faker;
+    protected Faker\Generator $faker;
 
     /**
      * ProductFixtures constructor.

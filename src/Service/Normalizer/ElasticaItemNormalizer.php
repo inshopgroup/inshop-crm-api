@@ -24,9 +24,9 @@ final class ElasticaItemNormalizer implements NormalizerInterface, NormalizerAwa
 
     public const FORMAT = 'jsonld';
 
-    private $contextBuilder;
+    private ContextBuilder $contextBuilder;
 
-    private $resourceClassResolver;
+    private ResourceClassResolverInterface $resourceClassResolver;
 
     /**
      * ElasticaCollectionNormalizer constructor.

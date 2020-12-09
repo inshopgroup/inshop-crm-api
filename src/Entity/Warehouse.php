@@ -65,7 +65,7 @@ class Warehouse
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -109,7 +109,7 @@ class Warehouse
      *
      * @return Warehouse
      */
-    public function setName($name): Warehouse
+    public function setName(string $name): Warehouse
     {
         $this->name = $name;
 

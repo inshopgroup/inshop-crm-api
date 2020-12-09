@@ -2,7 +2,7 @@ version: '3.2'
 
 services:
   php:
-    image: inshopgroup/docker-inshop-crm-api-php-fpm-dev:latest
+    image: inshopgroup/docker-inshop-crm-api-php-fpm-dev:php7.4
     depends_on:
       - db
     env_file:

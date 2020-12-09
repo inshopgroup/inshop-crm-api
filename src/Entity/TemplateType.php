@@ -65,7 +65,7 @@ class TemplateType
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -105,7 +105,7 @@ class TemplateType
      *
      * @return TemplateType
      */
-    public function setName($name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 

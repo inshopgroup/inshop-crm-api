@@ -28,7 +28,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @var Faker\Generator
      */
-    protected $faker;
+    protected Faker\Generator $faker;
 
     /**
      * InvoiceFixtures constructor.

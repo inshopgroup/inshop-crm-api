@@ -17,7 +17,7 @@ class TemplateFixtures extends Fixture
     /**
      * @var Faker\Generator
      */
-    protected $faker;
+    protected Faker\Generator $faker;
 
     /**
      * TemplateFixtures constructor.

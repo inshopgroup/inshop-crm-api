@@ -6,8 +6,6 @@ use App\Entity\Task;
 use App\Entity\User;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Exception;
 use expectedClass;
 use Google_Client;
@@ -15,6 +13,8 @@ use Google_Http_Request;
 use Google_Service_Calendar;
 use Google_Service_Calendar_CalendarList;
 use Google_Service_Calendar_Event;
+use JsonException;
+use RuntimeException;
 
 /**
  * https://developers.google.com/calendar/quickstart/php
@@ -47,8 +47,7 @@ class GoogleClient
 
     /**
      * @param User $user
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @throws JsonException
      */
     public function init(User $user): void
     {
@@ -63,6 +62,7 @@ class GoogleClient
 
     /**
      * @param User $user
+     * @throws JsonException
      */
     public function refresh(User $user): void
     {
@@ -75,7 +75,7 @@ class GoogleClient
                 $this->googleClient->fetchAccessTokenWithRefreshToken($this->googleClient->getAccessToken());
 
                 // Save the token
-                $user->setGoogleAccessToken(json_encode($this->googleClient->getAccessToken()));
+                $user->setGoogleAccessToken(json_encode($this->googleClient->getAccessToken(), JSON_THROW_ON_ERROR));
                 $this->entityManager->flush();
             }
         }
@@ -97,7 +97,7 @@ class GoogleClient
 
         // Check to see if there was an error.
         if (array_key_exists('error', $accessToken)) {
-            throw new \RuntimeException(implode(', ', $accessToken));
+            throw new RuntimeException(implode(', ', $accessToken));
         }
 
         $this->googleClient->setAccessToken($accessToken);
@@ -122,8 +122,7 @@ class GoogleClient
      * @param Task $task
      * @param User $user
      * @return Google_Service_Calendar_Event|null
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @throws JsonException
      */
     public function insertEvent(Task $task, User $user): ?Google_Service_Calendar_Event
     {
@@ -150,8 +149,7 @@ class GoogleClient
      * @param Task $task
      * @param User $user
      * @return Google_Service_Calendar_Event|null
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @throws JsonException
      */
     public function updateEvent(Task $task, User $user): ?Google_Service_Calendar_Event
     {
@@ -178,8 +176,7 @@ class GoogleClient
      * @param Task $task
      * @param User $user
      * @return expectedClass|Google_Http_Request|null
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @throws JsonException
      */
     public function deleteEvent(Task $task, User $user)
     {
@@ -210,24 +207,32 @@ class GoogleClient
         $start = DateTime::createFromFormat('Y-m-d H:i:s', $task->getDeadline()->format('Y-m-d') . ' 09:00:00');
         $end = (clone $start)->modify('+1 hour');
 
-        return new Google_Service_Calendar_Event(array(
-            'summary' => sprintf('%s - %s', $task->getName(), $task->getClient()->getName()),
-            'description' => $task->getDescription(),
-            'start' => array(
-                'dateTime' => $start->format('Y-m-d\TH:i:s+01:00'),
-                'timeZone' => 'Europe/Warsaw',
-            ),
-            'end' => array(
-                'dateTime' => $end->format('Y-m-d\TH:i:s+01:00'),
-                'timeZone' => 'Europe/Warsaw',
-            ),
-            'reminders' => array(
-                'useDefault' => false,
-                'overrides' => array(
-                    array('method' => 'email', 'minutes' => 24 * 60),
-                    array('method' => 'popup', 'minutes' => 10),
+        return new Google_Service_Calendar_Event(
+            array(
+                'summary' => sprintf('%s - %s', $task->getName(), $task->getClient()->getName()),
+                'description' => $task->getDescription(),
+                'start' => array(
+                    'dateTime' => $start->format('Y-m-d\TH:i:s+01:00'),
+                    'timeZone' => 'Europe/Warsaw',
                 ),
-            ),
-        ));
+                'end' => array(
+                    'dateTime' => $end->format('Y-m-d\TH:i:s+01:00'),
+                    'timeZone' => 'Europe/Warsaw',
+                ),
+                'reminders' => array(
+                    'useDefault' => false,
+                    'overrides' => array(
+                        array(
+                            'method' => 'email',
+                            'minutes' => 24 * 60,
+                        ),
+                        array(
+                            'method' => 'popup',
+                            'minutes' => 10,
+                        ),
+                    ),
+                ),
+            )
+        );
     }
 }

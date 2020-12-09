@@ -65,7 +65,7 @@ class PaymentType
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -114,7 +114,7 @@ class PaymentType
      *
      * @return PaymentType
      */
-    public function setName($name): PaymentType
+    public function setName(string $name): PaymentType
     {
         $this->name = $name;
 
