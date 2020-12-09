@@ -92,9 +92,8 @@ class OrderHeader
      * })
      */
     private ?int $id = null;
-/**
-     * @var integer
-     *
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "order_header_read",
@@ -105,7 +104,7 @@ class OrderHeader
      * })
      * @Assert\NotBlank()
      */
-    private int $number;
+    private string $number;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OrderStatus")

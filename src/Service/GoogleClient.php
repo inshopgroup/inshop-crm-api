@@ -13,6 +13,7 @@ use Google_Http_Request;
 use Google_Service_Calendar;
 use Google_Service_Calendar_CalendarList;
 use Google_Service_Calendar_Event;
+use GuzzleHttp\Psr7\Request;
 use JsonException;
 use RuntimeException;
 
@@ -175,10 +176,10 @@ class GoogleClient
     /**
      * @param Task $task
      * @param User $user
-     * @return expectedClass|Google_Http_Request|null
+     * @return Request
      * @throws JsonException
      */
-    public function deleteEvent(Task $task, User $user)
+    public function deleteEvent(Task $task, User $user): ?Request
     {
         if (!$user->getIsGoogleSyncEnabled() || !$user->getGoogleCalendarId()) {
             return null;

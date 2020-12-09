@@ -79,9 +79,8 @@ class PurchaseOrderStatus
      * })
      */
     private ?int $id = null;
-/**
-     * @var integer
-     *
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "purchase_order_status_read",
@@ -91,7 +90,7 @@ class PurchaseOrderStatus
      * })
      * @Assert\NotBlank()
      */
-    private int $name;
+    private string $name;
 
     public function __sleep()
     {

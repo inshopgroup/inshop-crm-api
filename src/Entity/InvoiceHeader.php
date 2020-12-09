@@ -86,9 +86,8 @@ class InvoiceHeader
      * })
      */
     private ?int $id = null;
-/**
-     * @var integer
-     *
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "invoice_header_read",
@@ -97,7 +96,7 @@ class InvoiceHeader
      * })
      * @Assert\NotBlank()
      */
-    private int $number;
+    private string $number;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\InvoiceStatus")

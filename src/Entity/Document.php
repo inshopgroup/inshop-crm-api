@@ -3,21 +3,21 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Interfaces\SearchInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * Document
@@ -81,7 +81,8 @@ class Document implements SearchInterface
      * @Groups({"document_read", "project_read", "invoice_header_read", "invoice_header_write", "invoice_header_read", "company_read"})
      */
     private ?int $id = null;
-/**
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -91,10 +92,10 @@ class Document implements SearchInterface
     private string $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Client", inversedBy="documents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="documents")
      * @Groups({"document_read", "document_write"})
      */
-    private Collection $clients;
+    private ?Client $client = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Company", inversedBy="documents")
@@ -122,7 +123,6 @@ class Document implements SearchInterface
 
     public function __construct()
     {
-        $this->clients = new ArrayCollection();
         $this->companies = new ArrayCollection();
         $this->projects = new ArrayCollection();
         $this->files = new ArrayCollection();
@@ -161,32 +161,6 @@ class Document implements SearchInterface
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Client[]
-     */
-    public function getClients(): Collection
-    {
-        return $this->clients;
-    }
-
-    public function addClient(Client $client): self
-    {
-        if (!$this->clients->contains($client)) {
-            $this->clients[] = $client;
-        }
-
-        return $this;
-    }
-
-    public function removeClient(Client $client): self
-    {
-        if ($this->clients->contains($client)) {
-            $this->clients->removeElement($client);
-        }
 
         return $this;
     }
@@ -267,6 +241,18 @@ class Document implements SearchInterface
         if ($this->files->contains($file)) {
             $this->files->removeElement($file);
         }
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }

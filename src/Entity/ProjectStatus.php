@@ -77,14 +77,13 @@ class ProjectStatus
      * @Groups({"project_status_read", "project_read", "document_read", "project_write", "client_read", "client_write"})
      */
     private ?int $id = null;
-/**
-     * @var integer
-     *
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({"project_status_read", "project_status_write", "project_read", "document_read", "client_read"})
      * @Assert\NotBlank()
      */
-    private int $name;
+    private string $name;
 
     public function __sleep()
     {

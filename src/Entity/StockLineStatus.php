@@ -77,8 +77,6 @@ class StockLineStatus
     private ?int $id = null;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "stock_line_status_read",
@@ -86,7 +84,7 @@ class StockLineStatus
      * })
      * @Assert\NotBlank()
      */
-    private int $name;
+    private string $name;
 
     public function __sleep()
     {

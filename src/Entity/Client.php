@@ -303,9 +303,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
         $this->addresses = new ArrayCollection();
         $this->contacts = new ArrayCollection();
         $this->projects = new ArrayCollection();
-        $this->companies = new ArrayCollection();
         $this->documents = new ArrayCollection();
-        $this->clients = new ArrayCollection();
         $this->password = bin2hex(random_bytes(32));
         $this->labels = new ArrayCollection();
     }

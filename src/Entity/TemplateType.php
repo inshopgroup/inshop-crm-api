@@ -75,13 +75,11 @@ class TemplateType
     private ?int $id = null;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({"template_type_read", "template_type_write", "project_read", "client_read", "template_read"})
      * @Assert\NotBlank()
      */
-    private int $name;
+    private string $name;
 
     public function __sleep()
     {

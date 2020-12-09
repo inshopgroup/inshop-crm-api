@@ -77,14 +77,13 @@ class TaskStatus
      * @Groups({"task_status_read", "project_read", "task_read", "task_write", "project_write"})
      */
     private ?int $id = null;
-/**
-     * @var integer
-     *
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({"task_status_read", "task_status_write", "user_read", "project_read", "task_read"})
      * @Assert\NotBlank()
      */
-    private int $name;
+    private string $name;
 
     public function __sleep()
     {

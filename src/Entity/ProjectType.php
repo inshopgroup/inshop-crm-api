@@ -75,13 +75,11 @@ class ProjectType
     private ?int $id = null;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({"project_type_read", "project_type_write", "project_read", "client_read"})
      * @Assert\NotBlank()
      */
-    private int $name;
+    private string $name;
 
     public function __sleep()
     {

@@ -92,8 +92,6 @@ class ShippingNoticeHeader
 
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "shipping_notice_header_read",
@@ -102,7 +100,7 @@ class ShippingNoticeHeader
      * })
      * @Assert\NotBlank()
      */
-    private int $number;
+    private string $number;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ShippingNoticeStatus")

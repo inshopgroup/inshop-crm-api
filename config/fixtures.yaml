@@ -8,45 +8,81 @@ services:
     country.fixtures:
         class: App\DataFixtures\CountryFixtures
         tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@service_container"
+
+    city.fixtures:
+        class: App\DataFixtures\CityFixtures
+        tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@service_container"
+
 
     address.fixtures:
         class: App\DataFixtures\AddressFixtures
         tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@service_container"
+
 
     company.fixtures:
         class: App\DataFixtures\CompanyFixtures
         tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@service_container"
+
 
     file.fixtures:
         class: App\DataFixtures\FileFixtures
         tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@service_container"
+
 
     client.fixtures:
         class: App\DataFixtures\ClientFixtures
         tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@service_container"
+
 
     invoice.fixtures:
         class: App\DataFixtures\InvoiceFixtures
         tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@service_container"
+
 
     order.fixtures:
         class: App\DataFixtures\OrderFixtures
         tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@service_container"
+
 
     role.fixtures:
         class: App\DataFixtures\RoleFixtures
         tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@service_container"
+
 
     product.fixtures:
         class: App\DataFixtures\ProductFixtures
         tags: ['doctrine.fixture.orm']
+        arguments:
+
 
     user.fixtures:
         class: App\DataFixtures\UserFixtures
         tags: ['doctrine.fixture.orm']
         arguments:
             - "@security.user_password_encoder.generic"
+            - "@service_container"
 
     text.fixtures:
         class: App\DataFixtures\TextFixtures
         tags: ['doctrine.fixture.orm']
+        arguments:
+            - "@service_container"
+

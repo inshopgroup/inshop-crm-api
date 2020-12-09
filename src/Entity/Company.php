@@ -3,21 +3,21 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\CompanyLastAction;
 use App\Interfaces\SearchInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * Company
@@ -32,7 +32,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     collectionOperations={
  *          "get"={
-*               "normalization_context"={
+ *               "normalization_context"={
  *                  "groups"={"company_read_collection", "read", "is_active_read"}
  *              },
  *              "access_control"="is_granted('ROLE_COMPANY_LIST')"
@@ -115,7 +115,8 @@ class Company implements SearchInterface
      * })
      */
     private ?int $id = null;
-/**
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -190,15 +191,13 @@ class Company implements SearchInterface
     private ?string $bankAccountNumber = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="boolean", nullable=true)
      * @Groups({
      *     "company_read",
      *     "company_write",
      * })
      */
-    private ?string $isVat = null;
+    private ?bool $isVat = null;
 
     /**
      * @var string|null

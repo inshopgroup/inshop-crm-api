@@ -91,8 +91,6 @@ class PurchaseOrderHeader
     private ?int $id = null;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "purchase_order_header_read",
@@ -101,7 +99,7 @@ class PurchaseOrderHeader
      * })
      * @Assert\NotBlank()
      */
-    private int $number;
+    private string $number;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PurchaseOrderStatus")

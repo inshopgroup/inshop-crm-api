@@ -106,8 +106,6 @@ class Task implements ClientInterface, SearchInterface
 
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "task_read",
@@ -118,11 +116,9 @@ class Task implements ClientInterface, SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private int $name;
+    private string $name;
 
     /**
-     * @var int|null
-     *
      * @ORM\Column(type="text", nullable=true)
      * @Groups({
      *     "task_read",
@@ -131,7 +127,7 @@ class Task implements ClientInterface, SearchInterface
      *     "project_read"
      * })
      */
-    private ?int $description = null;
+    private ?string $description = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="tasks")
@@ -191,7 +187,7 @@ class Task implements ClientInterface, SearchInterface
      *     "project_write"
      * })
      */
-    private int $timeEstimated = 0;
+    private float $timeEstimated = 0;
 
     /**
      * Spent time in minutes
@@ -204,7 +200,7 @@ class Task implements ClientInterface, SearchInterface
      *     "project_write"
      * })
      */
-    private int $timeSpent = 0;
+    private float $timeSpent = 0;
 
     /**
      * @ORM\Column(type="string", nullable=true)

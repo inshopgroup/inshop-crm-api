@@ -3,10 +3,12 @@
 namespace App\DataFixtures;
 
 use App\Entity\Address;
+use App\Entity\City;
 use App\Entity\Country;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 use Faker;
 
 /**
@@ -30,10 +32,12 @@ class AddressFixtures extends Fixture implements DependentFixtureInterface
 
     /**
      * @param ObjectManager $manager
+     * @throws Exception
      */
     public function load(ObjectManager $manager): void
     {
         $countries = $manager->getRepository(Country::class)->findAll();
+        $cities = $manager->getRepository(City::class)->findAll();
 
         for ($j = 0; $j < 50; $j++) {
             /** @var Country $country */
@@ -41,7 +45,7 @@ class AddressFixtures extends Fixture implements DependentFixtureInterface
 
             $address = new Address();
             $address->setCountry($country);
-            $address->setCity($this->faker->city);
+            $address->setCity($this->faker->randomElement($cities));
             $address->setRegion($this->faker->address);
             $address->setDistrict($this->faker->address);
             $address->setPostCode($this->faker->postcode);
@@ -63,6 +67,7 @@ class AddressFixtures extends Fixture implements DependentFixtureInterface
     {
         return array(
             CountryFixtures::class,
+            CityFixtures::class
         );
     }
 }

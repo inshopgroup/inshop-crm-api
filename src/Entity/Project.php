@@ -86,21 +86,17 @@ class Project implements ClientInterface, SearchInterface
 
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({"project_read", "project_write", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
      * @Assert\NotBlank()
      */
-    private int $name;
+    private string $name;
 
     /**
-     * @var int|null
-     *
      * @ORM\Column(type="text", nullable=true)
      * @Groups({"project_read", "project_write", "document_read"})
      */
-    private ?int $description = null;
+    private ?string $description = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="projects")

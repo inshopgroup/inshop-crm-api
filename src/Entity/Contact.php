@@ -87,9 +87,8 @@ class Contact implements SearchInterface
      * })
      */
     private ?int $id = null;
-/**
-     * @var integer
-     *
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "contact_read",
@@ -102,7 +101,7 @@ class Contact implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private int $value;
+    private string $value;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ContactType")

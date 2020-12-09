@@ -77,9 +77,8 @@ class PaymentType
      * })
      */
     private ?int $id = null;
-/**
-     * @var integer
-     *
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "payment_type_read",
@@ -90,7 +89,7 @@ class PaymentType
      * })
      * @Assert\NotBlank()
      */
-    private int $name;
+    private string $name;
 
     public function __sleep()
     {
