@@ -1,5 +1,6 @@
 vich_uploader:
     db_driver: orm
+    storage: flysystem
 
     mappings:
         file:
