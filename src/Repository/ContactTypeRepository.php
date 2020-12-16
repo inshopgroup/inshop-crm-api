@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ContactType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method ContactType|null find($id, $lockMode = null, $lockVersion = null)
