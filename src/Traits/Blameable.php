@@ -18,23 +18,23 @@ trait Blameable
      * @ORM\Column(nullable=true)
      * @Groups({"read"})
      */
-    protected string $createdBy;
+    protected ?string $createdBy = null;
 
     /**
-     * @var string
+     * @var string|null
      * @Gedmo\Blameable(on="update")
      * @ORM\Column(nullable=true)
      * @Groups({"read"})
      */
-    protected string $updatedBy;
+    protected ?string $updatedBy = null;
 
     /**
      * Sets createdBy.
      *
-     * @param string $createdBy
+     * @param string|null $createdBy
      * @return $this
      */
-    public function setCreatedBy(string $createdBy): self
+    public function setCreatedBy(?string $createdBy): self
     {
         $this->createdBy = $createdBy;
 
@@ -42,11 +42,9 @@ trait Blameable
     }
 
     /**
-     * Returns createdBy.
-     *
-     * @return string
+     * @return string|null
      */
-    public function getCreatedBy(): string
+    public function getCreatedBy(): ?string
     {
         return $this->createdBy;
     }
@@ -54,10 +52,10 @@ trait Blameable
     /**
      * Sets updatedBy.
      *
-     * @param string $updatedBy
+     * @param string|null $updatedBy
      * @return $this
      */
-    public function setUpdatedBy(string $updatedBy): self
+    public function setUpdatedBy(?string $updatedBy): self
     {
         $this->updatedBy = $updatedBy;
 
@@ -67,9 +65,9 @@ trait Blameable
     /**
      * Returns updatedBy.
      *
-     * @return string
+     * @return string|null
      */
-    public function getUpdatedBy(): string
+    public function getUpdatedBy(): ?string
     {
         return $this->updatedBy;
     }
