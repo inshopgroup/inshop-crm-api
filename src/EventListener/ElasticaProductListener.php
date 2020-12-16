@@ -4,7 +4,7 @@ namespace App\EventListener;
 
 use App\Entity\Product;
 use App\Service\Elastica\Client\ElasticaClientProduct;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Exception;
 
 /**
