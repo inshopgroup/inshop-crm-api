@@ -4,7 +4,7 @@ namespace App\EventListener;
 
 use App\Interfaces\SearchInterface;
 use App\Service\Elastica\Client\ElasticaClientSearch;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * Class ElasticaSearchListener
