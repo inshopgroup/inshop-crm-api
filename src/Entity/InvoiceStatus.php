@@ -2,10 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiSubresource;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -70,7 +66,7 @@ class InvoiceStatus
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -82,11 +78,9 @@ class InvoiceStatus
      *     "invoice_header_read_collection"
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "invoice_status_read",
@@ -96,7 +90,12 @@ class InvoiceStatus
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {

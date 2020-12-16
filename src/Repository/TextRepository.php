@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Text;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @method Text|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,7 +23,7 @@ class TextRepository extends ServiceEntityRepository
     /**
      * @param string $value
      * @return Text|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findBySlug(string $value): ?Text
     {
@@ -31,8 +32,7 @@ class TextRepository extends ServiceEntityRepository
             ->andWhere('tt.slug = :slug')
             ->setParameter('slug', $value)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
     /*

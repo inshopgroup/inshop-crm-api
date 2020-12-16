@@ -65,7 +65,7 @@ class PaymentType
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -76,11 +76,9 @@ class PaymentType
      *     "order_header_read_collection"
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "payment_type_read",
@@ -91,14 +89,19 @@ class PaymentType
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -110,7 +113,7 @@ class PaymentType
      *
      * @return PaymentType
      */
-    public function setName($name)
+    public function setName(string $name): PaymentType
     {
         $this->name = $name;
 
@@ -122,7 +125,7 @@ class PaymentType
      *
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }

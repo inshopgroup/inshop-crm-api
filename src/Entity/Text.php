@@ -86,7 +86,7 @@ class Text implements TranslatableInterface
     use TranslationSluggable;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -97,7 +97,7 @@ class Text implements TranslatableInterface
      *     "text_read_frontend",
      * })
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\TextTranslation", mappedBy="translatable", cascade={"persist"}, orphanRemoval=true)
@@ -111,11 +111,16 @@ class Text implements TranslatableInterface
      * @Assert\Valid()
      * @Assert\Count(min=1)
      */
-    private $translations;
+    private Collection $translations;
 
     public function __construct()
     {
         $this->translations = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getId(): ?int

@@ -48,7 +48,7 @@ class InvoiceLine
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -59,7 +59,8 @@ class InvoiceLine
      *     "invoice_header_write"
      * })
      */
-    private $id;
+    private ?int $id = null;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\InvoiceHeader", inversedBy="lines")
@@ -68,7 +69,7 @@ class InvoiceLine
      * })
      * @Assert\NotBlank()
      */
-    private $header;
+    private ?InvoiceHeader $header = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product")
@@ -80,7 +81,7 @@ class InvoiceLine
      * })
      * @Assert\NotBlank()
      */
-    private $product;
+    private ?Product $product = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -92,7 +93,7 @@ class InvoiceLine
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="float", nullable=false)
@@ -104,7 +105,7 @@ class InvoiceLine
      * })
      * @Assert\NotBlank()
      */
-    private $unitPriceNetto;
+    private float $unitPriceNetto;
 
     /**
      * @ORM\Column(type="float", nullable=false)
@@ -116,7 +117,7 @@ class InvoiceLine
      * })
      * @Assert\NotBlank()
      */
-    private $unitsCount;
+    private float $unitsCount;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Vat")
@@ -127,7 +128,12 @@ class InvoiceLine
      * })
      * @Assert\NotBlank()
      */
-    private $vat;
+    private ?Vat $vat = null;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {

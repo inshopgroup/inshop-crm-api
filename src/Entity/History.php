@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\History\HistoryGetEntityCollectionAction;
@@ -77,7 +79,7 @@ class History
      *     "history_get_entity_collection",
      * })
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @var string $action
@@ -88,7 +90,7 @@ class History
      *     "history_get_entity_collection",
      * })
      */
-    protected $action;
+    protected string $action;
 
     /**
      * @ORM\Column(name="logged_at", type="datetime")
@@ -97,7 +99,7 @@ class History
      *     "history_get_entity_collection",
      * })
      */
-    protected $loggedAt;
+    protected DateTimeInterface $loggedAt;
 
     /**
      * @ORM\Column(name="object_id", length=64, nullable=true)
@@ -106,7 +108,7 @@ class History
      *     "history_get_entity_collection",
      * })
      */
-    protected $objectId;
+    protected ?string $objectId = null;
 
     /**
      * @ORM\Column(name="object_class", type="string", length=255)
@@ -115,7 +117,7 @@ class History
      *     "history_get_entity_collection",
      * })
      */
-    protected $objectClass;
+    protected string $objectClass;
 
     /**
      * @ORM\Column(type="integer")
@@ -124,7 +126,7 @@ class History
      *     "history_get_entity_collection",
      * })
      */
-    protected $version;
+    protected int $version;
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -133,7 +135,7 @@ class History
      *     "history_get_entity_collection",
      * })
      */
-    protected $data;
+    protected ?array $data = null;
 
     /**
      * @ORM\Column(length=255, nullable=true)
@@ -142,7 +144,12 @@ class History
      *     "history_get_entity_collection",
      * })
      */
-    protected $username;
+    protected ?string $username = null;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {
@@ -161,14 +168,16 @@ class History
         return $this;
     }
 
-    public function getLoggedAt(): ?\DateTimeInterface
+    public function getLoggedAt(): ?DateTimeInterface
     {
         return $this->loggedAt;
     }
 
-    public function setLoggedAt()
+    public function setLoggedAt(): self
     {
-        $this->loggedAt = new \DateTime();
+        $this->loggedAt = new DateTime();
+
+        return $this;
     }
 
     public function getObjectId(): ?string

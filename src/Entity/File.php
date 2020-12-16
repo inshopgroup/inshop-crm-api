@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateFileAction;
@@ -15,7 +13,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use App\Traits\Blameable;
 use App\Traits\Timestampable;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ORM\Entity
@@ -52,7 +49,7 @@ class File
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -63,9 +60,8 @@ class File
      *     "project_read"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var HttpFile|null
      * @Assert\NotNull()
      * @Vich\UploadableField(
@@ -76,7 +72,7 @@ class File
      *     originalName="originalName"
      * )
      */
-    public $file;
+    public ?HttpFile $file = null;
 
     /**
      * @var string|null
@@ -88,7 +84,7 @@ class File
      *     "project_read"
      * })
      */
-    public $contentUrl;
+    public ?string $contentUrl = null;
 
     /**
      * @var string|null
@@ -98,7 +94,7 @@ class File
      *     "project_read"
      * })
      */
-    protected $size;
+    protected ?string $size = null;
 
     /**
      * @var string|null
@@ -108,7 +104,7 @@ class File
      *     "project_read"
      * })
      */
-    protected $mimeType;
+    protected ?string $mimeType = null;
 
     /**
      * @var string|null
@@ -118,22 +114,31 @@ class File
      *     "project_read"
      * })
      */
-    protected $originalName;
+    protected ?string $originalName = null;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     * @return File
+     * @return File
      */
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -146,10 +151,14 @@ class File
 
     /**
      * @param null|HttpFile $file
+     * @return File
+     * @return File
      */
-    public function setFile(?HttpFile $file): void
+    public function setFile(?HttpFile $file): self
     {
         $this->file = $file;
+
+        return $this;
     }
 
     /**
@@ -192,7 +201,7 @@ class File
         return $this;
     }
 
-    public function getOriginalName(): string
+    public function getOriginalName(): ?string
     {
         return $this->originalName;
     }
@@ -209,6 +218,6 @@ class File
      */
     public function __toString(): string
     {
-        return $this->getOriginalName();
+        return $this->getOriginalName() ?? '';
     }
 }

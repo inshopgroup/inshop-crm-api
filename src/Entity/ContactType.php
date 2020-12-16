@@ -8,7 +8,6 @@ use App\Traits\IsActive;
 use App\Traits\Timestampable;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -72,7 +71,7 @@ class ContactType
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -88,11 +87,9 @@ class ContactType
      *     "company_read",
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "contact_type_read",
@@ -105,14 +102,19 @@ class ContactType
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -124,7 +126,7 @@ class ContactType
      *
      * @return ContactType
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -136,7 +138,7 @@ class ContactType
      *
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -146,6 +148,6 @@ class ContactType
      */
     public function __toString()
     {
-        return $this->getName();
+        return $this->getName() ?? '';
     }
 }

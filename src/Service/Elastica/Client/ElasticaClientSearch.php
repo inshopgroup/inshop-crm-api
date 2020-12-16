@@ -6,8 +6,9 @@ use App\Interfaces\SearchInterface;
 use App\Service\ElasticaPaginator;
 use Elastica\Document;
 use Elastica\Query;
-use Elastica\ResultSet;
 use Elastica\Type\Mapping;
+
+use function get_class;
 
 /**
  * Class ElasticaClientSearch
@@ -73,7 +74,7 @@ class ElasticaClientSearch extends ElasticaClientBase
      */
     protected static function getEntityClass(SearchInterface $entity)
     {
-        $path = explode('\\', \get_class($entity));
+        $path = explode('\\', get_class($entity));
 
         return array_pop($path);
     }
@@ -99,8 +100,8 @@ class ElasticaClientSearch extends ElasticaClientBase
 
         $query->setQuery($boolQuery);
 
-        $page = isset($params['page']) ? $params['page'] : 1;
-        $size = isset($params['perPage']) ? $params['perPage'] : 30;
+        $page = $params['page'] ?? 1;
+        $size = $params['perPage'] ?? 30;
         $from = $size * ($page - 1);
 
         $query
@@ -114,7 +115,8 @@ class ElasticaClientSearch extends ElasticaClientBase
 
         $results = $search->search();
 
-        $data = array_map(function (Document $document) {
+        $data = array_map(
+            static function (Document $document) {
             return $document->toArray()['_source'];
         }, $results->getDocuments());
 

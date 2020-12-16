@@ -69,33 +69,37 @@ class Group
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Groups({"group_read", "user_read", "user_write"})
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
      * @Groups({"group_read", "group_write", "user_read"})
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Role")
      * @Groups({"group_read", "group_write"})
      */
-    private $roles;
+    private Collection $roles;
 
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getId(): ?int
@@ -144,7 +148,7 @@ class Group
     /**
      * @return array
      */
-    public function getRolesArray()
+    public function getRolesArray(): ?array
     {
         $roles = [];
 

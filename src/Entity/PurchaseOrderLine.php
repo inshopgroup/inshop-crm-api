@@ -48,7 +48,7 @@ class PurchaseOrderLine
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -59,7 +59,8 @@ class PurchaseOrderLine
      *     "purchase_order_write"
      * })
      */
-    private $id;
+    private ?int $id = null;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PurchaseOrderHeader", inversedBy="lines")
@@ -68,7 +69,7 @@ class PurchaseOrderLine
      * })
      * @Assert\NotBlank()
      */
-    private $header;
+    private ?PurchaseOrderHeader $header = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PurchaseOrderLineStatus")
@@ -80,7 +81,7 @@ class PurchaseOrderLine
      * })
      * @Assert\NotBlank()
      */
-    private $status;
+    private ?PurchaseOrderLineStatus $status = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\ShippingNoticeLine", mappedBy="purchaseOrderLine")
@@ -92,7 +93,7 @@ class PurchaseOrderLine
      * })
      * @Assert\NotBlank()
      */
-    private $shippingNoticeLine;
+    private ?ShippingNoticeLine $shippingNoticeLine = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OrderLine", inversedBy="purchaseOrderLines")
@@ -104,7 +105,7 @@ class PurchaseOrderLine
      * })
      * @Assert\NotBlank()
      */
-    private $orderLine;
+    private ?OrderLine $orderLine = null;
 
     /**
      * @ORM\Column(type="float", nullable=false)
@@ -116,7 +117,7 @@ class PurchaseOrderLine
      * })
      * @Assert\NotBlank()
      */
-    private $priceBuyNetto;
+    private float $priceBuyNetto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Vat")
@@ -128,7 +129,12 @@ class PurchaseOrderLine
      * })
      * @Assert\NotBlank()
      */
-    private $vat;
+    private ?Vat $vat = null;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {

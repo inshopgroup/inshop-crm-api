@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Company;
 use App\Repository\CompanyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -16,7 +17,7 @@ final class CompanyLastAction
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    private EntityManagerInterface $em;
 
     /**
      * EventDeadlineAction constructor.
@@ -30,7 +31,7 @@ final class CompanyLastAction
     /**
      * @param Request $request
      * @return Company|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function __invoke(Request $request): ?Company
     {

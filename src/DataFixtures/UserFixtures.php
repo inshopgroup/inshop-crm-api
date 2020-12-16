@@ -21,12 +21,12 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @var UserPasswordEncoderInterface
      */
-    protected $encoder;
+    protected UserPasswordEncoderInterface $encoder;
 
     /**
      * @var Faker\Generator
      */
-    protected $faker;
+    protected Faker\Generator $faker;
 
     /**
      * UserFixtures constructor.
@@ -41,7 +41,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $roles = $manager->getRepository(Role::class)->findAll();
         $language = $manager->getRepository(Language::class)->findOneBy(['code' => 'en']);

@@ -5,7 +5,7 @@ vich_uploader:
     mappings:
         file:
             uri_prefix: /file
-            upload_destination: asset_filesystem
+            upload_destination: file_filesystem
             namer: Vich\UploaderBundle\Naming\UniqidNamer
 
         image:

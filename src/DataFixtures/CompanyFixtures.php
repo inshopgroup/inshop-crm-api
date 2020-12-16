@@ -22,7 +22,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @var Faker\Generator
      */
-    protected $faker;
+    protected Faker\Generator $faker;
 
     /**
      * CompanyFixtures constructor.
@@ -35,7 +35,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $labelNames = ['A', 'B', 'C', 'D', 'E'];
 
@@ -49,7 +49,6 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
 
         $addresses = $manager->getRepository(Address::class)->findAll();
-        $files = $manager->getRepository(File::class)->findAll();
         $labels = $manager->getRepository(Label::class)->findAll();
 
         for ($i = 0; $i < 2; $i++) {
@@ -60,7 +59,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             $company->setFullName($this->faker->company);
             $company->setBankName($this->faker->company);
             $company->setBankAccountNumber($this->faker->bankAccountNumber);
-            $company->setIsVat($this->faker->boolean);
+            $company->setIsVat(true);
             $company->setVatComment($this->faker->company);
             $company->setKrs($this->faker->numberBetween(1000000, 10000000));
             $company->setNip($this->faker->numberBetween(1000000, 10000000));

@@ -19,7 +19,7 @@ class ElasticaClient
     /**
      * @var Client
      */
-    protected $client;
+    protected Client $client;
 
     /**
      * ElasticaClient constructor.

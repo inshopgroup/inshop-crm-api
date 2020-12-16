@@ -9,7 +9,7 @@ namespace App\Interfaces;
 interface ElasticInterface
 {
     /**
-     * @return int|null
+     * @return string
      */
     public function getId(): string;
 

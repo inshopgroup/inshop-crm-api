@@ -65,7 +65,7 @@ class Warehouse
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -74,11 +74,9 @@ class Warehouse
      *     "warehouse_read"
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "warehouse_read",
@@ -86,14 +84,19 @@ class Warehouse
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -105,7 +108,7 @@ class Warehouse
      *
      * @return Warehouse
      */
-    public function setName($name)
+    public function setName(string $name): Warehouse
     {
         $this->name = $name;
 

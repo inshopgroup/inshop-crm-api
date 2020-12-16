@@ -15,86 +15,68 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * Contact
+ * TemplateType
  *
- * @ORM\Table(name="label")
- * @ORM\Entity(repositoryClass="App\Repository\LabelRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TemplateTypeRepository")
  * @ApiResource(
  *     attributes={
- *          "normalization_context"={"groups"={"label_read", "read", "is_active_read"}},
- *          "denormalization_context"={"groups"={"label_write", "is_active_write"}},
- *          "order"={"id": "DESC"}
+ *          "normalization_context"={"groups"={"template_type_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"template_type_write", "is_active_write"}},
+ *          "order"={"id": "ASC"}
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_LABEL_LIST')"
+ *              "access_control"="is_granted('ROLE_TEMPLATE_TYPE_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_LABEL_CREATE')"
+ *              "access_control"="is_granted('ROLE_TEMPLATE_TYPE_CREATE')"
  *          }
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_LABEL_SHOW')"
+ *              "access_control"="is_granted('ROLE_TEMPLATE_TYPE_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_LABEL_UPDATE')"
+ *              "access_control"="is_granted('ROLE_TEMPLATE_TYPE_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_LABEL_DELETE')"
+ *              "access_control"="is_granted('ROLE_TEMPLATE_TYPE_DELETE')"
  *          }
  *     })
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
  * @ApiFilter(SearchFilter::class, properties={
  *     "id": "exact",
- *     "name": "ipartial",
- *     "country.name": "ipartial",
+ *     "name": "ipartial"
  * })
  * @ApiFilter(
  *     OrderFilter::class,
  *     properties={
  *          "id",
  *          "name",
- *          "country.name",
  *          "createdAt",
  *          "updatedAt"
  *     }
  * )
  */
-class Label
+class TemplateType
 {
     use Timestampable;
     use Blameable;
     use IsActive;
 
     /**
+     * @var int|null
+     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({
-     *     "label_read",
-     *     "product_read",
-     *     "company_read",
-     *     "company_write",
-     *     "company_read_collection",
-     *     "client_read",
-     *     "client_read_collection",
-     *     "client_write",
-     * })
+     * @Groups({"template_type_read", "project_read", "project_write", "client_read", "client_write", "template_write", "template_read"})
      */
     private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Groups({
-     *     "label_read",
-     *     "label_write",
-     *     "product_read",
-     *     "company_read",
-     *     "company_read_collection",
-     *     "client_read",
-     *     "client_read_collection",
-     * })
+     * @Groups({"template_type_read", "template_type_write", "project_read", "client_read", "template_read"})
      * @Assert\NotBlank()
      */
     private string $name;
@@ -104,20 +86,37 @@ class Label
         return [];
     }
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return TemplateType
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 }

@@ -14,9 +14,11 @@ use App\Entity\Product;
 use App\Entity\ProductSellPrice;
 use App\Entity\ProductTranslation;
 use App\Entity\Vat;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 use Faker;
 
 /**
@@ -29,7 +31,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @var Faker\Generator
      */
-    protected $faker;
+    protected Faker\Generator $faker;
 
     /**
      * ProductFixtures constructor.
@@ -41,9 +43,9 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
 
     /**
      * @param ObjectManager $manager
-     * @throws \Exception
+     * @throws Exception
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $currencies = $manager->getRepository(Currency::class)->findAll();
         $languages = $manager->getRepository(Language::class)->findAll();
@@ -130,8 +132,8 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 $productSellPrice->setProduct($product);
                 $productSellPrice->setChannel($this->faker->randomElement($channels));
                 $productSellPrice->setVat($this->faker->randomElement($vats));
-                $productSellPrice->setActiveFrom(new \DateTime());
-                $productSellPrice->setActiveTo((new \DateTime())->modify('+1 year'));
+                $productSellPrice->setActiveFrom(new DateTime());
+                $productSellPrice->setActiveTo((new DateTime())->modify('+1 year'));
                 $productSellPrice->setPriceSellBrutto($this->faker->numberBetween(501, 1000));
                 $productSellPrice->setPriceOldSellBrutto($this->faker->numberBetween(1000, 2000));
                 $productSellPrice->setCompanyProduct($product->getCompanyProducts()->first());

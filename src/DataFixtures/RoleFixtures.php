@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Module;
 use App\Entity\Role;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * Class RoleFixtures
@@ -16,7 +16,7 @@ class RoleFixtures extends Fixture
     /**
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $modules = [
             'Address' => [],

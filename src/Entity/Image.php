@@ -2,20 +2,17 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateImageAction;
+use App\Traits\Blameable;
 use App\Traits\IsActive;
+use App\Traits\Timestampable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File as HttpFile;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use App\Traits\Blameable;
-use App\Traits\Timestampable;
-use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ORM\Entity
@@ -31,7 +28,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *              "access_control"="is_granted('ROLE_IMAGE_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_IMAGE_CREATE')",
+ *              "access_control"="is_granted('ROLE_USER')",
  *              "method"="POST",
  *              "path"="/images",
  *              "controller"=CreateImageAction::class,
@@ -58,7 +55,7 @@ class Image
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -71,7 +68,7 @@ class Image
      *     "product_read_frontend_item"
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @var HttpFile|null
@@ -84,7 +81,7 @@ class Image
      *     originalName="originalName"
      * )
      */
-    public $image;
+    public ?HttpFile $image = null;
 
     /**
      * @var string|null
@@ -97,7 +94,7 @@ class Image
      *     "product_read_frontend_item"
      * })
      */
-    public $contentUrl;
+    public ?string $contentUrl = null;
 
     /**
      * @var string|null
@@ -109,7 +106,7 @@ class Image
      *     "product_read_frontend_item"
      * })
      */
-    protected $size;
+    protected ?string $size = null;
 
     /**
      * @var string|null
@@ -121,7 +118,7 @@ class Image
      *     "product_read_frontend_item"
      * })
      */
-    protected $mimeType;
+    protected ?string $mimeType = null;
 
     /**
      * @var string|null
@@ -133,22 +130,31 @@ class Image
      *     "product_read_frontend_item"
      * })
      */
-    protected $originalName;
+    protected ?string $originalName = null;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     * @return Image
+     * @return Image
      */
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -177,10 +183,14 @@ class Image
 
     /**
      * @param null|string $contentUrl
+     * @return Image
+     * @return Image
      */
-    public function setContentUrl(?string $contentUrl): void
+    public function setContentUrl(?string $contentUrl): self
     {
         $this->contentUrl = $contentUrl;
+
+        return $this;
     }
 
     public function getSize(): ?string

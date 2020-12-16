@@ -4,6 +4,7 @@ namespace App\Controller\Client;
 
 use App\Entity\Client;
 use App\Repository\ClientRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Lexik\Bundle\JWTAuthenticationBundle\Response\JWTAuthenticationSuccessResponse;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +21,7 @@ class ClientLoginByTokenCollectionAction
      * @param AuthenticationSuccessHandler $authenticationSuccessHandler
      * @param ClientRepository $clientRepository
      * @return JWTAuthenticationSuccessResponse
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function __invoke(
         Request $request,

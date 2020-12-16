@@ -48,7 +48,7 @@ class ShippingNoticeLine
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -59,7 +59,8 @@ class ShippingNoticeLine
      *     "shipping_notice_write"
      * })
      */
-    private $id;
+    private ?int $id = null;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ShippingNoticeHeader", inversedBy="lines")
@@ -68,7 +69,7 @@ class ShippingNoticeLine
      * })
      * @Assert\NotBlank()
      */
-    private $header;
+    private ?ShippingNoticeHeader $header = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ShippingNoticeLineStatus")
@@ -80,7 +81,7 @@ class ShippingNoticeLine
      * })
      * @Assert\NotBlank()
      */
-    private $status;
+    private ?ShippingNoticeLineStatus $status = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\PurchaseOrderLine", inversedBy="shippingNoticeLine")
@@ -92,7 +93,7 @@ class ShippingNoticeLine
      * })
      * @Assert\NotBlank()
      */
-    private $purchaseOrderLine;
+    private ?PurchaseOrderLine $purchaseOrderLine = null;
 
     /**
      * @ORM\Column(type="float", nullable=false)
@@ -104,7 +105,7 @@ class ShippingNoticeLine
      * })
      * @Assert\NotBlank()
      */
-    private $priceBuyNetto;
+    private float $priceBuyNetto;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Vat")
@@ -116,7 +117,12 @@ class ShippingNoticeLine
      * })
      * @Assert\NotBlank()
      */
-    private $vat;
+    private ?Vat $vat = null;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {

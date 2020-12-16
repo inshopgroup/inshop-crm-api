@@ -75,75 +75,49 @@ class Project implements ClientInterface, SearchInterface
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({
-     *     "project_read",
-     *     "user_read",
-     *     "task_read",
-     *     "task_write",
-     *     "client_read",
-     *     "client_write"
-     * })
+     * @Groups({"project_read", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
      */
-    private $id;
+    private ?int $id = null;
+
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Groups({
-     *     "project_read",
-     *     "project_write",
-     *     "user_read",
-     *     "task_read",
-     *     "task_write",
-     *     "client_read",
-     *     "client_write"
-     * })
+     * @Groups({"project_read", "project_write", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({
-     *     "project_read",
-     *     "project_write",
-     * })
+     * @Groups({"project_read", "project_write", "document_read"})
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="projects")
      * @Groups({"project_read", "project_write", "task_read"})
      * @Assert\NotBlank()
      */
-    private $client;
+    private ?Client $client = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProjectStatus")
-     * @Groups({
-     *     "project_read",
-     *     "project_write",
-     *     "client_read",
-     *     "client_write"
-     * })
+     * @Groups({"project_read", "project_write", "document_read", "client_read", "client_write"})
      * @Assert\NotBlank()
      */
-    private $status;
+    private ?ProjectStatus $status = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProjectType")
      * @Groups({"project_read", "project_write", "client_read", "client_write"})
      * @Assert\NotBlank()
      */
-    private $type;
+    private ?ProjectType $type = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="project", cascade={"persist"}, orphanRemoval=true)
@@ -151,7 +125,14 @@ class Project implements ClientInterface, SearchInterface
      * @ORM\OrderBy({"id" = "ASC"})
      * @Assert\Valid()
      */
-    private $tasks;
+    private Collection $tasks;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Document", inversedBy="projects")
+     * @Groups({"project_read"})
+     * @ORM\OrderBy({"id" = "DESC"})
+     */
+    private Collection $documents;
 
     /**
      * Constructor
@@ -159,6 +140,12 @@ class Project implements ClientInterface, SearchInterface
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->documents = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getId(): ?int
@@ -205,17 +192,19 @@ class Project implements ClientInterface, SearchInterface
     /**
      * @return ProjectStatus
      */
-    public function getStatus(): ProjectStatus
+    public function getStatus(): ?ProjectStatus
     {
         return $this->status;
     }
 
     /**
-     * @param ProjectStatus $status
+     * @param ProjectStatus|null $status
+     * @return Project
      */
-    public function setStatus(ProjectStatus $status = null): void
+    public function setStatus(?ProjectStatus $status): self
     {
         $this->status = $status;
+        return $this;
     }
 
     /**
@@ -244,6 +233,32 @@ class Project implements ClientInterface, SearchInterface
             if ($task->getProject() === $this) {
                 $task->setProject(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Document[]
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): self
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents[] = $document;
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): self
+    {
+        if ($this->documents->contains($document)) {
+            $this->documents->removeElement($document);
         }
 
         return $this;

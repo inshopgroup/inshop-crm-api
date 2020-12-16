@@ -83,19 +83,18 @@ class ProductTranslation
      *     "product_write"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=128)
      */
-    private $slug;
+    private string $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="translations")
      * @Assert\NotBlank()
      */
-    protected $translatable;
+    protected ?Product $translatable = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
@@ -106,7 +105,7 @@ class ProductTranslation
      *     "product_read_frontend"
      * })
      */
-    protected $language;
+    protected ?Language $language = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -117,7 +116,7 @@ class ProductTranslation
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -127,40 +126,47 @@ class ProductTranslation
      *     "product_read_frontend"
      * })
      */
-    private $description;
+    private ?string $description = null;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param  string
-     * @return null
+     * @param string
+     * @return ProductTranslation|null
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * @param  string
-     * @return null
+     * @param string|null $description
+     * @return ProductTranslation|null
      */
-    public function setDescription($description)
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
+        return $this;
     }
 
     public function getId(): ?int
@@ -168,24 +174,24 @@ class ProductTranslation
         return $this->id;
     }
 
-    public function getTranslatable(): Product
+    public function getTranslatable(): ?Product
     {
         return $this->translatable;
     }
 
-    public function setTranslatable(Product $translatable): self
+    public function setTranslatable(?Product $translatable): self
     {
         $this->translatable = $translatable;
 
         return $this;
     }
 
-    public function getLanguage(): Language
+    public function getLanguage(): ?Language
     {
         return $this->language;
     }
 
-    public function setLanguage(Language $language): self
+    public function setLanguage(?Language $language): self
     {
         $this->language = $language;
 

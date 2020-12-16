@@ -77,7 +77,7 @@ class Brand
      *     "product_write"
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -88,11 +88,16 @@ class Brand
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getName(): ?string

@@ -20,7 +20,7 @@ final class DashboardAction
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    private EntityManagerInterface $em;
 
     /**
      * EventDeadlineAction constructor.

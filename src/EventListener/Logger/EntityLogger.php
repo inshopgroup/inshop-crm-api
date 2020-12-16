@@ -13,12 +13,12 @@ class EntityLogger
     /**
      * @var string
      */
-    protected $action;
+    protected string $action;
 
     /**
      * @var array
      */
-    protected $changes = [];
+    protected array $changes = [];
 
     /**
      * @return mixed

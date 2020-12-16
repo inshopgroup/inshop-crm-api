@@ -66,7 +66,7 @@ class ShippingNoticeLineStatus
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -77,11 +77,9 @@ class ShippingNoticeLineStatus
      *     "shipping_notice_header_write"
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "shipping_notice_line_status_read",
@@ -90,7 +88,12 @@ class ShippingNoticeLineStatus
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {

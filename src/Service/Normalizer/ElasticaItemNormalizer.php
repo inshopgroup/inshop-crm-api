@@ -6,6 +6,7 @@ use ApiPlatform\Core\Api\ResourceClassResolverInterface;
 use ApiPlatform\Core\JsonLd\ContextBuilder;
 use ApiPlatform\Core\JsonLd\Serializer\JsonLdContextTrait;
 use ApiPlatform\Core\Serializer\ContextTrait;
+use stdClass;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -21,10 +22,11 @@ final class ElasticaItemNormalizer implements NormalizerInterface, NormalizerAwa
     use JsonLdContextTrait;
     use NormalizerAwareTrait;
 
-    const FORMAT = 'jsonld';
+    public const FORMAT = 'jsonld';
 
-    private $contextBuilder;
-    private $resourceClassResolver;
+    private ContextBuilder $contextBuilder;
+
+    private ResourceClassResolverInterface $resourceClassResolver;
 
     /**
      * ElasticaCollectionNormalizer constructor.
@@ -40,23 +42,23 @@ final class ElasticaItemNormalizer implements NormalizerInterface, NormalizerAwa
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, ?string $format = null): bool
     {
-        return self::FORMAT === $format && ($data instanceof \stdClass);
+        return self::FORMAT === $format && ($data instanceof stdClass);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, ?string $format = null, array $context = [])
     {
         $context = $this->initContext('array', $context);
 
-        return $this->normalizer->normalize((array)$object, $format, $context);
+        return $this->normalizer->normalize((array) $object, $format, $context);
     }
 
     /**
-     * {@inheritdoc}
+     * {}
      */
     public function hasCacheableSupportsMethod(): bool
     {

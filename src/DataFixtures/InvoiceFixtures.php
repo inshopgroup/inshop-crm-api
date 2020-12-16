@@ -12,9 +12,11 @@ use App\Entity\InvoiceType;
 use App\Entity\Language;
 use App\Entity\Product;
 use App\Entity\Vat;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 use Faker;
 
 /**
@@ -26,7 +28,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @var Faker\Generator
      */
-    protected $faker;
+    protected Faker\Generator $faker;
 
     /**
      * InvoiceFixtures constructor.
@@ -38,9 +40,9 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
 
     /**
      * @param ObjectManager $manager
-     * @throws \Exception
+     * @throws Exception
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $vats = $manager->getRepository(Vat::class)->findAll();
         $currencies = $manager->getRepository(Currency::class)->findAll();
@@ -63,8 +65,8 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             $ih->setStatus($this->faker->randomElement($invoiceStatuses));
             $ih->setType($this->faker->randomElement($invoiceTypes));
             $ih->setNumber($this->faker->randomNumber());
-            $ih->setDateOfInvoice(new \DateTime());
-            $ih->setDateOfSale(new \DateTime());
+            $ih->setDateOfInvoice(new DateTime());
+            $ih->setDateOfSale(new DateTime());
             $ih->setMaturity('payment deadline - 30 days');
             $ih->addFile($this->faker->randomElement($files));
 

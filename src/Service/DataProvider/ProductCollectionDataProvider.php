@@ -18,12 +18,12 @@ final class ProductCollectionDataProvider implements CollectionDataProviderInter
     /**
      * @var ElasticaClientProduct
      */
-    private $elastica;
+    private ElasticaClientProduct $elastica;
 
     /**
      * @var RequestStack
      */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * ProductCollectionDataProvider constructor.

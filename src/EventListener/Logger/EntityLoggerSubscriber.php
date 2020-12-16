@@ -3,17 +3,30 @@
 namespace App\EventListener\Logger;
 
 use App\Entity\History;
+use DateTime;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\Proxy;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\PersistentCollection;
 use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
+use JsonException;
+use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+
+use function get_class;
+use function in_array;
+use function is_object;
+use function method_exists;
 
 /**
  * Class EntityLoggerSubscriber
@@ -24,12 +37,17 @@ class EntityLoggerSubscriber implements EventSubscriber
     /**
      * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    protected TokenStorageInterface $tokenStorage;
 
     /**
      * @var array
      */
-    protected $logs = [];
+    protected array $logs = [];
+
+    /**
+     * @var bool
+     */
+    private bool $isDisabled = false;
 
     /**
      * @return array
@@ -47,7 +65,7 @@ class EntityLoggerSubscriber implements EventSubscriber
     /**
      * @var array
      */
-    protected static $disabledEntities = [
+    protected static array $disabledEntities = [
         EntityLogger::class,
         History::class,
         RefreshToken::class,
@@ -56,7 +74,7 @@ class EntityLoggerSubscriber implements EventSubscriber
     /**
      * @var array
      */
-    protected static $disabledAttributes = [
+    protected static array $disabledAttributes = [
         'createdAt',
         'updatedAt',
         'deletedAt',
@@ -80,22 +98,26 @@ class EntityLoggerSubscriber implements EventSubscriber
 
     /**
      * @param LifecycleEventArgs $args
-     * @throws \Doctrine\Common\Annotations\AnnotationException
-     * @throws \ReflectionException
+     * @throws ReflectionException
+     * @throws JsonException
      */
     public function preUpdate(LifecycleEventArgs $args): void
     {
-        $this->calculateChanges($args->getEntityManager(), $args->getEntity(), 'update');
+        if ($this->isDisabled() === false) {
+            $this->calculateChanges($args->getEntityManager(), $args->getEntity(), 'update');
+        }
     }
 
     /**
      * @param LifecycleEventArgs $args
-     * @throws \Doctrine\Common\Annotations\AnnotationException
-     * @throws \ReflectionException
+     * @throws ReflectionException
+     * @throws JsonException
      */
     public function postPersist(LifecycleEventArgs $args): void
     {
-        $this->calculateChanges($args->getEntityManager(), $args->getEntity(), 'create');
+        if ($this->isDisabled() === false) {
+            $this->calculateChanges($args->getEntityManager(), $args->getEntity(), 'create');
+        }
     }
 
     /**
@@ -103,29 +125,31 @@ class EntityLoggerSubscriber implements EventSubscriber
      */
     public function preRemove(LifecycleEventArgs $args): void
     {
-        $entity = $args->getEntity();
-        $entityClassName = \get_class($entity);
+        if ($this->isDisabled() === false) {
+            $entity = $args->getEntity();
+            $entityClassName = get_class($entity);
 
-        if (\in_array($entityClassName, self::$disabledEntities, true)) {
-            return;
+            if (in_array($entityClassName, self::$disabledEntities, true)) {
+                return;
+            }
+
+            $entityLogger = new EntityLogger();
+            $entityLogger->setEntity($entity);
+            $entityLogger->setAction('remove');
+            $entityLogger->addChange('name', $this->guessObjectName($entity));
+
+            $this->logs[] = $entityLogger;
         }
-
-        $entityLogger = new EntityLogger();
-        $entityLogger->setEntity($entity);
-        $entityLogger->setAction('remove');
-        $entityLogger->addChange('name', $this->guessObjectName($entity));
-
-        $this->logs[] = $entityLogger;
     }
 
     /**
      * @param PostFlushEventArgs $args
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function postFlush(PostFlushEventArgs $args): void
     {
-        if (!empty($this->logs)) {
+        if (!empty($this->logs) && $this->isDisabled() === false) {
             $em = $args->getEntityManager();
 
             /** @var EntityLogger $entityLogger */
@@ -135,10 +159,10 @@ class EntityLoggerSubscriber implements EventSubscriber
                     $history->setAction($entityLogger->getAction());
                     $history->setUsername($this->getUsername());
                     $history->setData($entityLogger->getChanges());
-                    $history->setObjectClass(\get_class($entityLogger->getEntity()));
+                    $history->setObjectClass(get_class($entityLogger->getEntity()));
                     $history->setObjectId($entityLogger->getEntity()->getId());
                     $history->setLoggedAt();
-                    $history->setVersion((new \DateTime())->getTimestamp());
+                    $history->setVersion((new DateTime())->getTimestamp());
 
                     $em->persist($history);
                 }
@@ -173,14 +197,14 @@ class EntityLoggerSubscriber implements EventSubscriber
      * @param $object
      * @return string
      */
-    protected function guessObjectName($object): string
+    protected function guessObjectName($object): ?string
     {
-        if (\is_object($object) && \method_exists($object, 'getId')) {
-            if (\method_exists($object, '__toString')) {
+        if (is_object($object) && method_exists($object, 'getId')) {
+            if (method_exists($object, '__toString')) {
                 return sprintf('%s (ID: %d)', $object->__toString(), $object->getId());
             }
 
-            if (\method_exists($object, 'getName')) {
+            if (method_exists($object, 'getName')) {
                 return sprintf('%s (ID: %d)', $object->getName(), $object->getId());
             }
 
@@ -199,7 +223,8 @@ class EntityLoggerSubscriber implements EventSubscriber
         return implode(
             ', ',
             array_map(
-                function ($entity) {
+                function ($entity)
+                {
                     return $this->guessObjectName($entity);
                 },
                 $collection
@@ -211,42 +236,50 @@ class EntityLoggerSubscriber implements EventSubscriber
      * @param EntityManagerInterface $em
      * @param $entity
      * @param string $action
-     * @throws \Doctrine\Common\Annotations\AnnotationException
-     * @throws \ReflectionException
+     * @throws ReflectionException
+     * @throws JsonException
      */
     protected function calculateChanges(EntityManagerInterface $em, $entity, string $action): void
     {
-        $entityClassName = \get_class($entity);
+        $entityClassName = get_class($entity);
 
-        if (\in_array($entityClassName, self::$disabledEntities, true)) {
+        if (in_array($entityClassName, self::$disabledEntities, true)) {
             return;
         }
 
         $uow = $em->getUnitOfWork();
 
-        $uow->recomputeSingleEntityChangeSet($em->getClassMetadata(\get_class($entity)), $entity);
+        $uow->recomputeSingleEntityChangeSet($em->getClassMetadata(get_class($entity)), $entity);
         $changes = $uow->getEntityChangeSet($entity);
 
         $annotationReader = new AnnotationReader();
-        $reflectionClass = new \ReflectionClass($entity);
 
+        $reflectionClass = new ReflectionClass($entity);
+
+        if ($entity instanceof Proxy) {
+            // This gets the real object, the one that the Proxy extends
+            $reflectionClass = $reflectionClass->getParentClass();
+        }
         $entityLogger = new EntityLogger();
         $entityLogger->setEntity($entity);
         $entityLogger->setAction($action);
 
         foreach ($changes as $attributeName => $change) {
-            if (\in_array($attributeName, self::$disabledAttributes, true)) {
+            if (in_array($attributeName, self::$disabledAttributes, true)) {
                 continue;
             }
 
             $type = null;
+
             if ($reflectionClass->hasProperty($attributeName)) {
                 $annotations = $annotationReader->getPropertyAnnotations($reflectionClass->getProperty($attributeName));
                 $type = $this->getColumnTypeFromAnnotations($annotations);
             }
 
-            $oldValueRaw = $change[0];
-            $newValueRaw = $change[1];
+            [
+                $oldValueRaw,
+                $newValueRaw
+            ] = [...$change];
 
             switch ($type) {
                 case 'boolean':
@@ -276,6 +309,12 @@ class EntityLoggerSubscriber implements EventSubscriber
                     $newValue = $newValueRaw;
                     break;
 
+                case 'json':
+                    $oldValue = json_encode($oldValueRaw, JSON_THROW_ON_ERROR, 512);
+                    $newValue = json_encode($newValueRaw, JSON_THROW_ON_ERROR, 512);
+                    break;
+
+                case OneToOne::class:
                 case ManyToOne::class:
                     $oldValue = $this->guessObjectName($oldValueRaw);
                     $newValue = $this->guessObjectName($newValueRaw);
@@ -298,7 +337,7 @@ class EntityLoggerSubscriber implements EventSubscriber
             }
 
             $attributeName = $col->getMapping()['fieldName'];
-            if (\in_array($attributeName, self::$disabledAttributes, true)) {
+            if (in_array($attributeName, self::$disabledAttributes, true)) {
                 continue;
             }
 
@@ -320,14 +359,15 @@ class EntityLoggerSubscriber implements EventSubscriber
     protected function getColumnTypeFromAnnotations(array $annotations): ?string
     {
         foreach ($annotations as $annotation) {
-            switch (\get_class($annotation)) {
+            switch (get_class($annotation)) {
                 case Column::class:
                     return $annotation->type;
-                    break;
 
                 case ManyToOne::class:
                     return ManyToOne::class;
-                    break;
+
+                case OneToOne::class:
+                    return OneToOne::class;
 
                 default:
                     return null;
@@ -335,5 +375,21 @@ class EntityLoggerSubscriber implements EventSubscriber
         }
 
         return null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDisabled(): bool
+    {
+        return $this->isDisabled;
+    }
+
+    /**
+     * @param bool $isDisabled
+     */
+    public function setIsDisabled(bool $isDisabled): void
+    {
+        $this->isDisabled = $isDisabled;
     }
 }

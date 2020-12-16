@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -72,7 +71,7 @@ class Contact implements SearchInterface
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -87,11 +86,9 @@ class Contact implements SearchInterface
      *     "company_read",
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
      *     "contact_read",
@@ -104,7 +101,7 @@ class Contact implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $value;
+    private string $value;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ContactType")
@@ -119,7 +116,7 @@ class Contact implements SearchInterface
      * })
      * @Assert\NotNull()
      */
-    private $contactType;
+    private ?ContactType $contactType = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Client", mappedBy="contacts")
@@ -129,19 +126,24 @@ class Contact implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $clients;
+    private Collection $clients;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Company", mappedBy="contacts")
      * @Groups({"contact_read", "contact_write"})
      * @Assert\NotBlank()
      */
-    private $companies;
+    private Collection $companies;
 
     public function __construct()
     {
         $this->clients = new ArrayCollection();
         $this->companies = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     /**
@@ -161,7 +163,7 @@ class Contact implements SearchInterface
      *
      * @return Contact
      */
-    public function setValue($value)
+    public function setValue(string $value): self
     {
         $this->value = $value;
 
@@ -173,7 +175,7 @@ class Contact implements SearchInterface
      *
      * @return string
      */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->value;
     }
@@ -181,11 +183,11 @@ class Contact implements SearchInterface
     /**
      * Set contactType
      *
-     * @param \App\Entity\ContactType $contactType
+     * @param ContactType|null $contactType
      *
      * @return Contact
      */
-    public function setContactType(\App\Entity\ContactType $contactType = null)
+    public function setContactType(?ContactType $contactType): self
     {
         $this->contactType = $contactType;
 
@@ -195,9 +197,9 @@ class Contact implements SearchInterface
     /**
      * Get contactType
      *
-     * @return \App\Entity\ContactType
+     * @return ContactType
      */
-    public function getContactType()
+    public function getContactType(): ?ContactType
     {
         return $this->contactType;
     }

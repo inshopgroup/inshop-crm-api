@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Interfaces\ClientInterface;
 use App\Interfaces\SearchInterface;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +14,7 @@ use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -25,6 +27,9 @@ use App\Controller\Client\ClientGetItemAction;
 use App\Controller\Client\ClientPutItemController;
 use App\Controller\Client\ClientSignupPostCollectionController;
 use App\Controller\Client\ClientRemindPasswordCollectionController;
+
+use function bin2hex;
+use function random_bytes;
 
 /**
  * Client
@@ -128,7 +133,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -153,9 +158,8 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "client_get_item"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -178,7 +182,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Address", inversedBy="clients")
@@ -190,10 +194,10 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * @ApiSubresource()
      * @Assert\Valid()
      */
-    private $addresses;
+    private Collection $addresses;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
      * @Groups({
@@ -203,7 +207,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "company_read"
      * })
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Label")
@@ -214,7 +218,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "client_write"
      * })
      */
-    private $labels;
+    private Collection $labels;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Contact", inversedBy="clients", cascade={"persist"}, orphanRemoval=true)
@@ -227,7 +231,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * @ApiSubresource()
      * @Assert\Valid()
      */
-    private $contacts;
+    private Collection $contacts;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="client", cascade={"persist"}, orphanRemoval=true)
@@ -240,14 +244,14 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * @ApiSubresource()
      * @Assert\Valid()
      */
-    private $projects;
+    private Collection $projects;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="client", orphanRemoval=true)
      * @ORM\OrderBy({"id" = "DESC"})
      * @ApiSubresource()
      */
-    private $documents;
+    private Collection $documents;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
@@ -261,12 +265,12 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * @Assert\NotBlank()
      * @Assert\Email()
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="string", length=64)
      */
-    private $password;
+    private string $password;
 
     /**
      * @Groups({
@@ -275,42 +279,44 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * })
      * @Assert\NotBlank(groups={"signup"})
      */
-    private $plainPassword;
+    private ?string $plainPassword = null;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Column(type="text", nullable=true)
      */
-    protected $token;
+    protected ?string $token = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $tokenCreatedAt;
+    protected ?DateTime $tokenCreatedAt = null;
 
     /**
      * Client constructor.
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
         $this->contacts = new ArrayCollection();
         $this->projects = new ArrayCollection();
-        $this->companies = new ArrayCollection();
         $this->documents = new ArrayCollection();
-        $this->clients = new ArrayCollection();
-
-        $this->password = \bin2hex(\random_bytes(32));
+        $this->password = bin2hex(random_bytes(32));
         $this->labels = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     /**
      * @return Client
      */
-    public function getClient(): Client
+    public function getClient(): self
     {
         return $this;
     }
@@ -490,36 +496,44 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     /**
      * @return mixed
      */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
     /**
      * @param mixed $password
+     * @return Client
+     * @return Client
      */
-    public function setPassword($password): void
+    public function setPassword($password): self
     {
         $this->password = $password;
+
+        return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getPlainPassword()
+    public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
     /**
      * @param mixed $plainPassword
+     * @return Client
+     * @return Client
      */
-    public function setPlainPassword($plainPassword): void
+    public function setPlainPassword($plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
@@ -527,12 +541,12 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     /**
      * @return array
      */
-    public function getRoles()
+    public function getRoles(): ?array
     {
         return ['ROLE_CLIENT'];
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
@@ -549,17 +563,17 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getTokenCreatedAt(): \DateTime
+    public function getTokenCreatedAt(): ?DateTime
     {
         return $this->tokenCreatedAt;
     }
 
     /**
-     * @param \DateTime $tokenCreatedAt
+     * @param DateTime|null $tokenCreatedAt
      */
-    public function setTokenCreatedAt(\DateTime $tokenCreatedAt): void
+    public function setTokenCreatedAt(?DateTime $tokenCreatedAt): void
     {
         $this->tokenCreatedAt = $tokenCreatedAt;
     }

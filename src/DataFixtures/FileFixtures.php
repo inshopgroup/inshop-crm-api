@@ -16,7 +16,7 @@ class FileFixtures extends Fixture
     /**
      * @var Faker\Generator
      */
-    protected $faker;
+    protected Faker\Generator $faker;
 
     /**
      * TemplateFixtures constructor.
@@ -29,7 +29,7 @@ class FileFixtures extends Fixture
     /**
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < 20; $i++) {
             $file = new File();

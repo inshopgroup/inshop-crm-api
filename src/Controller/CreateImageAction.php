@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use App\Entity\Image;
-use App\Form\ImageType;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Liip\ImagineBundle\Binary\BinaryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\FormFactoryInterface;
+use Liip\ImagineBundle\Imagine\Data\DataManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -19,78 +20,76 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class CreateImageAction
 {
     /**
+     * @var DataManager
+     */
+    private DataManager $dataManager;
+
+    /**
+     * @var FilterManager
+     */
+    private FilterManager $filterManager;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private EntityManagerInterface $em;
+
+    /**
      * @var ValidatorInterface
      */
-    private $validator;
-
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ValidatorInterface $validator;
 
     /**
      * CreateImageAction constructor.
-     * @param ManagerRegistry $doctrine
-     * @param FormFactoryInterface $factory
+     * @param DataManager $dataManager
+     * @param FilterManager $filterManager
+     * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
-     * @param ContainerInterface $container
      */
     public function __construct(
-        ManagerRegistry $doctrine,
-        FormFactoryInterface $factory,
-        ValidatorInterface $validator,
-        ContainerInterface $container
+        DataManager $dataManager,
+        FilterManager $filterManager,
+        EntityManagerInterface $em,
+        ValidatorInterface $validator
     ) {
+        $this->dataManager = $dataManager;
+        $this->filterManager = $filterManager;
+        $this->em = $em;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;
-        $this->factory = $factory;
-        $this->container = $container;
     }
 
     /**
      * @param Request $request
      * @return Image
-     * @throws \Exception
+     * @throws Exception
      */
     public function __invoke(Request $request): Image
     {
+        $uploadedFile = $request->files->get('file');
+
         $image = new Image();
+        $error = $this->validator->validatePropertyValue($image, 'file', $uploadedFile);
 
-        $form = $this->factory->create(ImageType::class, $image);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->doctrine->getManager();
-            $em->persist($image);
-            $em->flush();
-
-            // Thumbnails
-            $this->makeThumbNail($image);
-
-            // Prevent the serialization of the image property
-            $image->image = null;
-
-            return $image;
+        if ($error->count() > 0) {
+            throw new ValidationException($error);
         }
 
-        // This will be handled by API Platform and returns a validation error.
-        throw new ValidationException($this->validator->validate($image));
+        $this->prepareImageFile($uploadedFile);
+        $image->setImage($uploadedFile);
+        $this->validator->validate($image);
+
+        $this->em->persist($image);
+        $this->em->flush();
+
+        $image->image = null;
+
+        return $image;
     }
 
     /**
-     * @param Image $image
-     * @throws \Exception
+     * @param UploadedFile $uploadedFile
      */
-    protected function makeThumbNail(Image $image): void
+    private function prepareImageFile(UploadedFile $uploadedFile): void
     {
         $filters = [
             'thumbnail_200' => 'images_200_filesystem',
@@ -98,12 +97,15 @@ final class CreateImageAction
             'thumbnail_1000' => 'images_1000_filesystem',
         ];
 
-        foreach ($filters as $filter => $bucket) {
-           /** @var BinaryInterface $img */
-            $img = $this->container->get('liip_imagine.data.manager')->find($filter, $image->getContentUrl());
-            $img = $this->container->get('liip_imagine.filter.manager')->applyFilter($img, $filter);
+        foreach ($filters as $filter => $thumbDir) {
 
-            $this->container->get('oneup_flysystem.mount_manager')->getFilesystem($bucket)->write($image->getContentUrl(), $img->getContent());
+            /** @var BinaryInterface $img */
+            $img = $this->dataManager->find($filter, $uploadedFile->getFilename());
+            $img = $this->filterManager->applyFilter($img, $filter);
+            file_put_contents(
+                sys_get_temp_dir() . '/' . $uploadedFile->getFilename(),
+                $img->getContent()
+            );
         }
     }
 }

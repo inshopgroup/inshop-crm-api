@@ -26,7 +26,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @var Faker\Generator
      */
-    protected $faker;
+    protected Faker\Generator $faker;
 
     /**
      * OrderFixtures constructor.
@@ -39,7 +39,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $channels = $manager->getRepository(Channel::class)->findAll();
         $orderStatuses = $manager->getRepository(OrderStatus::class)->findAll();

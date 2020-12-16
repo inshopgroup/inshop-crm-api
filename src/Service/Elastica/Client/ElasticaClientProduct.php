@@ -7,13 +7,10 @@ use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\ProductTranslation;
 use App\Service\ElasticaPaginator;
-use Elastica\Aggregation\Nested;
-use Elastica\Aggregation\Range;
-use Elastica\Aggregation\Terms;
 use Elastica\Document;
 use Elastica\Query;
-use Elastica\Script\Script;
 use Elastica\Type\Mapping;
+use Exception;
 
 /**
  * Class ElasticaClientProduct
@@ -85,7 +82,7 @@ class ElasticaClientProduct extends ElasticaClientBase
     /**
      * @param Product $entity
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function toArray(Product $entity): array
     {
@@ -183,8 +180,8 @@ class ElasticaClientProduct extends ElasticaClientBase
 
         $query->setQuery($boolQuery);
 
-        $page = isset($params['page']) ? $params['page'] : 1;
-        $size = isset($params['perPage']) ? $params['perPage'] : 20;
+        $page = $params['page'] ?? 1;
+        $size = $params['perPage'] ?? 20;
         $from = $size * ($page - 1);
 
         $query
@@ -198,7 +195,8 @@ class ElasticaClientProduct extends ElasticaClientBase
 
         $results = $search->search();
 
-        $data = array_map(function (Document $document) {
+        $data = array_map(
+            static function (Document $document) {
             return $document->toArray()['_source'];
         }, $results->getDocuments());
 

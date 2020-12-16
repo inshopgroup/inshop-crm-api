@@ -4,6 +4,7 @@ namespace App\Controller\Text;
 
 use App\Entity\Text;
 use App\Repository\TextRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -17,7 +18,7 @@ class TextFrontendGetItemAction
      * @param Request $request
      * @param TextRepository $textRepository
      * @return Text
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function __invoke(Request $request, TextRepository $textRepository): Text
     {

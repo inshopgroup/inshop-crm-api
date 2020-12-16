@@ -3,21 +3,21 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\CompanyLastAction;
 use App\Interfaces\SearchInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * Company
@@ -32,7 +32,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     collectionOperations={
  *          "get"={
-*               "normalization_context"={
+ *               "normalization_context"={
  *                  "groups"={"company_read_collection", "read", "is_active_read"}
  *              },
  *              "access_control"="is_granted('ROLE_COMPANY_LIST')"
@@ -92,7 +92,7 @@ class Company implements SearchInterface
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -106,13 +106,15 @@ class Company implements SearchInterface
      *     "invoice_header_read_collection",
      *     "address_write",
      *     "contact_write",
+     *     "document_read",
+     *     "document_write",
      *     "company_product_read",
      *     "company_product_write",
      *     "product_sell_price_read",
      *     "company_read_collection"
      * })
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @var string
@@ -131,10 +133,10 @@ class Company implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -142,10 +144,10 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $fullName;
+    private ?string $fullName = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -153,10 +155,10 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $krs;
+    private ?string $krs = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -164,10 +166,10 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $nip;
+    private ?string $nip = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -175,10 +177,10 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $bankName;
+    private ?string $bankName = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -186,21 +188,19 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $bankAccountNumber;
+    private ?string $bankAccountNumber = null;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="boolean", nullable=true)
      * @Groups({
      *     "company_read",
      *     "company_write",
      * })
      */
-    private $isVat;
+    private ?bool $isVat = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -208,7 +208,7 @@ class Company implements SearchInterface
      *     "company_write",
      * })
      */
-    private $vatComment;
+    private ?string $vatComment = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Address", inversedBy="companies")
@@ -219,7 +219,17 @@ class Company implements SearchInterface
      *     "company_read",
      * })
      */
-    private $addresses;
+    private Collection $addresses;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Document", mappedBy="companies", orphanRemoval=true)
+     * @ORM\OrderBy({"id" = "DESC"})
+     * @Groups({
+     *     "invoice_header_read"
+     * })
+     * @ApiSubresource()
+     */
+    private Collection $documents;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Contact", inversedBy="companies", cascade={"persist"}, orphanRemoval=true)
@@ -232,7 +242,7 @@ class Company implements SearchInterface
      * @ApiSubresource()
      * @Assert\Valid()
      */
-    private $contacts;
+    private Collection $contacts;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CompanyProduct", mappedBy="company")
@@ -242,10 +252,10 @@ class Company implements SearchInterface
      * })
      * @ApiSubresource()
      */
-    private $companyProducts;
+    private Collection $companyProducts;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -254,10 +264,10 @@ class Company implements SearchInterface
      *     "company_read_collection"
      * })
      */
-    private $contactPerson;
+    private ?string $contactPerson = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
@@ -265,7 +275,7 @@ class Company implements SearchInterface
      *     "company_write"
      * })
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Label")
@@ -276,14 +286,20 @@ class Company implements SearchInterface
      *     "company_write"
      * })
      */
-    private $labels;
+    private Collection $labels;
 
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
+        $this->documents = new ArrayCollection();
         $this->contacts = new ArrayCollection();
         $this->companyProducts = new ArrayCollection();
         $this->labels = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     /**
@@ -409,6 +425,34 @@ class Company implements SearchInterface
     }
 
     /**
+     * @return Collection|Document[]
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): self
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents[] = $document;
+            $document->addCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): self
+    {
+        if ($this->documents->contains($document)) {
+            $this->documents->removeElement($document);
+            $document->removeCompany($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection|Contact[]
      */
     public function getContacts(): Collection
@@ -470,7 +514,7 @@ class Company implements SearchInterface
         return $this->description;
     }
 
-    public function setDescription(string $description = null): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 

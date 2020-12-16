@@ -18,7 +18,7 @@ trait Blameable
      * @ORM\Column(nullable=true)
      * @Groups({"read"})
      */
-    protected $createdBy;
+    protected string $createdBy;
 
     /**
      * @var string
@@ -26,15 +26,15 @@ trait Blameable
      * @ORM\Column(nullable=true)
      * @Groups({"read"})
      */
-    protected $updatedBy;
+    protected string $updatedBy;
 
     /**
      * Sets createdBy.
      *
-     * @param  string $createdBy
+     * @param string $createdBy
      * @return $this
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(string $createdBy): self
     {
         $this->createdBy = $createdBy;
 
@@ -46,7 +46,7 @@ trait Blameable
      *
      * @return string
      */
-    public function getCreatedBy()
+    public function getCreatedBy(): string
     {
         return $this->createdBy;
     }
@@ -54,10 +54,10 @@ trait Blameable
     /**
      * Sets updatedBy.
      *
-     * @param  string $updatedBy
+     * @param string $updatedBy
      * @return $this
      */
-    public function setUpdatedBy($updatedBy)
+    public function setUpdatedBy(string $updatedBy): self
     {
         $this->updatedBy = $updatedBy;
 
@@ -69,7 +69,7 @@ trait Blameable
      *
      * @return string
      */
-    public function getUpdatedBy()
+    public function getUpdatedBy(): string
     {
         return $this->updatedBy;
     }

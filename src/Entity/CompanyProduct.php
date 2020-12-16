@@ -3,12 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use App\Interfaces\SearchInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -68,7 +64,7 @@ class CompanyProduct
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -79,9 +75,8 @@ class CompanyProduct
      *     "product_sell_price_write"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="companyProducts")
      * @Groups({
      *     "company_product_read",
@@ -90,7 +85,7 @@ class CompanyProduct
      * })
      * @Assert\NotNull()
      */
-    private $company;
+    private ?Company $company = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="companyProducts")
@@ -101,7 +96,7 @@ class CompanyProduct
      * })
      * @Assert\NotNull()
      */
-    private $product;
+    private ?Product $product = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
@@ -112,7 +107,7 @@ class CompanyProduct
      * })
      * @Assert\NotNull()
      */
-    private $currency;
+    private ?Currency $currency = null;
 
     /**
      * @ORM\Column(type="float", nullable=false)
@@ -123,7 +118,7 @@ class CompanyProduct
      * })
      * @Assert\NotBlank()
      */
-    private $priceBuyNetto;
+    private float $priceBuyNetto;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
@@ -134,7 +129,12 @@ class CompanyProduct
      * })
      * @Assert\NotBlank()
      */
-    private $availability;
+    private int $availability;
+
+    public function __sleep()
+    {
+        return [];
+    }
 
     public function getId(): ?int
     {
@@ -165,36 +165,36 @@ class CompanyProduct
         return $this;
     }
 
-    public function getCompany(): Company
+    public function getCompany(): ?Company
     {
         return $this->company;
     }
 
-    public function setCompany(Company $company): self
+    public function setCompany(?Company $company): self
     {
         $this->company = $company;
 
         return $this;
     }
 
-    public function getProduct(): Product
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProduct(Product $product): self
+    public function setProduct(?Product $product): self
     {
         $this->product = $product;
 
         return $this;
     }
 
-    public function getCurrency(): Currency
+    public function getCurrency(): ?Currency
     {
         return $this->currency;
     }
 
-    public function setCurrency(Currency $currency): self
+    public function setCurrency(?Currency $currency): self
     {
         $this->currency = $currency;
 
@@ -208,8 +208,8 @@ class CompanyProduct
      *     "product_sell_price_read"
      * })
      */
-    public function getCompanyName()
+    public function getCompanyName(): ?string
     {
-        return $this->getCompany()->getName();
+        return $this->getCompany() ? $this->getCompany()->getName() : null;
     }
 }

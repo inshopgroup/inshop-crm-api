@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\GoogleClient;
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,12 +21,12 @@ class GoogleAuthCommand extends Command
     /**
      * @var UserRepository
      */
-    protected $userRepository;
+    protected UserRepository $userRepository;
 
     /**
      * @var GoogleClient
      */
-    protected $googleClient;
+    protected GoogleClient $googleClient;
 
     /**
      * GoogleAuthCommand constructor.
@@ -53,7 +54,7 @@ class GoogleAuthCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|void|null
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

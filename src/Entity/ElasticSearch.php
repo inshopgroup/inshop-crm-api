@@ -14,27 +14,27 @@ class ElasticSearch implements ElasticInterface
     /**
      * @var string
      */
-    private $id;
+    private string $id;
 
     /**
      * @var string
      */
-    private $iri;
+    private string $iri;
 
     /**
      * @var int
      */
-    private $entityId;
+    private int $entityId;
 
     /**
      * @var string
      */
-    private $type;
+    private string $type;
 
     /**
      * @var string
      */
-    private $text;
+    private string $text;
 
     /**
      * @return string

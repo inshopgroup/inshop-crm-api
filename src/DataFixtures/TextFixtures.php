@@ -18,7 +18,7 @@ class TextFixtures extends Fixture
     /**
      * @var Faker\Generator
      */
-    protected $faker;
+    protected Faker\Generator $faker;
 
     /**
      * TextFixtures constructor.
@@ -31,7 +31,7 @@ class TextFixtures extends Fixture
     /**
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $languages = $manager->getRepository(Language::class)->findAll();
 

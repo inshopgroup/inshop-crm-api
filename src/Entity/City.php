@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use App\Interfaces\SearchInterface;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -15,33 +16,33 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * Contact
+ * City
  *
- * @ORM\Table(name="label")
- * @ORM\Entity(repositoryClass="App\Repository\LabelRepository")
+ * @ORM\Table(name="city")
+ * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
  * @ApiResource(
  *     attributes={
- *          "normalization_context"={"groups"={"label_read", "read", "is_active_read"}},
- *          "denormalization_context"={"groups"={"label_write", "is_active_write"}},
+ *          "normalization_context"={"groups"={"city_read", "read", "is_active_read"}},
+ *          "denormalization_context"={"groups"={"city_write", "is_active_write"}},
  *          "order"={"id": "DESC"}
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_LABEL_LIST')"
+ *              "access_control"="is_granted('ROLE_CITY_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_LABEL_CREATE')"
+ *              "access_control"="is_granted('ROLE_CITY_CREATE')"
  *          }
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_LABEL_SHOW')"
+ *              "access_control"="is_granted('ROLE_CITY_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_LABEL_UPDATE')"
+ *              "access_control"="is_granted('ROLE_CITY_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_LABEL_DELETE')"
+ *              "access_control"="is_granted('ROLE_CITY_DELETE')"
  *          }
  *     })
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
@@ -61,7 +62,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
-class Label
+class City implements SearchInterface
 {
     use Timestampable;
     use Blameable;
@@ -72,32 +73,41 @@ class Label
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Groups({
-     *     "label_read",
-     *     "product_read",
-     *     "company_read",
-     *     "company_write",
+     *     "city_read",
+     *     "address_read",
+     *     "country_write",
+     *     "country_read",
+     *     "address_write",
      *     "company_read_collection",
      *     "client_read",
-     *     "client_read_collection",
-     *     "client_write",
+     *     "company_read",
      * })
      */
     private ?int $id = null;
-
-    /**
+/**
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({
-     *     "label_read",
-     *     "label_write",
-     *     "product_read",
-     *     "company_read",
+     *     "city_read",
+     *     "city_write",
+     *     "address_read",
+     *     "country_read",
      *     "company_read_collection",
      *     "client_read",
-     *     "client_read_collection",
+     *     "company_read",
      * })
      * @Assert\NotBlank()
      */
     private string $name;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="cities")
+     * @Groups({
+     *     "city_read",
+     *     "city_write"
+     * })
+     * @Assert\NotBlank()
+     */
+    private ?Country $country = null;
 
     public function __sleep()
     {
@@ -119,5 +129,33 @@ class Label
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Search text
+     *
+     * @return string
+     */
+    public function getSearchText(): string
+    {
+        return implode(
+            ' ',
+            [
+                $this->getName(),
+                $this->getCountry() ? $this->getCountry()->getName() : null,
+            ]
+        );
     }
 }

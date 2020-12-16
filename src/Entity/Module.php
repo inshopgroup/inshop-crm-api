@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -62,7 +61,7 @@ class Module
     use IsActive;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -72,9 +71,8 @@ class Module
      *     "group_read"
      * })
      */
-    private $id;
-
-    /**
+    private ?int $id = null;
+/**
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
@@ -85,7 +83,7 @@ class Module
      * })
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Role", mappedBy="module")
@@ -95,11 +93,16 @@ class Module
      * })
      * @Assert\NotBlank()
      */
-    private $roles;
+    private Collection $roles;
 
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getId(): ?int

@@ -7,6 +7,7 @@ use ApiPlatform\Core\JsonLd\ContextBuilder;
 use ApiPlatform\Core\JsonLd\Serializer\JsonLdContextTrait;
 use ApiPlatform\Core\Serializer\ContextTrait;
 use App\Service\ElasticaPaginator;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -22,10 +23,11 @@ final class ElasticaCollectionNormalizer implements NormalizerInterface, Normali
     use JsonLdContextTrait;
     use NormalizerAwareTrait;
 
-    const FORMAT = 'jsonld';
+    public const FORMAT = 'jsonld';
 
-    private $contextBuilder;
-    private $resourceClassResolver;
+    private ContextBuilder $contextBuilder;
+
+    private ResourceClassResolverInterface $resourceClassResolver;
 
     /**
      * ElasticaCollectionNormalizer constructor.
@@ -41,20 +43,22 @@ final class ElasticaCollectionNormalizer implements NormalizerInterface, Normali
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, ?string $format = null): bool
     {
         return self::FORMAT === $format && ($data instanceof ElasticaPaginator);
     }
 
     /**
      * @param ElasticaPaginator $object
-     * @param null $format
+     * @param string|null $format
      * @param array $context
      * @return array|bool|float|int|string
+     * @throws ExceptionInterface
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, ?string $format = null, array $context = [])
     {
-        $resourceClass = $this->resourceClassResolver->getResourceClass($object, $context['resource_class'] ?? null, true);
+        $resourceClass =
+            $this->resourceClassResolver->getResourceClass($object, $context['resource_class'] ?? null, true);
         $data = $this->addJsonLdContext($this->contextBuilder, $resourceClass, $context);
         $context = $this->initContext($resourceClass, $context);
 
@@ -72,7 +76,7 @@ final class ElasticaCollectionNormalizer implements NormalizerInterface, Normali
     }
 
     /**
-     * {@inheritdoc}
+     * {}
      */
     public function hasCacheableSupportsMethod(): bool
     {

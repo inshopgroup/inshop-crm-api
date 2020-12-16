@@ -17,7 +17,7 @@ class EntityRemoveListener
      * @param LifecycleEventArgs $args
      * @throws EntityRemoveException
      */
-    public function preRemove(LifecycleEventArgs $args)
+    public function preRemove(LifecycleEventArgs $args): void
     {
         $em = $args->getEntityManager();
         $entity = $args->getObject();
