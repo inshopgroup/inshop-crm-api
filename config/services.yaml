@@ -115,3 +115,8 @@ services:
         credentials:
           key: '%env(AWS_S3_ACCESS_ID)%'
           secret: '%env(AWS_S3_ACCESS_SECRET)%'
+
+  gesdinet.jwtrefreshtoken.refresh_token_manager:
+    class:  App\Service\RefreshTokenManager
+    public: true
+    arguments: [ '@gesdinet.jwtrefreshtoken.object_manager', '%gesdinet.jwtrefreshtoken.refresh_token.class%' ]
