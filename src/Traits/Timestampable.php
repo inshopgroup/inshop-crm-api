@@ -14,28 +14,28 @@ use Symfony\Component\Serializer\Annotation\Groups;
 trait Timestampable
 {
     /**
-     * @var DateTime
+     * @var DateTime|null
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      * @Groups({"read"})
      */
-    protected DateTime $createdAt;
+    protected ?DateTime $createdAt = null;
 
     /**
-     * @var DateTime
+     * @var DateTime|null
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      * @Groups({"read"})
      */
-    protected DateTime $updatedAt;
+    protected ?DateTime $updatedAt = null;
 
     /**
      * Sets createdAt.
      *
-     * @param  DateTime $createdAt
+     * @param  DateTime|null $createdAt
      * @return $this
      */
-    public function setCreatedAt(DateTime $createdAt): self
+    public function setCreatedAt(?DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -43,11 +43,9 @@ trait Timestampable
     }
 
     /**
-     * Returns createdAt.
-     *
-     * @return DateTime
+     * @return DateTime|null
      */
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
@@ -55,10 +53,10 @@ trait Timestampable
     /**
      * Sets updatedAt.
      *
-     * @param  DateTime $updatedAt
+     * @param  DateTime|null $updatedAt
      * @return $this
      */
-    public function setUpdatedAt(DateTime $updatedAt): self
+    public function setUpdatedAt(?DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -68,9 +66,9 @@ trait Timestampable
     /**
      * Returns updatedAt.
      *
-     * @return DateTime
+     * @return DateTime|null
      */
-    public function getUpdatedAt(): DateTime
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
