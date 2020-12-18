@@ -60,6 +60,7 @@ use function random_bytes;
  *                  "groups"={"signup_collection"}
  *              },
  *              "controller"=ClientSignupPostCollectionController::class,
+ *              "validation_groups"={"client_signup_frontend"},
  *              "defaults"={"_api_receive"=true},
  *          }
  *     },
@@ -91,7 +92,8 @@ use function random_bytes;
  *                  "groups"={"client_put_item"}
  *              },
  *              "controller"=ClientPutItemController::class,
- *              "defaults"={"_api_receive"=false},
+ *              "validation_groups"={"client_put_frontend"},
+ *              "defaults"={"_api_receive"=true},
  *          },
  *          "loginByToken"={
  *              "method"="GET",
@@ -180,7 +182,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "client_put_item",
      *     "signup_collection",
      * })
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"Default", "client_signup_frontend", "client_put_frontend"})
      */
     private string $name;
 
@@ -262,8 +264,8 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "client_put_item",
      *     "signup_collection",
      * })
-     * @Assert\NotBlank()
-     * @Assert\Email()
+     * @Assert\NotBlank(groups={"Default", "client_signup_frontend", "client_put_frontend"})
+     * @Assert\Email(groups={"Default", "client_signup_frontend", "client_put_frontend"})
      */
     private string $username;
 
@@ -277,7 +279,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "client_write",
      *     "signup_collection",
      * })
-     * @Assert\NotBlank(groups={"signup"})
+     * @Assert\NotBlank(groups={"client_signup_frontend"})
      */
     private ?string $plainPassword = null;
 

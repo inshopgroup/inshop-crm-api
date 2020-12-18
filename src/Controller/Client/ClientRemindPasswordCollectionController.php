@@ -3,17 +3,16 @@
 namespace App\Controller\Client;
 
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
-use ApiPlatform\Core\Validator\ValidatorInterface;
 use App\Controller\User\BaseUserController;
 use App\Entity\Client;
 use App\Repository\ClientRepository;
+use App\Service\Email\EmailSender;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Swift_Mailer;
-use Swift_Message;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -27,37 +26,71 @@ use function random_bytes;
 class ClientRemindPasswordCollectionController extends BaseUserController
 {
     /**
-     * @param Request $request
-     * @param EntityManagerInterface $em
-     * @param Swift_Mailer $mailer
+     * @var ParameterBagInterface
+     */
+    private ParameterBagInterface $params;
+
+    /**
+     * @var ClientRepository
+     */
+    private ClientRepository $clientRepository;
+
+    /**
+     * @var EmailSender
+     */
+    private EmailSender $emailSender;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private EntityManagerInterface $em;
+
+    /**
+     * ClientRemindPasswordCollectionController constructor.
+     * @param UserPasswordEncoderInterface $encoder
      * @param ParameterBagInterface $params
-     * @param ValidatorInterface $validator
      * @param ClientRepository $clientRepository
+     * @param EmailSender $emailSender
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(
+        UserPasswordEncoderInterface $encoder,
+        ParameterBagInterface $params,
+        ClientRepository $clientRepository,
+        EmailSender $emailSender,
+        EntityManagerInterface $em
+    ) {
+        parent::__construct($encoder);
+        $this->params = $params;
+        $this->clientRepository = $clientRepository;
+        $this->emailSender = $emailSender;
+        $this->em = $em;
+    }
+
+    /**
+     * @param Request $request
      * @return Client
+     * @throws \JsonException
      * @throws Exception
      */
-    public function __invoke(
-        Request $request,
-        EntityManagerInterface $em,
-        Swift_Mailer $mailer,
-        ParameterBagInterface $params,
-        ValidatorInterface $validator,
-        ClientRepository $clientRepository
-    ): Client {
+    public function __invoke(Request $request): Client
+    {
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $client = null;
 
         if (isset($data['username'])) {
             /** @var Client $client */
-            $client = $clientRepository->getClientByEmail($data['username']);
+            $client = $this->clientRepository->getClientByEmail($data['username']);
         }
 
         if (!$client) {
             throw new ValidationException(
-                new ConstraintViolationList([
-                    new ConstraintViolation('User not found', '', [], '', 'username', 'invalid'),
-                ])
+                new ConstraintViolationList(
+                    [
+                        new ConstraintViolation('User not found', '', [], '', 'username', 'invalid'),
+                    ]
+                )
             );
         }
 
@@ -66,27 +99,19 @@ class ClientRemindPasswordCollectionController extends BaseUserController
 
         $client = $this->encodePassword($client);
 
-        $validator->validate($client);
-        $em->flush();
+        $this->em->flush();
 
-        try {
-            $message = (new Swift_Message())
-                ->setSubject('Remind password')
-                ->setFrom('noreply@inshopcrm.com')
-                ->setTo($client->getUsername())
-                ->setBody(
-                    $this->renderView(
-                        'emails/signup.html.twig',
-                        [
-                            'user' => $client,
-                            'url' => sprintf('%s%s%s', $params->get('client_url'), '/token/login/', $client->getToken()),
-                        ]
-                    ),
-                    'text/html'
-                );
+        $parameters = [
+            'user' => $client,
+            'url' => sprintf(
+                '%s%s%s',
+                $this->params->get('client_url'),
+                '/token/login/',
+                $client->getToken()
+            ),
+        ];
 
-            $mailer->send($message);
-        } catch (Exception $e) {}
+        $this->emailSender->sendEmail($client, 'remind_password', 'remind.html.twig', $parameters);
 
         return $client;
     }

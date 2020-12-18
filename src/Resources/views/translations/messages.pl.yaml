@@ -1,0 +1,44 @@
+lesson_reminder: Przypomnienie o lekcji
+meeting_reminder: Przypomnienie o spotkaniu
+password_changed: Hasło zostało zmienione
+hello: Dzień dobry
+client_absence: Uczeń zgłosił nieobecność
+client_name: Imię i nazwisko ucznia
+client_menu: Panel klienta
+hi: Cześć
+you_have_been_added_to_group: Zostałeś dodany do nowej grupy
+your_teacher_is: Twój lektor jest
+your_schedule_is: Twój harmonogram jest
+time: Czas
+contact_notification: Powiadomienie o kontakcie od klienta
+name: Imię
+phone: Telefon
+email: Email
+topic: Temat
+description: Wiadomość
+day: Dzień
+your_meeting_is: Twoje spotkanie jest
+you_have_been_added_to_the_group: Zostałeś dodany do grupy
+you_have_a_new_meeting: Masz nowe spotkanie
+your_meeting_has_been_change: Twoje spotkanie zostało zmienione
+you_have_upcoming_lesson_soon: Masz wkrótce nadchodzącą lekcję
+you_have_upcoming_meeting_soon: Twoje spotkanie zaczyna się za
+your_schedule_for_group: Twój harmonogram dla grupy
+new_group_schedule: Grupa ma nowy harmonogram
+update_group_schedule: Harmonogram dla grupy został zmieniony
+lesson_number: Numer lekcji
+group_name: Nazwa grupy
+teacher: Lektor
+date: Data
+welcome: Zapraszamy!
+remind_password: Przypomnienie hasła
+thanks: Dziękujemy!
+reset_password: Zresetuj hasło
+forgot_your_password: Zapomniałeś hasła?
+didnt_make_this_request_forgot: Jeśli nie wysłałeś tej prośby, zignoruj tę wiadomość e-mail.
+to_set_up_new_password_click_the_button: Aby ustawić nowe hasło, kliknij przycisk poniżej
+to_set_up_new_password_follow_the_link: Aby ustawić nowe hasło, kliknij w link
+you_are_successfully_registered: Jesteś pomyślne zarejestrowany.
+you_are_successfully_changed_password: Pomyślnie zmieniłeś hasło.
+to_confirm_your_email_follow_the_link: Aby potwierdzić swój adres e-mail, kliknij w link
+confirm_registration: Potwierdź rejestrację

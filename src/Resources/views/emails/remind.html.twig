@@ -1,8 +1,8 @@
 {% extends 'emails/layout.html.twig' %}
 
 {% block body %}
-    <p>Hi {{ recruiter.user.name }},</p>
-    <p>To set up new password follow the link</p>
+    <p>{% trans %}hi{% endtrans %} {{ recruiter.user.name }}!</p>
+    <p>{% trans %}to_set_up_new_password_follow_the_link{% endtrans %}</p>
 
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
         <tbody>
@@ -19,6 +19,5 @@
         </tr>
         </tbody>
     </table>
-
-    <p>Thanks!</p>
+    <p>{% trans %}thanks{% endtrans %}</p>
 {% endblock %}
