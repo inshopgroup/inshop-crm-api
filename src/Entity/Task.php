@@ -30,13 +30,13 @@ use App\Controller\TaskDeadlineAction;
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_TASK_LIST')"
+ *              "security"="is_granted('ROLE_TASK_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_TASK_CREATE')"
+ *              "security"="is_granted('ROLE_TASK_CREATE')"
  *          },
  *          "deadline"={
- *              "access_control"="is_granted('ROLE_TASK_DEADLINE')",
+ *              "security"="is_granted('ROLE_TASK_DEADLINE')",
  *              "method"="GET",
  *              "path"="/tasks/deadline",
  *              "controller"=TaskDeadlineAction::class,
@@ -48,13 +48,13 @@ use App\Controller\TaskDeadlineAction;
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_TASK_SHOW')"
+ *              "security"="is_granted('ROLE_TASK_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_TASK_UPDATE')"
+ *              "security"="is_granted('ROLE_TASK_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_TASK_DELETE')"
+ *              "security"="is_granted('ROLE_TASK_DELETE')"
  *          }
  *     })
  * @ApiFilter(DateFilter::class, properties={"deadline", "createdAt", "updatedAt"})

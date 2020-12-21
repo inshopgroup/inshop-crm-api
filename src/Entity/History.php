@@ -29,10 +29,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_HISTORY_LIST')"
+ *              "security"="is_granted('ROLE_HISTORY_LIST')"
  *          },
  *          "getEntity"={
- *              "access_control"="is_granted('ROLE_HISTORY_LIST')",
+ *              "security"="is_granted('ROLE_HISTORY_LIST')",
  *              "method"="GET",
  *              "path"="/histories/{entity}/{entityId}",
  *              "normalization_context"={
@@ -44,7 +44,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_HISTORY_SHOW')"
+ *              "security"="is_granted('ROLE_HISTORY_SHOW')"
  *          }
  *     },
  * )

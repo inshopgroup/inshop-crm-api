@@ -36,14 +36,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_USER_LIST')"
+ *              "security"="is_granted('ROLE_USER_LIST')"
  *          },
  *          "post"={
  *              "controller"=UserPostCollectionController::class,
- *              "access_control"="is_granted('ROLE_USER_CREATE')"
+ *              "security"="is_granted('ROLE_USER_CREATE')"
  *          },
  *          "dashboard"={
- *              "access_control"="is_granted('ROLE_USER_DASHBOARD')",
+ *              "security"="is_granted('ROLE_USER_DASHBOARD')",
  *              "method"="GET",
  *              "path"="/users/dashboard",
  *              "controller"=DashboardAction::class,
@@ -52,14 +52,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_USER_SHOW')"
+ *              "security"="is_granted('ROLE_USER_SHOW')"
  *          },
  *          "put"={
  *              "controller"=UserPutItemController::class,
- *              "access_control"="is_granted('ROLE_USER_UPDATE')"
+ *              "security"="is_granted('ROLE_USER_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_USER_DELETE')"
+ *              "security"="is_granted('ROLE_USER_DELETE')"
  *          }
  *     },
  * )

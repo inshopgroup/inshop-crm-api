@@ -27,21 +27,21 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_MODULE_LIST')"
+ *              "security"="is_granted('ROLE_MODULE_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_MODULE_CREATE')"
+ *              "security"="is_granted('ROLE_MODULE_CREATE')"
  *          }
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_MODULE_SHOW')"
+ *              "security"="is_granted('ROLE_MODULE_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_MODULE_UPDATE')"
+ *              "security"="is_granted('ROLE_MODULE_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_MODULE_DELETE')"
+ *              "security"="is_granted('ROLE_MODULE_DELETE')"
  *          }
  *     })
  * @ApiFilter(

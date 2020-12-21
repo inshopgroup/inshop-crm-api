@@ -35,21 +35,21 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *              "normalization_context"={
  *                  "groups"={"invoice_header_read_collection", "read"}
  *              },
- *              "access_control"="is_granted('ROLE_INVOICE_HEADER_LIST')"
+ *              "security"="is_granted('ROLE_INVOICE_HEADER_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_INVOICE_HEADER_CREATE')"
+ *              "security"="is_granted('ROLE_INVOICE_HEADER_CREATE')"
  *          }
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_INVOICE_HEADER_SHOW')"
+ *              "security"="is_granted('ROLE_INVOICE_HEADER_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_INVOICE_HEADER_UPDATE')"
+ *              "security"="is_granted('ROLE_INVOICE_HEADER_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_INVOICE_HEADER_DELETE')"
+ *              "security"="is_granted('ROLE_INVOICE_HEADER_DELETE')"
  *          }
  *     }
  * )

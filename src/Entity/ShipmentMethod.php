@@ -26,21 +26,21 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_SHIPMENT_METHOD_LIST')"
+ *              "security"="is_granted('ROLE_SHIPMENT_METHOD_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_SHIPMENT_METHOD_CREATE')"
+ *              "security"="is_granted('ROLE_SHIPMENT_METHOD_CREATE')"
  *          }
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_SHIPMENT_METHOD_SHOW')"
+ *              "security"="is_granted('ROLE_SHIPMENT_METHOD_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_SHIPMENT_METHOD_UPDATE')"
+ *              "security"="is_granted('ROLE_SHIPMENT_METHOD_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_SHIPMENT_METHOD_DELETE')"
+ *              "security"="is_granted('ROLE_SHIPMENT_METHOD_DELETE')"
  *          }
  *     })
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})

@@ -35,28 +35,28 @@ use Symfony\Component\Validator\Constraints as Assert;
  *               "normalization_context"={
  *                  "groups"={"company_read_collection", "read", "is_active_read"}
  *              },
- *              "access_control"="is_granted('ROLE_COMPANY_LIST')"
+ *              "security"="is_granted('ROLE_COMPANY_LIST')"
  *          },
  *          "last"={
- *              "access_control"="is_granted('ROLE_COMPANY_UPDATE')",
+ *              "security"="is_granted('ROLE_COMPANY_UPDATE')",
  *              "method"="GET",
  *              "path"="/companies/last",
  *              "controller"=CompanyLastAction::class,
  *              "defaults"={"_api_receive"=false}
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_COMPANY_CREATE')"
+ *              "security"="is_granted('ROLE_COMPANY_CREATE')"
  *          }
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_COMPANY_SHOW')"
+ *              "security"="is_granted('ROLE_COMPANY_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_COMPANY_UPDATE')"
+ *              "security"="is_granted('ROLE_COMPANY_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_COMPANY_DELETE')"
+ *              "security"="is_granted('ROLE_COMPANY_DELETE')"
  *          }
  *     })
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})

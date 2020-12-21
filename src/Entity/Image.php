@@ -25,10 +25,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_IMAGE_LIST')"
+ *              "security"="is_granted('ROLE_IMAGE_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_USER')",
+ *              "security"="is_granted('ROLE_USER')",
  *              "method"="POST",
  *              "path"="/images",
  *              "controller"=CreateImageAction::class,
@@ -37,13 +37,13 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_IMAGE_SHOW')"
+ *              "security"="is_granted('ROLE_IMAGE_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_IMAGE_UPDATE')"
+ *              "security"="is_granted('ROLE_IMAGE_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_IMAGE_DELETE')"
+ *              "security"="is_granted('ROLE_IMAGE_DELETE')"
  *          }
  *     })
  * @Vich\Uploadable

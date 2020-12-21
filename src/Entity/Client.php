@@ -48,10 +48,10 @@ use function random_bytes;
  *              "normalization_context"={
  *                  "groups"={"client_read_collection", "read", "is_active_read"}
  *              },
- *              "access_control"="is_granted('ROLE_CLIENT_LIST')"
+ *              "security"="is_granted('ROLE_CLIENT_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_CLIENT_CREATE')"
+ *              "security"="is_granted('ROLE_CLIENT_CREATE')"
  *          },
  *          "signup"={
  *              "method"="POST",
@@ -66,16 +66,16 @@ use function random_bytes;
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_CLIENT_SHOW')"
+ *              "security"="is_granted('ROLE_CLIENT_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_CLIENT_UPDATE')"
+ *              "security"="is_granted('ROLE_CLIENT_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_CLIENT_DELETE')"
+ *              "security"="is_granted('ROLE_CLIENT_DELETE')"
  *          },
  *          "clientGet"={
- *              "access_control"="is_granted('ROLE_CLIENT')",
+ *              "security"="is_granted('ROLE_CLIENT')",
  *              "method"="GET",
  *              "path"="/frontend/profile/me",
  *              "normalization_context"={
@@ -85,7 +85,7 @@ use function random_bytes;
  *              "defaults"={"_api_receive"=false},
  *          },
  *          "clientPut"={
- *              "access_control"="is_granted('ROLE_CLIENT')",
+ *              "security"="is_granted('ROLE_CLIENT')",
  *              "method"="PUT",
  *              "path"="/frontend/profile/me",
  *              "normalization_context"={

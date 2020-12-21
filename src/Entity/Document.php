@@ -32,21 +32,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_DOCUMENT_LIST')"
+ *              "security"="is_granted('ROLE_DOCUMENT_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_DOCUMENT_CREATE')"
+ *              "security"="is_granted('ROLE_DOCUMENT_CREATE')"
  *          }
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_DOCUMENT_SHOW')"
+ *              "security"="is_granted('ROLE_DOCUMENT_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_DOCUMENT_UPDATE')"
+ *              "security"="is_granted('ROLE_DOCUMENT_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_DOCUMENT_DELETE')"
+ *              "security"="is_granted('ROLE_DOCUMENT_DELETE')"
  *          }
  *     })
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})

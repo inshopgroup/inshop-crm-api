@@ -27,21 +27,21 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_CURRENCY_LIST')"
+ *              "security"="is_granted('ROLE_CURRENCY_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_CURRENCY_CREATE')"
+ *              "security"="is_granted('ROLE_CURRENCY_CREATE')"
  *          }
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_CURRENCY_SHOW')"
+ *              "security"="is_granted('ROLE_CURRENCY_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_CURRENCY_UPDATE')"
+ *              "security"="is_granted('ROLE_CURRENCY_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_CURRENCY_DELETE')"
+ *              "security"="is_granted('ROLE_CURRENCY_DELETE')"
  *          }
  *     })
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})

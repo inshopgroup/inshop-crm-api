@@ -34,10 +34,10 @@ use App\Controller\Category\CategoryFrontendGetItemAction;
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_CATEGORY_LIST')"
+ *              "security"="is_granted('ROLE_CATEGORY_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_CATEGORY_CREATE')"
+ *              "security"="is_granted('ROLE_CATEGORY_CREATE')"
  *          },
  *          "frontend"={
  *              "method"="GET",
@@ -51,13 +51,13 @@ use App\Controller\Category\CategoryFrontendGetItemAction;
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_CATEGORY_SHOW')"
+ *              "security"="is_granted('ROLE_CATEGORY_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_CATEGORY_UPDATE')"
+ *              "security"="is_granted('ROLE_CATEGORY_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_CATEGORY_DELETE')"
+ *              "security"="is_granted('ROLE_CATEGORY_DELETE')"
  *          },
  *          "frontend"={
  *              "method"="GET",

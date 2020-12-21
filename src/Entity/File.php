@@ -19,10 +19,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(iri="http://schema.org/MediaObject",
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_FILE_LIST')"
+ *              "security"="is_granted('ROLE_FILE_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_FILE_CREATE')",
+ *              "security"="is_granted('ROLE_FILE_CREATE')",
  *              "method"="POST",
  *              "path"="/files",
  *              "controller"=CreateFileAction::class,
@@ -31,13 +31,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_FILE_SHOW')"
+ *              "security"="is_granted('ROLE_FILE_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_FILE_UPDATE')"
+ *              "security"="is_granted('ROLE_FILE_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_FILE_DELETE')"
+ *              "security"="is_granted('ROLE_FILE_DELETE')"
  *          }
  *     })
  * @Vich\Uploadable

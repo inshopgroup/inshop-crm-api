@@ -30,21 +30,21 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_PROJECT_LIST')"
+ *              "security"="is_granted('ROLE_PROJECT_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_PROJECT_CREATE')"
+ *              "security"="is_granted('ROLE_PROJECT_CREATE')"
  *          }
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_PROJECT_SHOW')"
+ *              "security"="is_granted('ROLE_PROJECT_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_PROJECT_UPDATE')"
+ *              "security"="is_granted('ROLE_PROJECT_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_PROJECT_DELETE')"
+ *              "security"="is_granted('ROLE_PROJECT_DELETE')"
  *          }
  *     })
  * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})

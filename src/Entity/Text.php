@@ -32,13 +32,13 @@ use App\Controller\Text\TextFrontendGetItemAction;
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_TEXT_SHOW')"
+ *              "security"="is_granted('ROLE_TEXT_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_TEXT_UPDATE')"
+ *              "security"="is_granted('ROLE_TEXT_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_TEXT_DELETE')"
+ *              "security"="is_granted('ROLE_TEXT_DELETE')"
  *          },
  *          "frontendGet"={
  *              "method"="GET",
@@ -55,10 +55,10 @@ use App\Controller\Text\TextFrontendGetItemAction;
  *              "normalization_context"={
  *                  "groups"={"text_read_collection", "read", "is_active_read"}
  *              },
- *              "access_control"="is_granted('ROLE_TEXT_LIST')"
+ *              "security"="is_granted('ROLE_TEXT_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_TEXT_CREATE')"
+ *              "security"="is_granted('ROLE_TEXT_CREATE')"
  *          }
  *     }
  * )

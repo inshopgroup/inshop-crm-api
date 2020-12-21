@@ -23,21 +23,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     collectionOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_PURCHASE_ORDER_LINE_LIST')"
+ *              "security"="is_granted('ROLE_PURCHASE_ORDER_LINE_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_PURCHASE_ORDER_LINE_CREATE')"
+ *              "security"="is_granted('ROLE_PURCHASE_ORDER_LINE_CREATE')"
  *          }
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_PURCHASE_ORDER_LINE_SHOW')"
+ *              "security"="is_granted('ROLE_PURCHASE_ORDER_LINE_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_PURCHASE_ORDER_LINE_UPDATE')"
+ *              "security"="is_granted('ROLE_PURCHASE_ORDER_LINE_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_PURCHASE_ORDER_LINE_DELETE')"
+ *              "security"="is_granted('ROLE_PURCHASE_ORDER_LINE_DELETE')"
  *          }
  *     })
  */

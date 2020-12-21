@@ -32,21 +32,21 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *              "normalization_context"={
  *                  "groups"={"order_header_read_collection", "read", "is_active_read"}
  *              },
- *              "access_control"="is_granted('ROLE_ORDER_HEADER_LIST')"
+ *              "security"="is_granted('ROLE_ORDER_HEADER_LIST')"
  *          },
  *          "post"={
- *              "access_control"="is_granted('ROLE_ORDER_HEADER_CREATE')"
+ *              "security"="is_granted('ROLE_ORDER_HEADER_CREATE')"
  *          }
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_ORDER_HEADER_SHOW')"
+ *              "security"="is_granted('ROLE_ORDER_HEADER_SHOW')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_ORDER_HEADER_UPDATE')"
+ *              "security"="is_granted('ROLE_ORDER_HEADER_UPDATE')"
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_ORDER_HEADER_DELETE')"
+ *              "security"="is_granted('ROLE_ORDER_HEADER_DELETE')"
  *          }
  *     }
  * )
