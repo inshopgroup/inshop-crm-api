@@ -97,8 +97,6 @@ class ClientRemindPasswordCollectionController extends BaseUserController
         $client->setToken(bin2hex(random_bytes(32)));
         $client->setTokenCreatedAt(new DateTime());
 
-        $client = $this->encodePassword($client);
-
         $this->em->flush();
 
         $parameters = [
