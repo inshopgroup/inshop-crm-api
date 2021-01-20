@@ -5,8 +5,8 @@ namespace App\Service\Elastica\Client;
 use App\Interfaces\SearchInterface;
 use App\Service\ElasticaPaginator;
 use Elastica\Document;
+use Elastica\Mapping;
 use Elastica\Query;
-use Elastica\Type\Mapping;
 
 use function get_class;
 
@@ -30,11 +30,10 @@ class ElasticaClientSearch extends ElasticaClientBase
     public function createMapping(): void
     {
         // Create a type
-        $elasticaType = $this->client->getClient()->getIndex($this->getIndex())->getType('_doc');
+        $index = $this->client->getClient()->getIndex($this->getIndex());
 
         // Define mapping
         $mapping = new Mapping();
-        $mapping->setType($elasticaType);
 
         // Set mapping
         $mapping->setProperties([
@@ -48,7 +47,7 @@ class ElasticaClientSearch extends ElasticaClientBase
         ]);
 
         // Send mapping to type
-        $mapping->send();
+        $mapping->send($index);
     }
 
     /**
