@@ -4,21 +4,14 @@ namespace App\Controller\Client;
 
 use App\Controller\User\BaseUserController;
 use App\Entity\Client;
-use App\Entity\ClientRole;
-use App\Entity\Company;
-use App\Entity\Language;
 use App\Service\Email\EmailSender;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
 use Twig\Error\LoaderError;
-
 use Twig\Error\RuntimeError;
-
 use Twig\Error\SyntaxError;
 
 use function bin2hex;
@@ -54,12 +47,10 @@ class ClientSignupPostCollectionController extends BaseUserController
      */
     public function __construct(
         UserPasswordEncoderInterface $encoder,
-        EntityManagerInterface $em,
         EmailSender $emailSender,
         ParameterBagInterface $params
     ) {
         parent::__construct($encoder);
-        $this->em = $em;
         $this->emailSender = $emailSender;
         $this->params = $params;
     }
@@ -76,11 +67,10 @@ class ClientSignupPostCollectionController extends BaseUserController
     {
         $data->setToken(bin2hex(random_bytes(32)));
         $data->setTokenCreatedAt(new DateTime());
+        $data->setIsActive(false);
 
         /** @var Client $client */
         $client = $this->encodePassword($data);
-
-        $this->em->flush();
 
         $parameters = [
             'user' => $client,

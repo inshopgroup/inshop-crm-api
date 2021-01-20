@@ -35,6 +35,7 @@ security:
 
         client_login:
             pattern:  ^/frontend/login
+            user_checker: App\Security\ClientChecker
             stateless: true
             anonymous: true
             provider: client_provider
