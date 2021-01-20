@@ -69,13 +69,12 @@ class StockLine
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "stock_line_read"
      * })
      */
     private ?int $id = null;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\StockLineStatus")
@@ -137,7 +136,7 @@ class StockLine
     private ?Currency $currency = null;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="float")
      * @Groups({
      *     "stock_line_read",
      *     "stock_line_write",
@@ -156,17 +155,12 @@ class StockLine
      */
     private ?CompanyProduct $companyProduct = null;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPriceBuyNetto(): ?float
+    public function getPriceBuyNetto(): float
     {
         return $this->priceBuyNetto;
     }

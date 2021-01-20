@@ -22,6 +22,9 @@ final class ElasticaItemNormalizer implements NormalizerInterface, NormalizerAwa
     use JsonLdContextTrait;
     use NormalizerAwareTrait;
 
+    /**
+     * @var string
+     */
     public const FORMAT = 'jsonld';
 
     private ContextBuilder $contextBuilder;

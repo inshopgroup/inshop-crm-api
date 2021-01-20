@@ -93,7 +93,7 @@ class User implements Serializable, UserInterface
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "user_read",
      *     "task_read",
@@ -103,7 +103,6 @@ class User implements Serializable, UserInterface
      * })
      */
     private ?int $id = null;
-
 
     /**
      * @var string
@@ -140,7 +139,7 @@ class User implements Serializable, UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "user_read",
      *     "user_write",
@@ -223,11 +222,6 @@ class User implements Serializable, UserInterface
         $this->groups = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getUsername(): ?string
     {
         return $this->username;
@@ -264,11 +258,13 @@ class User implements Serializable, UserInterface
     /** @see \Serializable::serialize() */
     public function serialize(): ?string
     {
-        return serialize(array(
-            $this->id,
-            $this->username,
-            $this->password,
-        ));
+        return serialize(
+            array(
+                $this->id,
+                $this->username,
+                $this->password,
+            )
+        );
     }
 
     /** @param $serialized
@@ -302,10 +298,7 @@ class User implements Serializable, UserInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -318,13 +311,11 @@ class User implements Serializable, UserInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -336,6 +327,7 @@ class User implements Serializable, UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
         return $this;
     }
 

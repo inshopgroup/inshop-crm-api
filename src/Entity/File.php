@@ -53,7 +53,7 @@ class File
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "document_write",
      *     "document_read",
@@ -61,7 +61,8 @@ class File
      * })
      */
     private ?int $id = null;
-/**
+
+    /**
      * @var HttpFile|null
      * @Assert\NotNull()
      * @Vich\UploadableField(
@@ -115,11 +116,6 @@ class File
      * })
      */
     protected ?string $originalName = null;
-
-    public function __sleep()
-    {
-        return [];
-    }
 
     /**
      * @return int

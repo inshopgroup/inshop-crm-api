@@ -47,7 +47,7 @@ class TaskListener
                     $this->googleClient->insertEvent($entity, $user);
                 }
             }
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
 
         }
     }

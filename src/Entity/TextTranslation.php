@@ -76,14 +76,15 @@ class TextTranslation
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "text_read",
      *     "text_write"
      * })
      */
     private ?int $id = null;
-/**
+
+    /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(length=128)
      */
@@ -169,17 +170,12 @@ class TextTranslation
      */
     protected string $seoKeywords = '';
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -191,7 +187,7 @@ class TextTranslation
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -203,7 +199,7 @@ class TextTranslation
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -215,7 +211,7 @@ class TextTranslation
         return $this;
     }
 
-    public function getSeoTitle(): ?string
+    public function getSeoTitle(): string
     {
         return $this->seoTitle;
     }
@@ -227,7 +223,7 @@ class TextTranslation
         return $this;
     }
 
-    public function getSeoDescription(): ?string
+    public function getSeoDescription(): string
     {
         return $this->seoDescription;
     }
@@ -239,7 +235,7 @@ class TextTranslation
         return $this;
     }
 
-    public function getSeoKeywords(): ?string
+    public function getSeoKeywords(): string
     {
         return $this->seoKeywords;
     }

@@ -71,7 +71,7 @@ class Country implements SearchInterface
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "country_read",
      *     "city_read",
@@ -86,7 +86,7 @@ class Country implements SearchInterface
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "country_read",
      *     "country_write",
@@ -115,17 +115,12 @@ class Country implements SearchInterface
         $this->cities = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

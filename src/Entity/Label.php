@@ -70,7 +70,7 @@ class Label
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "label_read",
      *     "product_read",
@@ -85,7 +85,7 @@ class Label
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "label_read",
      *     "label_write",
@@ -99,17 +99,12 @@ class Label
      */
     private string $name;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

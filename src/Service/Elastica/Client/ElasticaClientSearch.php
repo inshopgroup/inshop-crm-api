@@ -71,7 +71,7 @@ class ElasticaClientSearch extends ElasticaClientBase
      * @param SearchInterface $entity
      * @return mixed
      */
-    protected static function getEntityClass(SearchInterface $entity)
+    protected static function getEntityClass(SearchInterface $entity): string
     {
         $path = explode('\\', get_class($entity));
 

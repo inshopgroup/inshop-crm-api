@@ -69,7 +69,7 @@ class ShipmentMethod
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "shipment_method_read",
      *     "order_header_read",
@@ -80,7 +80,7 @@ class ShipmentMethod
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "shipment_method_read",
      *     "shipment_method_write",
@@ -90,11 +90,6 @@ class ShipmentMethod
      * @Assert\NotBlank()
      */
     private string $name;
-
-    public function __sleep()
-    {
-        return [];
-    }
 
     /**
      * Get id
@@ -122,10 +117,8 @@ class ShipmentMethod
 
     /**
      * Get name
-     *
-     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

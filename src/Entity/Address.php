@@ -89,7 +89,7 @@ class Address implements SearchInterface
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "address_read",
      *     "company_read",
@@ -247,11 +247,6 @@ class Address implements SearchInterface
         $this->companies = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     /**
      * @return int
      */
@@ -283,7 +278,7 @@ class Address implements SearchInterface
     /**
      * @param Country|null $country
      */
-    public function setCountry(?Country $country): void
+    public function setCountry(Country $country): void
     {
         $this->country = $country;
     }
@@ -299,7 +294,7 @@ class Address implements SearchInterface
     /**
      * @param City|null $city
      */
-    public function setCity(?City $city): void
+    public function setCity(City $city): void
     {
         $this->city = $city;
     }

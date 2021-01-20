@@ -10,8 +10,5 @@ use App\Entity\Client;
  */
 interface ClientInterface
 {
-    /**
-     * @return Client
-     */
-    public function getClient(): ?Client;
+    public function getClient(): Client;
 }

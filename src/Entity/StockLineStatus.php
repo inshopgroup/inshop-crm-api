@@ -69,7 +69,7 @@ class StockLineStatus
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "stock_line_status_read"
      * })
@@ -77,7 +77,7 @@ class StockLineStatus
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "stock_line_status_read",
      *     "stock_line_status_write"
@@ -85,11 +85,6 @@ class StockLineStatus
      * @Assert\NotBlank()
      */
     private string $name;
-
-    public function __sleep()
-    {
-        return [];
-    }
 
     /**
      * Get id
@@ -117,10 +112,8 @@ class StockLineStatus
 
     /**
      * Get name
-     *
-     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

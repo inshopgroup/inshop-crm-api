@@ -79,14 +79,13 @@ class Project implements ClientInterface, SearchInterface
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({"project_read", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
      */
     private ?int $id = null;
 
-
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({"project_read", "project_write", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
      * @Assert\NotBlank()
      */
@@ -143,17 +142,12 @@ class Project implements ClientInterface, SearchInterface
         $this->documents = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -177,12 +171,12 @@ class Project implements ClientInterface, SearchInterface
         return $this;
     }
 
-    public function getClient(): ?Client
+    public function getClient(): Client
     {
         return $this->client;
     }
 
-    public function setClient(?Client $client): self
+    public function setClient(Client $client): self
     {
         $this->client = $client;
 
@@ -204,6 +198,7 @@ class Project implements ClientInterface, SearchInterface
     public function setStatus(?ProjectStatus $status): self
     {
         $this->status = $status;
+
         return $this;
     }
 

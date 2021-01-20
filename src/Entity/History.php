@@ -146,17 +146,12 @@ class History
      */
     protected ?string $username = null;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getAction(): ?string
+    public function getAction(): string
     {
         return $this->action;
     }
@@ -168,7 +163,7 @@ class History
         return $this;
     }
 
-    public function getLoggedAt(): ?DateTimeInterface
+    public function getLoggedAt(): \DateTimeInterface
     {
         return $this->loggedAt;
     }
@@ -192,7 +187,7 @@ class History
         return $this;
     }
 
-    public function getObjectClass(): ?string
+    public function getObjectClass(): string
     {
         return $this->objectClass;
     }
@@ -204,7 +199,7 @@ class History
         return $this;
     }
 
-    public function getVersion(): ?int
+    public function getVersion(): int
     {
         return $this->version;
     }

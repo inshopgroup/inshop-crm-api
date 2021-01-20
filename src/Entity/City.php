@@ -71,7 +71,7 @@ class City implements SearchInterface
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "city_read",
      *     "address_read",
@@ -84,8 +84,9 @@ class City implements SearchInterface
      * })
      */
     private ?int $id = null;
-/**
-     * @ORM\Column(type="string", length=255, nullable=false)
+
+    /**
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "city_read",
      *     "city_write",
@@ -109,17 +110,12 @@ class City implements SearchInterface
      */
     private ?Country $country = null;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

@@ -47,14 +47,14 @@ class HistoryRepository extends ServiceEntityRepository
         $wrapped = new EntityWrapper($entity, $this->_em);
         $objectClass = $wrapped->getMetadata()->name;
         $meta = $this->getClassMetadata();
-        $dql = "SELECT log FROM {$meta->name} log";
+        $dql = sprintf('SELECT log FROM %s log', $meta->name);
         $dql .= ' WHERE log.objectId = :objectId';
         $dql .= ' AND log.objectClass = :objectClass';
         $dql .= ' ORDER BY log.version DESC';
 
         $objectId = (string) $wrapped->getIdentifier();
         $q = $this->_em->createQuery($dql);
-        $q->setParameters(compact('objectId', 'objectClass'));
+        $q->setParameters(['objectId' => $objectId, 'objectClass' => $objectClass]);
 
         return $q;
     }

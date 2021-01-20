@@ -52,7 +52,7 @@ class InvoiceLine
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "invoice_line_read",
      *     "invoice_header_read",
@@ -60,7 +60,6 @@ class InvoiceLine
      * })
      */
     private ?int $id = null;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\InvoiceHeader", inversedBy="lines")
@@ -84,7 +83,7 @@ class InvoiceLine
     private ?Product $product = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "invoice_line_read",
      *     "invoice_line_write",
@@ -96,7 +95,7 @@ class InvoiceLine
     private string $name;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="float")
      * @Groups({
      *     "invoice_line_read",
      *     "invoice_line_write",
@@ -108,7 +107,7 @@ class InvoiceLine
     private float $unitPriceNetto;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="float")
      * @Groups({
      *     "invoice_line_read",
      *     "invoice_line_write",
@@ -130,17 +129,12 @@ class InvoiceLine
      */
     private ?Vat $vat = null;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -152,7 +146,7 @@ class InvoiceLine
         return $this;
     }
 
-    public function getUnitPriceNetto(): ?float
+    public function getUnitPriceNetto(): float
     {
         return $this->unitPriceNetto;
     }
@@ -164,7 +158,7 @@ class InvoiceLine
         return $this;
     }
 
-    public function getUnitsCount(): ?float
+    public function getUnitsCount(): float
     {
         return $this->unitsCount;
     }

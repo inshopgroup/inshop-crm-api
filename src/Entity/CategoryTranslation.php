@@ -79,7 +79,7 @@ class CategoryTranslation
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "category_read",
      *     "category_write"
@@ -112,7 +112,7 @@ class CategoryTranslation
     protected ?Language $language = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "category_read",
      *     "category_write",
@@ -133,15 +133,7 @@ class CategoryTranslation
      */
     private ?string $description = null;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -150,7 +142,7 @@ class CategoryTranslation
      * @param string
      * @return CategoryTranslation
      */
-    public function setName($name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -169,7 +161,7 @@ class CategoryTranslation
      * @param string
      * @return CategoryTranslation
      */
-    public function setDescription($description): self
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -205,7 +197,7 @@ class CategoryTranslation
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }

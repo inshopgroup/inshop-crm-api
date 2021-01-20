@@ -106,6 +106,7 @@ class GoogleClient
         $user->setIsGoogleSyncEnabled(true);
         $user->setGoogleCalendars(json_encode($this->getCalendars(), JSON_THROW_ON_ERROR, 512));
         $user->setGoogleAccessToken(json_encode($this->googleClient->getAccessToken(), JSON_THROW_ON_ERROR, 512));
+
         $this->entityManager->flush();
     }
 

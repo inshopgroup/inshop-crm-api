@@ -64,7 +64,7 @@ class ElasticaIndexSearchCommand extends Command
      * @return int|void
      * @throws Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->search->createIndex();
         $this->search->createMapping();
@@ -102,7 +102,8 @@ class ElasticaIndexSearchCommand extends Command
         EntityManagerInterface $em,
         SymfonyStyle $io
     ): void {
-        $io->note(sprintf('Indexing %s', $entityClass));
+        $message = sprintf('Indexing %s', $entityClass);
+        $io->note($message);
         $io->note((new DateTime())->format('Y-m-d H:i:s'));
 
         $entities = $em->getRepository($entityClass)->findAll();

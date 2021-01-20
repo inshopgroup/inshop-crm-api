@@ -59,7 +59,7 @@ class Image
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "image_write",
      *     "image_read",
@@ -136,11 +136,6 @@ class Image
      * })
      */
     protected ?string $originalName = null;
-
-    public function __sleep()
-    {
-        return [];
-    }
 
     /**
      * @return int

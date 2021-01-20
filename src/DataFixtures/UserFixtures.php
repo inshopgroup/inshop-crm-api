@@ -62,6 +62,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user->setName(sprintf('%s %s', $this->faker->firstName, $this->faker->lastName));
         $user->addGroup($groupDemo);
         $user->setPassword($this->encoder->encodePassword($user, 'demo'));
+
         $manager->persist($user);
         $manager->flush();
     }

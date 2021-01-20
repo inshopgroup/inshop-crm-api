@@ -69,22 +69,17 @@ class ProjectType
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({"project_type_read", "project_read", "project_write", "client_read", "client_write"})
      */
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({"project_type_read", "project_type_write", "project_read", "client_read"})
      * @Assert\NotBlank()
      */
     private string $name;
-
-    public function __sleep()
-    {
-        return [];
-    }
 
     /**
      * Get id
@@ -112,10 +107,8 @@ class ProjectType
 
     /**
      * Get name
-     *
-     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

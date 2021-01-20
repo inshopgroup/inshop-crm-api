@@ -23,6 +23,9 @@ final class ElasticaCollectionNormalizer implements NormalizerInterface, Normali
     use JsonLdContextTrait;
     use NormalizerAwareTrait;
 
+    /**
+     * @var string
+     */
     public const FORMAT = 'jsonld';
 
     private ContextBuilder $contextBuilder;
@@ -55,7 +58,7 @@ final class ElasticaCollectionNormalizer implements NormalizerInterface, Normali
      * @return array|bool|float|int|string
      * @throws ExceptionInterface
      */
-    public function normalize($object, ?string $format = null, array $context = [])
+    public function normalize($object, ?string $format = null, array $context = []): array
     {
         $resourceClass =
             $this->resourceClassResolver->getResourceClass($object, $context['resource_class'] ?? null, true);

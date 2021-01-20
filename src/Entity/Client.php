@@ -139,7 +139,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "client_read",
      *     "client_read_collection",
@@ -161,10 +161,11 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * })
      */
     private ?int $id = null;
-/**
+
+    /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "client_read",
      *     "client_read_collection",
@@ -310,11 +311,6 @@ class Client implements ClientInterface, SearchInterface, UserInterface
         $this->labels = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     /**
      * @return Client
      */
@@ -344,7 +340,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -508,7 +504,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * @return Client
      * @return Client
      */
-    public function setPassword($password): self
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -528,7 +524,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * @return Client
      * @return Client
      */
-    public function setPlainPassword($plainPassword): self
+    public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
 

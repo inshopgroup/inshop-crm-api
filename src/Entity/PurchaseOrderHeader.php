@@ -82,7 +82,7 @@ class PurchaseOrderHeader
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "purchase_order_header_read",
      *     "purchase_order_header_read_collection"
@@ -91,7 +91,7 @@ class PurchaseOrderHeader
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "purchase_order_header_read",
      *     "purchase_order_header_write",
@@ -172,17 +172,12 @@ class PurchaseOrderHeader
         $this->lines = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNumber(): ?string
+    public function getNumber(): string
     {
         return $this->number;
     }
