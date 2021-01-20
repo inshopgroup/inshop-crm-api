@@ -76,7 +76,7 @@ abstract class ElasticaClientBase
      */
     public function deleteDocument($id): void
     {
-        $this->client->getClient()->deleteIds([$id], $this->getIndex(), ElasticaClient::INDEX_TYPE);
+        $this->client->getClient()->deleteIds([$id], $this->getIndex());
     }
 
     /**
@@ -84,48 +84,50 @@ abstract class ElasticaClientBase
      */
     public function createIndex(): void
     {
-        $elasticaIndex = $this->client->getClient()->getIndex($this->getIndex());
-
+        $elasticaIndex = $this->client->getIndex($this->getIndex());
         $elasticaIndex->create(
             [
-                'number_of_shards' => 2,
-                'number_of_replicas' => 1,
-                'analysis' => [
-                    'analyzer' => [
-                        'index_keyword_analyzer' => [
-                            'type' => 'custom',
-                            'tokenizer' => 'keyword',
-                            'filter' => array()
-                        ],
-                        'analyzer_ngram' => [
-                            'type' => 'custom',
-                            'tokenizer' => 'my_tokenizer',
-                            'filter' => array('lowercase')
-                        ],
-                        'analyzer_whitespace' => [
-                            'type' => 'custom',
-                            'tokenizer' => 'whitespace',
-                            'filter' => array('lowercase')
-                        ],
-                        'search_analyser' => [
-                            'type' => 'custom',
-                            'tokenizer' => 'whitespace',
-                            'filter' => array('lowercase')
-                        ]
-                    ],
-                    'tokenizer' => [
-                        'my_tokenizer' => [
-                            'type' => 'ngram',
-                            'min_gram' => 3,
-                            'max_gram' => 20,
-                            'token_chars' => [
-                                'letter',
-                                'digit',
-                                'symbol',
+                'settings' => [
+                    'number_of_shards' => 2,
+                    'number_of_replicas' => 1,
+                    'max_ngram_diff' => 17,
+                    'analysis' => [
+                        'analyzer' => [
+                            'index_keyword_analyzer' => [
+                                'type' => 'custom',
+                                'tokenizer' => 'keyword',
+                                'filter' => array(),
+                            ],
+                            'analyzer_ngram' => [
+                                'type' => 'custom',
+                                'tokenizer' => 'my_tokenizer',
+                                'filter' => array('lowercase'),
+                            ],
+                            'analyzer_whitespace' => [
+                                'type' => 'custom',
+                                'tokenizer' => 'whitespace',
+                                'filter' => array('lowercase'),
+                            ],
+                            'search_analyser' => [
+                                'type' => 'custom',
+                                'tokenizer' => 'whitespace',
+                                'filter' => array('lowercase'),
                             ],
                         ],
-                    ]
-                ]
+                        'tokenizer' => [
+                            'my_tokenizer' => [
+                                'type' => 'ngram',
+                                'min_gram' => 3,
+                                'max_gram' => 20,
+                                'token_chars' => [
+                                    'letter',
+                                    'digit',
+                                    'symbol',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
             true
         );
@@ -160,7 +162,7 @@ abstract class ElasticaClientBase
      */
     protected function getKeywordQuery(string $q): Query\BoolQuery
     {
-        $q = mb_strtolower(trim($q));
+        $q = mb_strtolower(trim(rawurldecode($q)));
         $words = explode(' ', $q);
 
         $bqq = new Query\BoolQuery();
@@ -186,9 +188,7 @@ abstract class ElasticaClientBase
             }
         }
 
-        $wildcard = new Query\Wildcard();
-        $wildcard->setValue('search', '*' . $q . '*');
-
+        $wildcard = new Query\Wildcard('search', '*' . $q . '*');
         $bqq->addShould($wildcard);
         $bqq->addShould($bqw);
 

@@ -8,8 +8,8 @@ use App\Entity\Product;
 use App\Entity\ProductTranslation;
 use App\Service\ElasticaPaginator;
 use Elastica\Document;
+use Elastica\Mapping;
 use Elastica\Query;
-use Elastica\Type\Mapping;
 use Exception;
 
 /**
@@ -32,51 +32,91 @@ class ElasticaClientProduct extends ElasticaClientBase
     public function createMapping(): void
     {
         // Create a type
-        $elasticaType = $this->client->getClient()->getIndex($this->getIndex())->getType('_doc');
+        $index = $this->client->getClient()->getIndex($this->getIndex());
 
         // Define mapping
         $mapping = new Mapping();
-        $mapping->setType($elasticaType);
 
-        $mapping->setProperties(array(
-            'id' => array('type' => 'integer'),
-            'ean' => array('type' => 'text'),
-            'slug' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-            'search' => array('type' => 'text'),
-            'search_ngram' => array('type' => 'text', 'analyzer' => 'analyzer_ngram'),
-            'search_whitespace' => array('type' => 'text', 'analyzer' => 'analyzer_whitespace'),
-            'translations' => array(
-                'type' => 'object',
-                'properties' => array(
-                    'lang' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-                    'name' => array('type' => 'text', 'copy_to' => ['search', 'search_ngram', 'search_whitespace']),
-                    'description' => array('type' => 'text', 'copy_to' => ['search', 'search_ngram', 'search_whitespace']),
+        $mapping->setProperties(
+            array(
+                'id' => array('type' => 'integer'),
+                'ean' => array('type' => 'text'),
+                'slug' => array(
+                    'type' => 'text',
+                    'analyzer' => 'index_keyword_analyzer',
                 ),
-            ),
-            'images' => array(
-                'type' => 'object',
-                'properties' => array(
-                    'contentUrl' => array('type' => 'text'),
+                'search' => array('type' => 'text'),
+                'search_ngram' => array(
+                    'type' => 'text',
+                    'analyzer' => 'analyzer_ngram',
                 ),
-            ),
-            'category' => array(
-                'type' => 'object',
-                'properties' => array(
-                    'id' => array('type' => 'integer'),
-                    'slug' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-                    'translations' => array(
-                        'type' => 'nested',
-                        'properties' => array(
-                            'lang' => array('type' => 'text', 'analyzer' => 'index_keyword_analyzer'),
-                            'name' => array('type' => 'text', 'copy_to' => ['search', 'search_ngram', 'search_whitespace']),
+                'search_whitespace' => array(
+                    'type' => 'text',
+                    'analyzer' => 'analyzer_whitespace',
+                ),
+                'translations' => array(
+                    'type' => 'object',
+                    'properties' => array(
+                        'lang' => array(
+                            'type' => 'text',
+                            'analyzer' => 'index_keyword_analyzer',
+                        ),
+                        'name' => array(
+                            'type' => 'text',
+                            'copy_to' => [
+                                'search',
+                                'search_ngram',
+                                'search_whitespace',
+                            ],
+                        ),
+                        'description' => array(
+                            'type' => 'text',
+                            'copy_to' => [
+                                'search',
+                                'search_ngram',
+                                'search_whitespace',
+                            ],
                         ),
                     ),
                 ),
-            ),
-        ));
+                'images' => array(
+                    'type' => 'object',
+                    'properties' => array(
+                        'contentUrl' => array('type' => 'text'),
+                    ),
+                ),
+                'category' => array(
+                    'type' => 'object',
+                    'properties' => array(
+                        'id' => array('type' => 'integer'),
+                        'slug' => array(
+                            'type' => 'text',
+                            'analyzer' => 'index_keyword_analyzer',
+                        ),
+                        'translations' => array(
+                            'type' => 'nested',
+                            'properties' => array(
+                                'lang' => array(
+                                    'type' => 'text',
+                                    'analyzer' => 'index_keyword_analyzer',
+                                ),
+                                'name' => array(
+                                    'type' => 'text',
+                                    'copy_to' => [
+                                        'search',
+                                        'search_ngram',
+                                        'search_whitespace',
+                                    ],
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
 
         // Send mapping to type
-        $mapping->send();
+        $mapping->send($index);
     }
 
     /**
@@ -91,8 +131,8 @@ class ElasticaClientProduct extends ElasticaClientBase
         /** @var CategoryTranslation $categoryTranslation */
         foreach ($entity->getCategory()->getTranslations() as $categoryTranslation) {
             $categoryTranslations[] = [
-              'lang' => $categoryTranslation->getLanguage()->getCode(),
-              'name' => $categoryTranslation->getName(),
+                'lang' => $categoryTranslation->getLanguage()->getCode(),
+                'name' => $categoryTranslation->getName(),
             ];
         }
 
@@ -101,10 +141,10 @@ class ElasticaClientProduct extends ElasticaClientBase
         /** @var ProductTranslation $translation */
         foreach ($entity->getTranslations() as $translation) {
             $translations[] = [
-              'lang' => $translation->getLanguage()->getCode(),
-              'slug' => $translation->getSlug(),
-              'name' => $translation->getName(),
-              'description' => $translation->getDescription(),
+                'lang' => $translation->getLanguage()->getCode(),
+                'slug' => $translation->getSlug(),
+                'name' => $translation->getName(),
+                'description' => $translation->getDescription(),
             ];
         }
 
@@ -113,7 +153,7 @@ class ElasticaClientProduct extends ElasticaClientBase
         /** @var Image $image */
         foreach ($entity->getImages() as $image) {
             $images[] = [
-              'contentUrl' => $image->getContentUrl(),
+                'contentUrl' => $image->getContentUrl(),
             ];
         }
 
@@ -127,7 +167,7 @@ class ElasticaClientProduct extends ElasticaClientBase
                 'id' => $entity->getCategory()->getId(),
                 'slug' => $entity->getCategory()->getSlug(),
                 'translations' => $categoryTranslations,
-            ]
+            ],
         ];
     }
 
@@ -187,8 +227,7 @@ class ElasticaClientProduct extends ElasticaClientBase
         $query
             ->setFrom($from)
             ->setSize($size)
-            ->setSort(['id' => 'desc'])
-        ;
+            ->setSort(['id' => 'desc']);
 
         $search = $this->client->createSearch($this->getIndex());
         $search->setQuery($query);
@@ -196,9 +235,12 @@ class ElasticaClientProduct extends ElasticaClientBase
         $results = $search->search();
 
         $data = array_map(
-            static function (Document $document) {
-            return $document->toArray()['_source'];
-        }, $results->getDocuments());
+            static function (Document $document)
+            {
+                return $document->toArray()['_source'];
+            },
+            $results->getDocuments()
+        );
 
         // Facets
         $query = new Query();

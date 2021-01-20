@@ -6,7 +6,6 @@ use Elastica\Client;
 use Elastica\Document;
 use Elastica\Index;
 use Elastica\Search;
-use Elastica\Type;
 
 /**
  * Class ElasticaClient
@@ -14,8 +13,6 @@ use Elastica\Type;
  */
 class ElasticaClient
 {
-    public const INDEX_TYPE = '_doc';
-
     /**
      * @var Client
      */
@@ -26,10 +23,12 @@ class ElasticaClient
      */
     public function __construct()
     {
-        $this->client = new Client(array(
-            'host' => 'elasticsearch',
-            'port' => 9200
-        ));
+        $this->client = new Client(
+            array(
+                'host' => 'elasticsearch',
+                'port' => 9200,
+            )
+        );
     }
 
     /**
@@ -40,7 +39,6 @@ class ElasticaClient
     {
         $search = new Search($this->client);
         $search->addIndex($index);
-        $search->addType('_doc');
 
         return $search;
     }
@@ -51,15 +49,6 @@ class ElasticaClient
     public function getClient(): Client
     {
         return $this->client;
-    }
-
-    /**
-     * @param string $index
-     * @return Type
-     */
-    public function getType(string $index): Type
-    {
-        return $this->client->getIndex($index)->getType(self::INDEX_TYPE);
     }
 
     /**
@@ -77,24 +66,24 @@ class ElasticaClient
      */
     public function addDocument(string $index, array $data): void
     {
-        $document = new Document($data['id'], $data);
-        $this->getType($index)->addDocument($document);
-        $this->getType($index)->getIndex()->refresh();
+        $document = new Document($data['id'], $data, $index);
+        $this->getIndex($index)->addDocument($document);
+        $this->getIndex($index)->refresh();
     }
 
     /**
      * @param string $index
-     * @param array $datas
+     * @param array $data
      */
-    public function addDocuments(string $index, array $datas): void
+    public function addDocuments(string $index, array $data): void
     {
         $documents = [];
 
-        foreach ($datas as $data) {
-            $documents[] = new Document($data['id'], $data);
+        foreach ($data as $datum) {
+            $documents[] = new Document($datum['id'], $datum, $index);
         }
 
-        $this->getType($index)->addDocuments($documents);
-        $this->getType($index)->getIndex()->refresh();
+        $this->getIndex($index)->addDocuments($documents);
+        $this->getIndex($index)->refresh();
     }
 }
