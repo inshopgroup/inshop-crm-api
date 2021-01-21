@@ -101,6 +101,7 @@ class Company implements SearchInterface
      *     "company_read",
      *     "contact_read",
      *     "address_read",
+     *     "address_write",
      *     "invoice_header_read",
      *     "invoice_header_write",
      *     "invoice_header_read_collection",
