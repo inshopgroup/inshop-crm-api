@@ -1,0 +1,80 @@
+version: '3.3'
+
+services:
+  php:
+    build: ./docker/php-fpm-prod
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+    volumes:
+      - .:/var/www:rw,cached
+#      - images-data:/var/www/public/images:rw
+    networks:
+      - api
+
+  nginx:
+    image: inshopgroup/docker-inshop-crm-api-nginx-prod:latest
+    depends_on:
+      - php
+    volumes:
+      - ./public:/var/www/public:ro
+#      - images-data:/var/www/public/images:rw
+    environment:
+      VIRTUAL_HOST:
+      LETSENCRYPT_HOST:
+      LETSENCRYPT_EMAIL:
+    networks:
+      - api
+      - webproxy
+
+  db:
+    image: postgres:11.4-alpine
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+    ports:
+      - ${PORT_DATABASE}:5432
+    networks:
+      - api
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    ports:
+      - ${PORT_ELASTIC}:9200
+    networks:
+      - api
+      - esnet
+
+  redis:
+    image: redis:latest
+    volumes:
+      - redis-data:/var/lib/redis
+    networks:
+      - api
+
+volumes:
+  es-data: { }
+  db-data: { }
+  redis-data: { }
+  images-data: { }
+
+networks:
+  esnet:
+  api:
+  webproxy:
+    external:
+      name: webproxy
