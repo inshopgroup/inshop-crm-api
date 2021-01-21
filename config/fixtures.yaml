@@ -11,13 +11,6 @@ services:
         arguments:
             - "@service_container"
 
-    city.fixtures:
-        class: App\DataFixtures\CityFixtures
-        tags: ['doctrine.fixture.orm']
-        arguments:
-            - "@service_container"
-
-
     address.fixtures:
         class: App\DataFixtures\AddressFixtures
         tags: ['doctrine.fixture.orm']

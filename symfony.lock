@@ -158,6 +158,9 @@
     "firebase/php-jwt": {
         "version": "v5.2.0"
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.3"
+    },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.42"
     },
@@ -359,6 +362,9 @@
             "ref": "0eb87bba411c227da027fe5f7c1dc7954b02f242"
         }
     },
+    "paragonie/constant_time_encoding": {
+        "version": "v2.4.0"
+    },
     "paragonie/random_compat": {
         "version": "v9.99.99"
     },
@@ -397,6 +403,9 @@
     },
     "phpseclib/phpseclib": {
         "version": "2.0.29"
+    },
+    "phpstan/phpdoc-parser": {
+        "version": "0.4.10"
     },
     "phpstan/phpstan": {
         "version": "0.12.68"
@@ -690,6 +699,9 @@
     },
     "symfony/property-info": {
         "version": "v5.2.0"
+    },
+    "symfony/proxy-manager-bridge": {
+        "version": "v5.2.1"
     },
     "symfony/routing": {
         "version": "5.1",

@@ -115,7 +115,7 @@ class Address implements SearchInterface
     private ?Country $country = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\City")
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
      *     "client_read",
      *     "address_read",
@@ -125,7 +125,7 @@ class Address implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private ?City $city = null;
+    private ?string $city = null;
 
     /**
      * @var string|null
@@ -284,17 +284,17 @@ class Address implements SearchInterface
     }
 
     /**
-     * @return City
+     * @return string
      */
-    public function getCity(): ?City
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
     /**
-     * @param City|null $city
+     * @param string|null $city
      */
-    public function setCity(City $city): void
+    public function setCity(string $city): void
     {
         $this->city = $city;
     }
@@ -426,7 +426,7 @@ class Address implements SearchInterface
             ' ',
             [
                 $this->getCountry() ? $this->getCountry()->getName() : null,
-                $this->getCity() ? $this->getCity()->getName() : null,
+                $this->getCity(),
                 $this->getRegion(),
                 $this->getDistrict(),
                 $this->getStreet(),

@@ -80,7 +80,7 @@ class RoleFixtures extends Fixture
 //            'Invoice line' => [],
 //            'Invoice status' => [],
 //            'Invoice type' => [],
-//            'Language' => [],
+            'Language' => [],
 //            'Order header' => [],
 //            'Order line' => [],
 //            'Order line status' => [],
