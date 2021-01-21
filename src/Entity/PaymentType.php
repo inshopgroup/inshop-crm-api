@@ -69,7 +69,7 @@ class PaymentType
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "payment_type_read",
      *     "order_header_read",
@@ -79,7 +79,7 @@ class PaymentType
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "payment_type_read",
      *     "payment_type_write",
@@ -90,11 +90,6 @@ class PaymentType
      * @Assert\NotBlank()
      */
     private string $name;
-
-    public function __sleep()
-    {
-        return [];
-    }
 
     /**
      * Get id
@@ -110,10 +105,8 @@ class PaymentType
      * Set name
      *
      * @param string $name
-     *
-     * @return PaymentType
      */
-    public function setName(string $name): PaymentType
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -122,10 +115,8 @@ class PaymentType
 
     /**
      * Get name
-     *
-     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

@@ -60,11 +60,26 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  */
 class ContactType
 {
-    public const TYPE_PHONE  = 1;
+    /**
+     * @var int
+     */
+    public const TYPE_PHONE = 1;
+    /**
+     * @var int
+     */
     public const TYPE_MOBILE = 2;
-    public const TYPE_FAX    = 3;
-    public const TYPE_EMAIL  = 4;
-    public const TYPE_WWW    = 5;
+    /**
+     * @var int
+     */
+    public const TYPE_FAX = 3;
+    /**
+     * @var int
+     */
+    public const TYPE_EMAIL = 4;
+    /**
+     * @var int
+     */
+    public const TYPE_WWW = 5;
 
     use Timestampable;
     use Blameable;
@@ -75,7 +90,7 @@ class ContactType
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "contact_type_read",
      *     "contact_read",
@@ -90,7 +105,7 @@ class ContactType
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "contact_type_read",
      *     "contact_type_write",
@@ -103,11 +118,6 @@ class ContactType
      * @Assert\NotBlank()
      */
     private string $name;
-
-    public function __sleep()
-    {
-        return [];
-    }
 
     /**
      * Get id
@@ -135,10 +145,8 @@ class ContactType
 
     /**
      * Get name
-     *
-     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

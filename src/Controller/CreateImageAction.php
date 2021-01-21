@@ -97,7 +97,7 @@ final class CreateImageAction
             'thumbnail_1000' => 'images_1000_filesystem',
         ];
 
-        foreach ($filters as $filter => $thumbDir) {
+        foreach (array_keys($filters) as $filter) {
 
             /** @var BinaryInterface $img */
             $img = $this->dataManager->find($filter, $uploadedFile->getFilename());

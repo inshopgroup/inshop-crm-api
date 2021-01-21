@@ -70,7 +70,7 @@ class Channel
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "channel_read",
      *     "product_sell_price_read",
@@ -83,7 +83,7 @@ class Channel
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "channel_read",
      *     "channel_write",
@@ -119,17 +119,12 @@ class Channel
      */
     private bool $isPublic;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -153,7 +148,7 @@ class Channel
         return $this;
     }
 
-    public function getIsPublic(): ?bool
+    public function getIsPublic(): bool
     {
         return $this->isPublic;
     }

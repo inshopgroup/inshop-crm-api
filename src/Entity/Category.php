@@ -96,7 +96,7 @@ class Category implements TranslatableInterface
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "category_read",
      *     "product_read",
@@ -156,11 +156,6 @@ class Category implements TranslatableInterface
     {
         $this->subCategories = new ArrayCollection();
         $this->translations = new ArrayCollection();
-    }
-
-    public function __sleep()
-    {
-        return [];
     }
 
     public function getId(): ?int
@@ -242,7 +237,7 @@ class Category implements TranslatableInterface
         return $this;
     }
 
-    public function getPosition(): ?int
+    public function getPosition(): int
     {
         return $this->position;
     }
@@ -255,7 +250,6 @@ class Category implements TranslatableInterface
     }
 
     /**
-     * @return string
      * @throws Exception
      * @Groups({
      *     "category_read",
@@ -263,7 +257,7 @@ class Category implements TranslatableInterface
      *     "category_read_frontend"
      * })
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         /** @var CategoryTranslation $translation */
         $translation = $this->getTranslation();

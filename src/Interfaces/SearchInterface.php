@@ -10,8 +10,6 @@ interface SearchInterface
 {
     /**
      * Entity ID
-     *
-     * @return int
      */
     public function getId(): ?int;
 

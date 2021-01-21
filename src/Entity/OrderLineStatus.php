@@ -70,7 +70,7 @@ class OrderLineStatus
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "order_line_status_read",
      *     "order_header_read",
@@ -80,7 +80,7 @@ class OrderLineStatus
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "order_line_status_read",
      *     "order_line_status_write",
@@ -90,17 +90,12 @@ class OrderLineStatus
      */
     private string $name;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

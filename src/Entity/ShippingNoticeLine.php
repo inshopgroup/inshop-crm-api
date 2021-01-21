@@ -52,7 +52,7 @@ class ShippingNoticeLine
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "shipping_notice_line_read",
      *     "shipping_notice_read",
@@ -60,7 +60,6 @@ class ShippingNoticeLine
      * })
      */
     private ?int $id = null;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ShippingNoticeHeader", inversedBy="lines")
@@ -96,7 +95,7 @@ class ShippingNoticeLine
     private ?PurchaseOrderLine $purchaseOrderLine = null;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="float")
      * @Groups({
      *     "shipping_notice_line_read",
      *     "shipping_notice_line_write",
@@ -119,17 +118,12 @@ class ShippingNoticeLine
      */
     private ?Vat $vat = null;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPriceBuyNetto(): ?float
+    public function getPriceBuyNetto(): float
     {
         return $this->priceBuyNetto;
     }

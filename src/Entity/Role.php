@@ -63,7 +63,7 @@ class Role
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "role_read",
      *     "group_read",
@@ -71,7 +71,6 @@ class Role
      * })
      */
     private ?int $id = null;
-
 
     /**
      * @var string
@@ -112,11 +111,6 @@ class Role
      */
     private ?Module $module = null;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     /**
      * @return int
      */
@@ -133,7 +127,7 @@ class Role
         $this->id = $id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -145,7 +139,7 @@ class Role
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getRole(): string
     {
         return $this->role;
     }

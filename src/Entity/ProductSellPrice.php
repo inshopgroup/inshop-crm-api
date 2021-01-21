@@ -69,7 +69,7 @@ class ProductSellPrice
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "product_sell_price_read",
      *     "order_header_read",
@@ -77,7 +77,6 @@ class ProductSellPrice
      * })
      */
     private ?int $id = null;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="productSellPrices")
@@ -111,7 +110,7 @@ class ProductSellPrice
     private ?Vat $vat = null;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="float")
      * @Groups({
      *     "product_sell_price_read",
      *     "product_sell_price_write"
@@ -121,7 +120,7 @@ class ProductSellPrice
     private float $priceSellBrutto;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="float")
      * @Groups({
      *     "product_sell_price_read",
      *     "product_sell_price_write"
@@ -131,7 +130,7 @@ class ProductSellPrice
     private float $priceOldSellBrutto;
 
     /**
-     * @ORM\Column(type="datetime", nullable=false)
+     * @ORM\Column(type="datetime")
      * @Groups({
      *     "product_sell_price_read",
      *     "product_sell_price_write"
@@ -141,7 +140,7 @@ class ProductSellPrice
     private DateTimeInterface $activeFrom;
 
     /**
-     * @ORM\Column(type="datetime", nullable=false)
+     * @ORM\Column(type="datetime")
      * @Groups({
      *     "product_sell_price_read",
      *     "product_sell_price_write"
@@ -160,17 +159,12 @@ class ProductSellPrice
      */
     private ?CompanyProduct $companyProduct = null;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getActiveFrom(): ?DateTimeInterface
+    public function getActiveFrom(): \DateTimeInterface
     {
         return $this->activeFrom;
     }
@@ -182,7 +176,7 @@ class ProductSellPrice
         return $this;
     }
 
-    public function getActiveTo(): ?DateTimeInterface
+    public function getActiveTo(): \DateTimeInterface
     {
         return $this->activeTo;
     }
@@ -242,7 +236,7 @@ class ProductSellPrice
         return $this;
     }
 
-    public function getPriceSellBrutto(): ?float
+    public function getPriceSellBrutto(): float
     {
         return $this->priceSellBrutto;
     }
@@ -254,7 +248,7 @@ class ProductSellPrice
         return $this;
     }
 
-    public function getPriceOldSellBrutto(): ?float
+    public function getPriceOldSellBrutto(): float
     {
         return $this->priceOldSellBrutto;
     }
@@ -272,11 +266,11 @@ class ProductSellPrice
      *     "order_header_read"
      * })
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return sprintf(
             '%s - %s %s',
-            $this->getCompanyProduct() ?  $this->getCompanyProduct()->getCompanyName() : null,
+            $this->getCompanyProduct() ? $this->getCompanyProduct()->getCompanyName() : null,
             $this->getPriceSellBrutto(),
             $this->getChannel() ? $this->getChannel()->getCurrency()->getCode() : null
         );

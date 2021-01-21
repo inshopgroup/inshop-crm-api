@@ -82,7 +82,7 @@ class ShippingNoticeHeader
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "shipping_notice_header_read",
      *     "shipping_notice_header_read_collection"
@@ -90,9 +90,8 @@ class ShippingNoticeHeader
      */
     private ?int $id = null;
 
-
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "shipping_notice_header_read",
      *     "shipping_notice_header_write",
@@ -173,17 +172,12 @@ class ShippingNoticeHeader
         $this->lines = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNumber(): ?string
+    public function getNumber(): string
     {
         return $this->number;
     }

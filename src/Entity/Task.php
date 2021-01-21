@@ -94,7 +94,7 @@ class Task implements ClientInterface, SearchInterface
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "task_read",
      *     "user_read",
@@ -104,9 +104,8 @@ class Task implements ClientInterface, SearchInterface
      */
     private ?int $id = null;
 
-
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -131,6 +130,7 @@ class Task implements ClientInterface, SearchInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="tasks")
+     * @ORM\JoinColumn(nullable=false)
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -138,10 +138,10 @@ class Task implements ClientInterface, SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private ?Project $project = null;
+    private Project $project;
 
     /**
-     * @ORM\Column(type="date", nullable=false)
+     * @ORM\Column(type="date")
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -179,7 +179,7 @@ class Task implements ClientInterface, SearchInterface
     /**
      * Estimated time in minutes
      *
-     * @ORM\Column(type="float", nullable=false, options={"default": 0})
+     * @ORM\Column(type="float", options={"default":0})
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -192,7 +192,7 @@ class Task implements ClientInterface, SearchInterface
     /**
      * Spent time in minutes
      *
-     * @ORM\Column(type="float", nullable=false, options={"default": 0})
+     * @ORM\Column(type="float", options={"default":0})
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -207,11 +207,6 @@ class Task implements ClientInterface, SearchInterface
      */
     private ?string $googleEventId = null;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     /**
      * @return int|null
      */
@@ -220,7 +215,7 @@ class Task implements ClientInterface, SearchInterface
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -244,12 +239,12 @@ class Task implements ClientInterface, SearchInterface
         return $this;
     }
 
-    public function getProject(): ?Project
+    public function getProject(): Project
     {
         return $this->project;
     }
 
-    public function setProject(?Project $project): self
+    public function setProject(Project $project): self
     {
         $this->project = $project;
 
@@ -313,9 +308,9 @@ class Task implements ClientInterface, SearchInterface
     /**
      * @return Client
      */
-    public function getClient(): ?Client
+    public function getClient(): Client
     {
-        return $this->getProject() ? $this->getProject()->getClient() : null;
+        return $this->getProject()->getClient();
     }
 
     /**
@@ -341,7 +336,7 @@ class Task implements ClientInterface, SearchInterface
 
     public function setTimeEstimated(float $timeEstimated): self
     {
-        $this->timeEstimated = (int)($timeEstimated * 60);
+        $this->timeEstimated = (int) ($timeEstimated * 60);
 
         return $this;
     }
@@ -353,7 +348,7 @@ class Task implements ClientInterface, SearchInterface
 
     public function setTimeSpent(float $timeSpent): self
     {
-        $this->timeSpent = (int)($timeSpent * 60);
+        $this->timeSpent = (int) ($timeSpent * 60);
 
         return $this;
     }

@@ -103,7 +103,7 @@ class EntityLoggerSubscriber implements EventSubscriber
      */
     public function preUpdate(LifecycleEventArgs $args): void
     {
-        if ($this->isDisabled() === false) {
+        if (!$this->isDisabled()) {
             $this->calculateChanges($args->getEntityManager(), $args->getEntity(), 'update');
         }
     }
@@ -115,7 +115,7 @@ class EntityLoggerSubscriber implements EventSubscriber
      */
     public function postPersist(LifecycleEventArgs $args): void
     {
-        if ($this->isDisabled() === false) {
+        if (!$this->isDisabled()) {
             $this->calculateChanges($args->getEntityManager(), $args->getEntity(), 'create');
         }
     }
@@ -125,7 +125,7 @@ class EntityLoggerSubscriber implements EventSubscriber
      */
     public function preRemove(LifecycleEventArgs $args): void
     {
-        if ($this->isDisabled() === false) {
+        if (!$this->isDisabled()) {
             $entity = $args->getEntity();
             $entityClassName = get_class($entity);
 
@@ -149,7 +149,7 @@ class EntityLoggerSubscriber implements EventSubscriber
      */
     public function postFlush(PostFlushEventArgs $args): void
     {
-        if (!empty($this->logs) && $this->isDisabled() === false) {
+        if (!empty($this->logs) && !$this->isDisabled()) {
             $em = $args->getEntityManager();
 
             /** @var EntityLogger $entityLogger */
@@ -223,7 +223,7 @@ class EntityLoggerSubscriber implements EventSubscriber
         return implode(
             ', ',
             array_map(
-                function ($entity)
+                function ($entity): ?string
                 {
                     return $this->guessObjectName($entity);
                 },
@@ -250,6 +250,7 @@ class EntityLoggerSubscriber implements EventSubscriber
         $uow = $em->getUnitOfWork();
 
         $uow->recomputeSingleEntityChangeSet($em->getClassMetadata(get_class($entity)), $entity);
+
         $changes = $uow->getEntityChangeSet($entity);
 
         $annotationReader = new AnnotationReader();

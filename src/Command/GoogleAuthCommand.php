@@ -56,14 +56,15 @@ class GoogleAuthCommand extends Command
      * @return int|void|null
      * @throws Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         /** @var User $user */
         $user = $this->userRepository->findOneBy(['username' => $input->getArgument('username')]);
 
         if ($user) {
             $io = new SymfonyStyle($input, $output);
-            $io->success(sprintf('Authorizing user "%s"', $user->getUsername()));
+            $message = sprintf('Authorizing user "%s"', $user->getUsername());
+            $io->success($message);
 
             $this->googleClient->init($user);
             $this->googleClient->auth($user);

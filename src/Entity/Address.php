@@ -89,7 +89,7 @@ class Address implements SearchInterface
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "address_read",
      *     "company_read",
@@ -115,7 +115,7 @@ class Address implements SearchInterface
     private ?Country $country = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\City")
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
      *     "client_read",
      *     "address_read",
@@ -125,7 +125,7 @@ class Address implements SearchInterface
      * })
      * @Assert\NotBlank()
      */
-    private ?City $city = null;
+    private ?string $city = null;
 
     /**
      * @var string|null
@@ -247,11 +247,6 @@ class Address implements SearchInterface
         $this->companies = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     /**
      * @return int
      */
@@ -283,23 +278,23 @@ class Address implements SearchInterface
     /**
      * @param Country|null $country
      */
-    public function setCountry(?Country $country): void
+    public function setCountry(Country $country): void
     {
         $this->country = $country;
     }
 
     /**
-     * @return City
+     * @return string
      */
-    public function getCity(): ?City
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
     /**
-     * @param City|null $city
+     * @param string|null $city
      */
-    public function setCity(?City $city): void
+    public function setCity(string $city): void
     {
         $this->city = $city;
     }
@@ -431,7 +426,7 @@ class Address implements SearchInterface
             ' ',
             [
                 $this->getCountry() ? $this->getCountry()->getName() : null,
-                $this->getCity() ? $this->getCity()->getName() : null,
+                $this->getCity(),
                 $this->getRegion(),
                 $this->getDistrict(),
                 $this->getStreet(),

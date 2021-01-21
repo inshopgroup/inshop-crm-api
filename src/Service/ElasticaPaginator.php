@@ -28,9 +28,9 @@ class ElasticaPaginator implements Countable, IteratorAggregate, JsonSerializabl
     protected int $itemsPerPage = 30;
 
     /**
-     * @return float|int
+     * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->getTotalItems();
     }
@@ -39,7 +39,7 @@ class ElasticaPaginator implements Countable, IteratorAggregate, JsonSerializabl
      * @return ArrayIterator|mixed|Traversable
      * @throws Exception
      */
-    public function getIterator()
+    public function getIterator(): Iterator
     {
         $results = $this->getResults();
 
@@ -57,7 +57,7 @@ class ElasticaPaginator implements Countable, IteratorAggregate, JsonSerializabl
     /**
      * @return array|mixed
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $results = $this->getResults();
         if ($results instanceof Traversable) {
@@ -66,7 +66,6 @@ class ElasticaPaginator implements Countable, IteratorAggregate, JsonSerializabl
 
         return $results;
     }
-
 
     /**
      * @return float
@@ -121,17 +120,17 @@ class ElasticaPaginator implements Countable, IteratorAggregate, JsonSerializabl
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getResults()
+    public function getResults(): array
     {
         return $this->results;
     }
 
     /**
-     * @param mixed $results
+     * @param array $results
      */
-    public function setResults($results): void
+    public function setResults(array $results): void
     {
         $this->results = $results;
     }
@@ -153,9 +152,9 @@ class ElasticaPaginator implements Countable, IteratorAggregate, JsonSerializabl
     }
 
     /**
-     * @param mixed $itemsPerPage
+     * @param int $itemsPerPage
      */
-    public function setItemsPerPage($itemsPerPage): void
+    public function setItemsPerPage(int $itemsPerPage): void
     {
         $this->itemsPerPage = $itemsPerPage;
     }

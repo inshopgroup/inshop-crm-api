@@ -77,16 +77,15 @@ class Template implements SearchInterface
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({"template_read"})
      */
     private ?int $id = null;
 
-
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({"template_read", "template_write"})
      * @Assert\NotBlank()
      */
@@ -95,7 +94,7 @@ class Template implements SearchInterface
     /**
      * @var Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\File")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn()
      * @ApiProperty(iri="http://schema.org/image")
      * @ApiSubresource()
      * @Groups({"template_read", "template_write"})
@@ -115,17 +114,12 @@ class Template implements SearchInterface
         $this->files = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

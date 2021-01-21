@@ -70,7 +70,7 @@ class Language
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "language_read",
      *     "invoice_header_read",
@@ -87,7 +87,7 @@ class Language
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "language_read",
      *     "language_write",
@@ -102,7 +102,7 @@ class Language
     private ?string $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "language_read",
      *     "language_write",
@@ -114,11 +114,6 @@ class Language
      * @Assert\NotBlank()
      */
     private string $code;
-
-    public function __sleep()
-    {
-        return [];
-    }
 
     public function getId(): ?int
     {
@@ -137,7 +132,7 @@ class Language
         return $this;
     }
 
-    public function getCode(): ?string
+    public function getCode(): string
     {
         return $this->code;
     }

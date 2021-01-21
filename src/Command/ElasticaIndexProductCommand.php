@@ -57,7 +57,7 @@ class ElasticaIndexProductCommand extends Command
      * @return int|void
      * @throws Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->search->createIndex();
         $this->search->createMapping();

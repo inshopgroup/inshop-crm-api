@@ -70,7 +70,7 @@ class Brand
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "brand_read",
      *     "product_read",
@@ -80,7 +80,7 @@ class Brand
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "brand_read",
      *     "brand_write",
@@ -95,12 +95,7 @@ class Brand
         return $this->id;
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

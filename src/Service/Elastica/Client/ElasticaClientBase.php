@@ -151,6 +151,7 @@ abstract class ElasticaClientBase
 
         $search = $this->client->createSearch($this->getIndex());
         $search->setQuery($query);
+
         $documents = $search->search()->getDocuments();
 
         return array_shift($documents);

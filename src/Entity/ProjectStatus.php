@@ -60,8 +60,17 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  */
 class ProjectStatus
 {
+    /**
+     * @var int
+     */
     public const STATUS_OPEN = 1;
+    /**
+     * @var int
+     */
     public const STATUS_IN_PROGRESS = 2;
+    /**
+     * @var int
+     */
     public const STATUS_CLOSED = 3;
 
     use Timestampable;
@@ -73,22 +82,17 @@ class ProjectStatus
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({"project_status_read", "project_read", "document_read", "project_write", "client_read", "client_write"})
      */
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({"project_status_read", "project_status_write", "project_read", "document_read", "client_read"})
      * @Assert\NotBlank()
      */
     private string $name;
-
-    public function __sleep()
-    {
-        return [];
-    }
 
     /**
      * Get id
@@ -104,10 +108,8 @@ class ProjectStatus
      * Set name
      *
      * @param string $name
-     *
-     * @return ProjectStatus
      */
-    public function setName(string $name): ProjectStatus
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -116,10 +118,8 @@ class ProjectStatus
 
     /**
      * Get name
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

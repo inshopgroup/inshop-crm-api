@@ -69,7 +69,7 @@ class Warehouse
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "warehouse_read"
      * })
@@ -77,7 +77,7 @@ class Warehouse
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "warehouse_read",
      *     "warehouse_write"
@@ -85,11 +85,6 @@ class Warehouse
      * @Assert\NotBlank()
      */
     private string $name;
-
-    public function __sleep()
-    {
-        return [];
-    }
 
     /**
      * Get id
@@ -105,10 +100,8 @@ class Warehouse
      * Set name
      *
      * @param string $name
-     *
-     * @return Warehouse
      */
-    public function setName(string $name): Warehouse
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -117,10 +110,8 @@ class Warehouse
 
     /**
      * Get name
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

@@ -96,11 +96,12 @@ class Company implements SearchInterface
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "company_read",
      *     "contact_read",
      *     "address_read",
+     *     "address_write",
      *     "invoice_header_read",
      *     "invoice_header_write",
      *     "invoice_header_read_collection",
@@ -119,7 +120,7 @@ class Company implements SearchInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "company_read",
      *     "company_write",
@@ -297,11 +298,6 @@ class Company implements SearchInterface
         $this->labels = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     /**
      * Search text
      *
@@ -326,7 +322,7 @@ class Company implements SearchInterface
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

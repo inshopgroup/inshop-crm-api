@@ -65,14 +65,15 @@ class Module
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "module_read",
      *     "group_read"
      * })
      */
     private ?int $id = null;
-/**
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
@@ -100,17 +101,12 @@ class Module
         $this->roles = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

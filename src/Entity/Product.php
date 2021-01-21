@@ -111,7 +111,7 @@ class Product implements TranslatableInterface
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "product_read",
      *     "invoice_header_read",
@@ -127,7 +127,8 @@ class Product implements TranslatableInterface
      * })
      */
     private ?int $id = null;
-/**
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category")
      * @Groups({
      *     "product_read",
@@ -149,7 +150,7 @@ class Product implements TranslatableInterface
     private ?Brand $brand = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "product_read",
      *     "product_write",
@@ -200,7 +201,7 @@ class Product implements TranslatableInterface
      *     "product_read_frontend",
      *     "product_read_frontend_item"
      * })
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn()
      * @ApiProperty(iri="http://schema.org/image")
      * @ApiSubresource()
      * @ORM\OrderBy({"id" = "DESC"})
@@ -216,11 +217,6 @@ class Product implements TranslatableInterface
         $this->productSellPrices = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->images = new ArrayCollection();
-    }
-
-    public function __sleep()
-    {
-        return [];
     }
 
     public function getId(): ?int
@@ -240,7 +236,7 @@ class Product implements TranslatableInterface
         return $this;
     }
 
-    public function getEan(): ?string
+    public function getEan(): string
     {
         return $this->ean;
     }

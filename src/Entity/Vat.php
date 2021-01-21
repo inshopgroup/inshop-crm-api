@@ -70,7 +70,7 @@ class Vat
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "vat_read",
      *     "product_read",
@@ -84,8 +84,9 @@ class Vat
      * })
      */
     private ?int $id = null;
-/**
-     * @ORM\Column(type="string", length=255, nullable=false)
+
+    /**
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "vat_read",
      *     "vat_write",
@@ -99,23 +100,18 @@ class Vat
     private string $name;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="float")
      * @Groups({"vat_read", "vat_write"})
      * @Assert\NotBlank()
      */
     private float $value;
-
-    public function __sleep()
-    {
-        return [];
-    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -127,7 +123,7 @@ class Vat
         return $this;
     }
 
-    public function getValue(): ?float
+    public function getValue(): float
     {
         return $this->value;
     }

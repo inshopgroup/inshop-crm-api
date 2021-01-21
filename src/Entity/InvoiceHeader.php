@@ -79,7 +79,7 @@ class InvoiceHeader
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_read_collection"
@@ -88,7 +88,7 @@ class InvoiceHeader
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_read_collection",
@@ -181,7 +181,7 @@ class InvoiceHeader
     private ?Language $language = null;
 
     /**
-     * @ORM\Column(type="date", nullable=false)
+     * @ORM\Column(type="date")
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_write"
@@ -191,7 +191,7 @@ class InvoiceHeader
     private DateTimeInterface $dateOfInvoice;
 
     /**
-     * @ORM\Column(type="date", nullable=false)
+     * @ORM\Column(type="date")
      * @Groups({
      *     "invoice_header_read",
      *     "invoice_header_write"
@@ -223,7 +223,7 @@ class InvoiceHeader
     /**
      * @var Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\File")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn()
      * @ApiProperty(iri="http://schema.org/image")
      * @ApiSubresource()
      * @Groups({
@@ -241,17 +241,12 @@ class InvoiceHeader
         $this->files = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNumber(): ?string
+    public function getNumber(): string
     {
         return $this->number;
     }
@@ -263,7 +258,7 @@ class InvoiceHeader
         return $this;
     }
 
-    public function getDateOfInvoice(): ?DateTimeInterface
+    public function getDateOfInvoice(): \DateTimeInterface
     {
         return $this->dateOfInvoice;
     }
@@ -275,7 +270,7 @@ class InvoiceHeader
         return $this;
     }
 
-    public function getDateOfSale(): ?DateTimeInterface
+    public function getDateOfSale(): \DateTimeInterface
     {
         return $this->dateOfSale;
     }

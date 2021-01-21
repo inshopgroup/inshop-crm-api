@@ -68,7 +68,7 @@ class CompanyProduct
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "company_product_read",
      *     "product_sell_price_read",
@@ -76,7 +76,8 @@ class CompanyProduct
      * })
      */
     private ?int $id = null;
-/**
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="companyProducts")
      * @Groups({
      *     "company_product_read",
@@ -110,7 +111,7 @@ class CompanyProduct
     private ?Currency $currency = null;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="float")
      * @Groups({
      *     "company_product_read",
      *     "company_product_write",
@@ -121,7 +122,7 @@ class CompanyProduct
     private float $priceBuyNetto;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="integer")
      * @Groups({
      *     "company_product_read",
      *     "company_product_write",
@@ -131,17 +132,12 @@ class CompanyProduct
      */
     private int $availability;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPriceBuyNetto(): ?float
+    public function getPriceBuyNetto(): float
     {
         return $this->priceBuyNetto;
     }
@@ -153,7 +149,7 @@ class CompanyProduct
         return $this;
     }
 
-    public function getAvailability(): ?int
+    public function getAvailability(): int
     {
         return $this->availability;
     }

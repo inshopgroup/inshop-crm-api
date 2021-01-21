@@ -90,7 +90,7 @@ class Text implements TranslatableInterface
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "text_read",
      *     "text_read_collection",
@@ -116,11 +116,6 @@ class Text implements TranslatableInterface
     public function __construct()
     {
         $this->translations = new ArrayCollection();
-    }
-
-    public function __sleep()
-    {
-        return [];
     }
 
     public function getId(): ?int

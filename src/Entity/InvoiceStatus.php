@@ -70,7 +70,7 @@ class InvoiceStatus
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "invoice_status_read",
      *     "invoice_header_read",
@@ -81,7 +81,7 @@ class InvoiceStatus
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "invoice_status_read",
      *     "invoice_status_write",
@@ -92,17 +92,12 @@ class InvoiceStatus
      */
     private string $name;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

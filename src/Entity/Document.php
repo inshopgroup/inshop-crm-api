@@ -77,7 +77,7 @@ class Document implements SearchInterface
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({"document_read", "project_read", "invoice_header_read", "invoice_header_write", "invoice_header_read", "company_read"})
      */
     private ?int $id = null;
@@ -85,7 +85,7 @@ class Document implements SearchInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({"document_read", "document_write", "project_read", "invoice_header_read", "company_read"})
      * @Assert\NotBlank()
      */
@@ -113,7 +113,7 @@ class Document implements SearchInterface
     /**
      * @var Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\File")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn()
      * @ApiProperty(iri="http://schema.org/image")
      * @ApiSubresource()
      * @Groups({"document_read", "document_write", "project_read"})
@@ -126,11 +126,6 @@ class Document implements SearchInterface
         $this->companies = new ArrayCollection();
         $this->projects = new ArrayCollection();
         $this->files = new ArrayCollection();
-    }
-
-    public function __sleep()
-    {
-        return [];
     }
 
     /**
@@ -153,7 +148,7 @@ class Document implements SearchInterface
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

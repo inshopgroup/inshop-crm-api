@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -73,11 +72,12 @@ class Group
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({"group_read", "user_read", "user_write"})
      */
     private ?int $id = null;
-/**
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
@@ -97,17 +97,12 @@ class Group
         $this->roles = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -146,9 +141,9 @@ class Group
     }
 
     /**
-     * @return array
+     * @return string[]|null[]
      */
-    public function getRolesArray(): ?array
+    public function getRolesArray(): array
     {
         $roles = [];
 

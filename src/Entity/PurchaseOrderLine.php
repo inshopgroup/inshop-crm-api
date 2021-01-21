@@ -52,7 +52,7 @@ class PurchaseOrderLine
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "purchase_order_line_read",
      *     "purchase_order_read",
@@ -60,7 +60,6 @@ class PurchaseOrderLine
      * })
      */
     private ?int $id = null;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PurchaseOrderHeader", inversedBy="lines")
@@ -108,7 +107,7 @@ class PurchaseOrderLine
     private ?OrderLine $orderLine = null;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="float")
      * @Groups({
      *     "purchase_order_line_read",
      *     "purchase_order_line_write",
@@ -131,17 +130,12 @@ class PurchaseOrderLine
      */
     private ?Vat $vat = null;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPriceBuyNetto(): ?float
+    public function getPriceBuyNetto(): float
     {
         return $this->priceBuyNetto;
     }

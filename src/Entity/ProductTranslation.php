@@ -77,14 +77,15 @@ class ProductTranslation
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "product_read",
      *     "product_write"
      * })
      */
     private ?int $id = null;
-/**
+
+    /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=128)
      */
@@ -108,7 +109,7 @@ class ProductTranslation
     protected ?Language $language = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "product_write",
      *     "product_read",
@@ -128,15 +129,7 @@ class ProductTranslation
      */
     private ?string $description = null;
 
-    public function __sleep()
-    {
-        return [];
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -148,6 +141,7 @@ class ProductTranslation
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -166,6 +160,7 @@ class ProductTranslation
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -198,7 +193,7 @@ class ProductTranslation
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }

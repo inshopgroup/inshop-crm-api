@@ -75,7 +75,7 @@ class Contact implements SearchInterface
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({
      *     "contact_read",
      *     "client_read",
@@ -89,7 +89,7 @@ class Contact implements SearchInterface
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "contact_read",
      *     "contact_write",
@@ -141,11 +141,6 @@ class Contact implements SearchInterface
         $this->companies = new ArrayCollection();
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     /**
      * Get id
      *
@@ -172,10 +167,8 @@ class Contact implements SearchInterface
 
     /**
      * Get value
-     *
-     * @return string
      */
-    public function getValue(): ?string
+    public function getValue(): string
     {
         return $this->value;
     }

@@ -60,8 +60,17 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  */
 class TaskStatus
 {
+    /**
+     * @var int
+     */
     public const STATUS_TODO = 1;
+    /**
+     * @var int
+     */
     public const STATUS_IN_PROGRESS = 2;
+    /**
+     * @var int
+     */
     public const STATUS_DONE = 3;
 
     use Timestampable;
@@ -73,22 +82,17 @@ class TaskStatus
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Groups({"task_status_read", "project_read", "task_read", "task_write", "project_write"})
      */
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({"task_status_read", "task_status_write", "user_read", "project_read", "task_read"})
      * @Assert\NotBlank()
      */
     private string $name;
-
-    public function __sleep()
-    {
-        return [];
-    }
 
     /**
      * Get id
@@ -116,10 +120,8 @@ class TaskStatus
 
     /**
      * Get name
-     *
-     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

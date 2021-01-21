@@ -212,6 +212,7 @@ class ElasticaClientProduct extends ElasticaClientBase
         // filter by category
         $term = new Query\Match();
         $term->setField('category.slug', $params['categorySlug']);
+
         $boolQuery->addMust($term);
 
         if (isset($params['q'])) {
@@ -230,6 +231,7 @@ class ElasticaClientProduct extends ElasticaClientBase
             ->setSort(['id' => 'desc']);
 
         $search = $this->client->createSearch($this->getIndex());
+
         $search->setQuery($query);
 
         $results = $search->search();
