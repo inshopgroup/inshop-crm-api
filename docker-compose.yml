@@ -2,7 +2,7 @@ version: '3.2'
 
 services:
   php:
-    image: inshopgroup/docker-inshop-crm-api-php-fpm-dev:php7.4
+    image: inshopgroup/docker-inshop-crm-api-php-fpm-dev:php8.1
     depends_on:
       - db
     env_file:
@@ -25,7 +25,7 @@ services:
       - api
 
   db:
-    image: postgres:11.4-alpine
+    image: postgres:latest
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_USER=${DATABASE_USER}
@@ -38,7 +38,7 @@ services:
       - api
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.3
     environment:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -53,22 +53,12 @@ services:
       - ${PORT_ELASTIC}:9200
     networks:
       - api
-      - esnet
-
-  redis:
-    image: redis:latest
-    volumes:
-      - redis-data:/var/lib/redis
-    networks:
-      - api
 
 volumes:
   es-data: {}
   db-data: {}
-  redis-data: {}
   files-data: {}
   images-data: {}
 
 networks:
-    esnet:
     api:

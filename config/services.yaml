@@ -94,17 +94,17 @@ services:
   Liip\ImagineBundle\Imagine\Filter\FilterManager:
     alias: 'liip_imagine.filter.manager'
 
-  app.redis:
-    class: Redis
-    calls:
-      - method: connect
-        arguments:
-          - '%env(REDIS_HOST)%'
-          - '%env(int:REDIS_PORT)%'
+#  app.redis:
+#    class: Redis
+#    calls:
+#      - method: connect
+#        arguments:
+#          - '%env(REDIS_HOST)%'
+#          - '%env(int:REDIS_PORT)%'
 
-  Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
-    arguments:
-      - '@app.redis'
+#  Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
+#    arguments:
+#      - '@app.redis'
 
   app.s3_client:
     class: Aws\S3\S3Client
