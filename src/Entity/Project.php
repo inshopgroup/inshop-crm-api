@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Interfaces\ClientInterface;
-use App\Interfaces\SearchInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -68,7 +67,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
-class Project implements ClientInterface, SearchInterface
+class Project implements ClientInterface
 {
     use Timestampable;
     use Blameable;

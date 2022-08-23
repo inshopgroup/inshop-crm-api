@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Interfaces\ClientInterface;
-use App\Interfaces\SearchInterface;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -83,7 +83,7 @@ use App\Controller\TaskDeadlineAction;
  *     }
  * )
  */
-class Task implements ClientInterface, SearchInterface
+class Task implements ClientInterface
 {
     use Timestampable;
     use Blameable;

@@ -9,7 +9,7 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Faker;
 
 /**
@@ -19,9 +19,9 @@ use Faker;
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    protected UserPasswordEncoderInterface $encoder;
+    protected UserPasswordHasherInterface $encoder;
 
     /**
      * @var Faker\Generator
@@ -30,9 +30,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     /**
      * UserFixtures constructor.
-     * @param UserPasswordEncoderInterface $encoder
+     * @param UserPasswordHasherInterface $encoder
      */
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    public function __construct(UserPasswordHasherInterface $encoder)
     {
         $this->encoder = $encoder;
         $this->faker = Faker\Factory::create();
@@ -59,9 +59,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user = new User();
         $user->setLanguage($language);
         $user->setUsername('demo');
-        $user->setName(sprintf('%s %s', $this->faker->firstName, $this->faker->lastName));
+        $user->setName(sprintf('%s %s', $this->faker->firstName(), $this->faker->lastName()));
         $user->addGroup($groupDemo);
-        $user->setPassword($this->encoder->encodePassword($user, 'demo'));
+        $user->setPassword($this->encoder->hashPassword($user, 'demo'));
 
         $manager->persist($user);
         $manager->flush();

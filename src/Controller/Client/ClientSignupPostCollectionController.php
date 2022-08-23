@@ -9,7 +9,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -40,13 +40,13 @@ class ClientSignupPostCollectionController extends BaseUserController
 
     /**
      * ClientSignupPostCollectionController constructor.
-     * @param UserPasswordEncoderInterface $encoder
+     * @param UserPasswordHasherInterface $encoder
      * @param EntityManagerInterface $em
      * @param EmailSender $emailSender
      * @param ParameterBagInterface $params
      */
     public function __construct(
-        UserPasswordEncoderInterface $encoder,
+        UserPasswordHasherInterface $encoder,
         EmailSender $emailSender,
         ParameterBagInterface $params
     ) {

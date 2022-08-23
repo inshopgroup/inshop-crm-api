@@ -1,0 +1,7 @@
+gesdinet_jwt_refresh_token:
+    refresh_token_class: App\Entity\RefreshToken
+    ttl: 28800
+    ttl_update: true
+    firewall: refresh
+    user_provider: 'security.user.provider.concrete.client_provider'
+    user_identity_field: 'username'

@@ -7,7 +7,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Interfaces\SearchInterface;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
@@ -78,7 +77,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class Address implements SearchInterface
+class Address
 {
     use Timestampable;
     use Blameable;
@@ -92,11 +91,8 @@ class Address implements SearchInterface
      * @ORM\GeneratedValue()
      * @Groups({
      *     "address_read",
-     *     "company_read",
-     *     "company_write",
      *     "client_read",
      *     "client_write",
-     *     "company_read_collection"
      * })
      */
     private ?int $id = null;
@@ -106,9 +102,7 @@ class Address implements SearchInterface
      * @Groups({
      *     "address_read",
      *     "address_write",
-     *     "company_read_collection",
      *     "client_read",
-     *     "company_read",
      * })
      * @Assert\NotBlank()
      */
@@ -120,8 +114,6 @@ class Address implements SearchInterface
      *     "client_read",
      *     "address_read",
      *     "address_write",
-     *     "company_read_collection",
-     *     "company_read",
      * })
      * @Assert\NotBlank()
      */
@@ -135,7 +127,6 @@ class Address implements SearchInterface
      *     "address_read",
      *     "address_write",
      *     "client_read",
-     *     "company_read",
      * })
      */
     private ?string $region = null;
@@ -148,7 +139,6 @@ class Address implements SearchInterface
      *     "address_read",
      *     "address_write",
      *     "client_read",
-     *     "company_read",
      * })
      */
     private ?string $district = null;
@@ -160,9 +150,7 @@ class Address implements SearchInterface
      * @Groups({
      *     "address_read",
      *     "address_write",
-     *     "company_read_collection",
      *     "client_read",
-     *     "company_read",
      * })
      */
     private ?string $postCode = null;
@@ -175,7 +163,6 @@ class Address implements SearchInterface
      *     "address_read",
      *     "address_write",
      *     "client_read",
-     *     "company_read",
      * })
      * @Assert\NotBlank()
      */
@@ -189,7 +176,6 @@ class Address implements SearchInterface
      *     "address_read",
      *     "address_write",
      *     "client_read",
-     *     "company_read",
      * })
      * @Assert\NotBlank()
      */
@@ -203,7 +189,6 @@ class Address implements SearchInterface
      *     "address_read",
      *     "address_write",
      *     "client_read",
-     *     "company_read",
      * })
      */
     private ?string $apartment = null;
@@ -216,7 +201,6 @@ class Address implements SearchInterface
      *     "address_read",
      *     "address_write",
      *     "client_read",
-     *     "company_read",
      * })
      */
     private ?string $comment = null;
@@ -231,20 +215,9 @@ class Address implements SearchInterface
      */
     private Collection $clients;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Company", mappedBy="addresses")
-     * @Groups({
-     *     "address_read",
-     *     "address_write"
-     * })
-     * @ORM\OrderBy({"id" = "DESC"})
-     */
-    private Collection $companies;
-
     public function __construct()
     {
         $this->clients = new ArrayCollection();
-        $this->companies = new ArrayCollection();
     }
 
     /**
@@ -465,33 +438,6 @@ class Address implements SearchInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Company[]
-     */
-    public function getCompanies(): Collection
-    {
-        return $this->companies;
-    }
-
-    public function addCompany(Company $company): self
-    {
-        if (!$this->companies->contains($company)) {
-            $this->companies[] = $company;
-            $company->addAddress($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompany(Company $company): self
-    {
-        if ($this->companies->contains($company)) {
-            $this->companies->removeElement($company);
-            $company->removeAddress($this);
-        }
-
-        return $this;
-    }
 
     public function getPostCode(): ?string
     {

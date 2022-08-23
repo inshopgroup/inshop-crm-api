@@ -43,14 +43,14 @@ class AddressFixtures extends Fixture implements DependentFixtureInterface
 
             $address = new Address();
             $address->setCountry($country);
-            $address->setCity($this->faker->city);
-            $address->setRegion($this->faker->address);
-            $address->setDistrict($this->faker->address);
-            $address->setPostCode($this->faker->postcode);
-            $address->setStreet($this->faker->streetAddress);
+            $address->setCity($this->faker->city());
+            $address->setRegion($this->faker->address());
+            $address->setDistrict($this->faker->address());
+            $address->setPostCode($this->faker->postcode());
+            $address->setStreet($this->faker->streetAddress());
             $address->setBuilding($this->faker->numberBetween(1, 200));
             $address->setApartment($this->faker->numberBetween(1, 200));
-            $address->setComment($this->faker->name);
+            $address->setComment($this->faker->name());
 
             $manager->persist($address);
         }

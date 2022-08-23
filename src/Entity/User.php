@@ -10,6 +10,7 @@ use App\Controller\User\UserPostCollectionController;
 use App\Controller\DashboardAction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -17,6 +18,7 @@ use App\Traits\Timestampable;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -82,7 +84,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
-class User implements Serializable, UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use Timestampable;
     use Blameable;
@@ -240,7 +242,7 @@ class User implements Serializable, UserInterface
     /**
      * @return array
      */
-    public function getRoles(): ?array
+    public function getRoles(): array
     {
         $roles[] = ['ROLE_USER'];
 
@@ -255,22 +257,16 @@ class User implements Serializable, UserInterface
     {
     }
 
-    /** @see \Serializable::serialize() */
-    public function serialize(): ?string
+    public function __serialize(): array
     {
-        return serialize(
-            array(
-                $this->id,
-                $this->username,
-                $this->password,
-            )
+        return array(
+            $this->id,
+            $this->username,
+            $this->password,
         );
     }
 
-    /** @param $serialized
-     * @see \Serializable::unserialize()
-     */
-    public function unserialize($serialized): void
+    public function __unserialize($serialized): void
     {
         [
             $this->id,
@@ -480,5 +476,15 @@ class User implements Serializable, UserInterface
         $this->googleCalendarId = $googleCalendarId;
 
         return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string)$this->getId();
+    }
+
+    public function isIsGoogleSyncEnabled(): ?bool
+    {
+        return $this->isGoogleSyncEnabled;
     }
 }

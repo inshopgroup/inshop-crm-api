@@ -5,10 +5,10 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Interfaces\ClientInterface;
-use App\Interfaces\SearchInterface;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -16,6 +16,7 @@ use App\Traits\Timestampable;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -128,7 +129,7 @@ use function random_bytes;
  *     }
  * )
  */
-class Client implements ClientInterface, SearchInterface, UserInterface
+class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
     use Timestampable;
     use Blameable;
@@ -143,8 +144,6 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      * @Groups({
      *     "client_read",
      *     "client_read_collection",
-     *     "company_read",
-     *     "company_write",
      *     "document_read",
      *     "project_read",
      *     "document_write",
@@ -170,8 +169,6 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "client_read",
      *     "client_read_collection",
      *     "client_write",
-     *     "company_read",
-     *     "company_write",
      *     "document_read",
      *     "project_read",
      *     "document_write",
@@ -208,7 +205,6 @@ class Client implements ClientInterface, SearchInterface, UserInterface
      *     "client_read",
      *     "client_read_collection",
      *     "client_write",
-     *     "company_read"
      * })
      */
     private ?string $description = null;
@@ -540,7 +536,7 @@ class Client implements ClientInterface, SearchInterface, UserInterface
     /**
      * @return array
      */
-    public function getRoles(): ?array
+    public function getRoles(): array
     {
         return ['ROLE_CLIENT'];
     }
@@ -601,5 +597,10 @@ class Client implements ClientInterface, SearchInterface, UserInterface
         }
 
         return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string)$this->getId();
     }
 }

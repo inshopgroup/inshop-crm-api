@@ -1,49 +1,10 @@
-# Read the documentation: https://github.com/1up-lab/OneupFlysystemBundle/tree/master/Resources/doc/index.md
+# Read the documentation: https://github.com/1up-lab/OneupFlysystemBundle
 oneup_flysystem:
-  adapters:
-    file_adapter:
-      awss3v3:
-        client: app.s3_client
-        bucket: '%env(AWS_S3_BUCKET_FILE_NAME)%'
-        prefix: ~
-
-    image_adapter:
-      awss3v3:
-        client: app.s3_client
-        bucket: '%env(AWS_S3_BUCKET_IMAGE_NAME)%'
-        prefix: ~
-
-#    images_200_adapter:
-#      local:
-#        directory: '%kernel.project_dir%/public/images/200'
-#
-#    images_420_adapter:
-#      local:
-#        directory: '%kernel.project_dir%/public/images/420'
-#
-#    images_1000_adapter:
-#      local:
-#        directory: '%kernel.project_dir%/public/images/1000'
-
-  filesystems:
-    file_filesystem:
-      adapter: file_adapter
-      mount: file_filesystem
-      visibility: public
-
-    image_filesystem:
-      adapter: image_adapter
-      mount: image_filesystem
-      visibility: public
-
-#    images_200:
-#      adapter: images_200_adapter
-#      mount: images_200_filesystem
-#
-#    images_420:
-#      adapter: images_420_adapter
-#      mount: images_420_filesystem
-#
-#    images_1000:
-#      adapter: images_1000_adapter
-#      mount: images_1000_filesystem
+    adapters:
+        default_adapter:
+            local:
+                location: '%kernel.cache_dir%/flysystem'
+    filesystems:
+        default_filesystem:
+            adapter: default_adapter
+            alias: League\Flysystem\Filesystem

@@ -7,7 +7,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Interfaces\SearchInterface;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
@@ -60,7 +59,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class Country implements SearchInterface
+class Country
 {
     use Timestampable;
     use Blameable;
@@ -76,9 +75,7 @@ class Country implements SearchInterface
      *     "city_write",
      *     "address_read",
      *     "address_write",
-     *     "company_read_collection",
      *     "client_read",
-     *     "company_read",
      * })
      */
     private ?int $id = null;
@@ -90,9 +87,7 @@ class Country implements SearchInterface
      *     "country_write",
      *     "city_read",
      *     "address_read",
-     *     "company_read_collection",
      *     "client_read",
-     *     "company_read",
      * })
      * @Assert\NotBlank()
      */

@@ -9,7 +9,6 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Interfaces\SearchInterface;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
@@ -66,7 +65,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class Document implements SearchInterface
+class Document
 {
     use Timestampable;
     use Blameable;
@@ -78,7 +77,7 @@ class Document implements SearchInterface
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue()
-     * @Groups({"document_read", "project_read", "invoice_header_read", "invoice_header_write", "invoice_header_read", "company_read"})
+     * @Groups({"document_read", "project_read", "invoice_header_read", "invoice_header_write", "invoice_header_read"})
      */
     private ?int $id = null;
 
@@ -86,7 +85,7 @@ class Document implements SearchInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255)
-     * @Groups({"document_read", "document_write", "project_read", "invoice_header_read", "company_read"})
+     * @Groups({"document_read", "document_write", "project_read", "invoice_header_read"})
      * @Assert\NotBlank()
      */
     private string $name;
@@ -96,12 +95,6 @@ class Document implements SearchInterface
      * @Groups({"document_read", "document_write"})
      */
     private ?Client $client = null;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Company", inversedBy="documents")
-     * @Groups({"document_read", "document_write"})
-     */
-    private Collection $companies;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="documents")
@@ -156,32 +149,6 @@ class Document implements SearchInterface
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Company[]
-     */
-    public function getCompanies(): Collection
-    {
-        return $this->companies;
-    }
-
-    public function addCompany(Company $company): self
-    {
-        if (!$this->companies->contains($company)) {
-            $this->companies[] = $company;
-        }
-
-        return $this;
-    }
-
-    public function removeCompany(Company $company): self
-    {
-        if ($this->companies->contains($company)) {
-            $this->companies->removeElement($company);
-        }
 
         return $this;
     }
