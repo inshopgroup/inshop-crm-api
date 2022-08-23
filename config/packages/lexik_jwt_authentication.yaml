@@ -1,18 +1,14 @@
 lexik_jwt_authentication:
-  secret_key:       '%kernel.project_dir%/config/jwt/private.pem' # required for token creation
-  public_key:       '%kernel.project_dir%/config/jwt/public.pem'  # required for token verification
-  pass_phrase: '%env(JWT_PASSPHRASE)%'
-  token_ttl: 28800
-  encoder:
-    # token encoder/decoder service - default implementation based on the lcobucci/jwt library
-    service: lexik_jwt_authentication.encoder.lcobucci
+#    secret_key: '%env(resolve:JWT_SECRET_KEY)%'
+#    public_key: '%env(resolve:JWT_PUBLIC_KEY)%'
+#    pass_phrase: '%env(JWT_PASSPHRASE)%'
+    secret_key:       '%kernel.project_dir%/config/jwt/private.pem' # required for token creation
+    public_key:       '%kernel.project_dir%/config/jwt/public.pem'  # required for token verification
+    pass_phrase: '%env(JWT_PASSPHRASE)%'
+    token_ttl: 28800
+    encoder:
+        # token encoder/decoder service - default implementation based on the lcobucci/jwt library
+        service: lexik_jwt_authentication.encoder.lcobucci
 
-    # encryption algorithm used by the encoder service
-    signature_algorithm: RS256
-
-gesdinet_jwt_refresh_token:
-  ttl: 28800
-  ttl_update: true
-  firewall: refresh
-  user_provider: 'security.user.provider.concrete.client_provider'
-  user_identity_field: 'username'
+        # encryption algorithm used by the encoder service
+        signature_algorithm: RS256

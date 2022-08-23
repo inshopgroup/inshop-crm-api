@@ -1,8 +1,8 @@
 liip_imagine:
-#    loaders:
-#        default:
-#            flysystem:
-#                 data_root: "/var/www/public/images"
+    #    loaders:
+    #        default:
+    #            flysystem:
+    #                 data_root: "/var/www/public/images"
 
     # valid drivers options include "gd" or "gmagick" or "imagick"
     driver: "gd"

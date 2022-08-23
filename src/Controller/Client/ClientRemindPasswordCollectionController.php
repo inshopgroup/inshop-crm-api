@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -47,14 +47,14 @@ class ClientRemindPasswordCollectionController extends BaseUserController
 
     /**
      * ClientRemindPasswordCollectionController constructor.
-     * @param UserPasswordEncoderInterface $encoder
+     * @param UserPasswordHasherInterface $encoder
      * @param ParameterBagInterface $params
      * @param ClientRepository $clientRepository
      * @param EmailSender $emailSender
      * @param EntityManagerInterface $em
      */
     public function __construct(
-        UserPasswordEncoderInterface $encoder,
+        UserPasswordHasherInterface $encoder,
         ParameterBagInterface $params,
         ClientRepository $clientRepository,
         EmailSender $emailSender,

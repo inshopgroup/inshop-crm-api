@@ -1,122 +1,63 @@
-imports:
-  - { resource: fixtures.yaml }
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
 
 # Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-  locale: 'en'
-  client_url: '%env(resolve:CLIENT_URL)%'
+    locale: 'en'
+    client_url: '%env(resolve:CLIENT_URL)%'
 
 services:
-  # default configuration for services in *this* file
-  _defaults:
-    autowire: true      # Automatically injects dependencies in your services.
-    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-    public: false       # Allows optimizing the container by removing unused services; this also means
-      # fetching services directly from the container via $container->get() won't work.
-    # The best practice is to be explicit about your dependencies anyway.
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-  # makes classes in src/ available to be used as services
-  # this creates a service per class whose id is the fully-qualified class name
-  App\:
-    resource: '../src/*'
-    exclude: '../src/{Entity,Migrations,Tests,DataFixtures}'
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
 
-  # controllers are imported separately to make sure services can be injected
-  # as action arguments even if you don't extend any base controller class
-  App\Controller\:
-    resource: '../src/Controller'
-    tags: ['controller.service_arguments']
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
 
-  # add more service definitions when explicit configuration is needed
-  # please note that last definitions always *replace* previous ones
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
 
-  api.event.jwt_created_listener:
-    class: App\EventListener\JWTCreatedListener
-    tags:
-      - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+    api.event.jwt_created_listener:
+        class: App\EventListener\JWTCreatedListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 
-  api.event.authentication_success_listener:
-    class: App\EventListener\AuthenticationSuccessListener
-    tags:
-      - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+    api.event.authentication_success_listener:
+        class: App\EventListener\AuthenticationSuccessListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
 
-  app.entity_logger.subscriber:
-    class: App\EventListener\Logger\EntityLoggerSubscriber
-    arguments: ['@security.token_storage']
-    tags:
-      - { name: doctrine.event_subscriber, connection: default }
+    app.entity_logger.subscriber:
+        class: App\EventListener\Logger\EntityLoggerSubscriber
+        arguments: ['@security.token_storage']
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
 
-  App\EventListener\EntityRemoveListener:
-    tags:
-      - { name: doctrine.event_listener, event: preRemove }
+    App\EventListener\EntityRemoveListener:
+        tags:
+            - { name: doctrine.event_listener, event: preRemove }
 
-  app.elastica.listener.search.index:
-    class: 'App\EventListener\ElasticaSearchListener'
-    tags:
-      - { name: 'doctrine.event_listener', event: 'postPersist' }
-      - { name: 'doctrine.event_listener', event: 'postUpdate' }
-      - { name: 'doctrine.event_listener', event: 'preRemove' }
+    Liip\ImagineBundle\Imagine\Data\DataManager:
+        alias: 'liip_imagine.data.manager'
 
-  app.elastica.listener.product.index:
-    class: 'App\EventListener\ElasticaProductListener'
-    tags:
-      - { name: 'doctrine.event_listener', event: 'postPersist' }
-      - { name: 'doctrine.event_listener', event: 'postUpdate' }
-      - { name: 'doctrine.event_listener', event: 'preRemove' }
+    Liip\ImagineBundle\Imagine\Filter\FilterManager:
+        alias: 'liip_imagine.filter.manager'
 
-  app.elastica.listener.task:
-    class: 'App\EventListener\TaskListener'
-    tags:
-      - { name: 'doctrine.event_listener', event: 'postPersist' }
-      - { name: 'doctrine.event_listener', event: 'postUpdate' }
-      - { name: 'doctrine.event_listener', event: 'preRemove' }
-
-  App\Service\Normalizer\ElasticaCollectionNormalizer:
-    class: 'App\Service\Normalizer\ElasticaCollectionNormalizer'
-    arguments:
-      - '@api_platform.jsonld.context_builder'
-      - '@api_platform.resource_class_resolver'
-    tags:
-      - { name: 'serializer.normalizer', priority: 17 }
-
-  App\Service\Normalizer\ElasticaItemNormalizer:
-    class: 'App\Service\Normalizer\ElasticaItemNormalizer'
-    arguments:
-      - '@api_platform.jsonld.context_builder'
-      - '@api_platform.resource_class_resolver'
-    tags:
-      - { name: 'serializer.normalizer', priority: 17 }
-
-  Liip\ImagineBundle\Imagine\Data\DataManager:
-    alias: 'liip_imagine.data.manager'
-
-  Liip\ImagineBundle\Imagine\Filter\FilterManager:
-    alias: 'liip_imagine.filter.manager'
-
-#  app.redis:
-#    class: Redis
-#    calls:
-#      - method: connect
-#        arguments:
-#          - '%env(REDIS_HOST)%'
-#          - '%env(int:REDIS_PORT)%'
-
-#  Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
-#    arguments:
-#      - '@app.redis'
-
-  app.s3_client:
-    class: Aws\S3\S3Client
-    arguments:
-      -
-        version: 'latest'
-        region: '%env(AWS_S3_BUCKET_REGION)%'
-        credentials:
-          key: '%env(AWS_S3_ACCESS_ID)%'
-          secret: '%env(AWS_S3_ACCESS_SECRET)%'
-
-  gesdinet.jwtrefreshtoken.refresh_token_manager:
-    class:  App\Service\RefreshTokenManager
-    public: true
-    arguments: [ '@gesdinet.jwtrefreshtoken.object_manager', '%gesdinet.jwtrefreshtoken.refresh_token.class%' ]
+    gesdinet.jwtrefreshtoken.refresh_token_manager:
+        class:  App\Service\RefreshTokenManager
+        public: true
+        arguments: [ '@gesdinet.jwtrefreshtoken.object_manager', '%gesdinet.jwtrefreshtoken.refresh_token.class%' ]

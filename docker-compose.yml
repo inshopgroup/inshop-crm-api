@@ -37,25 +37,7 @@ services:
     networks:
       - api
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.3
-    environment:
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - discovery.type=single-node
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - es-data:/usr/share/elasticsearch/data
-    ports:
-      - ${PORT_ELASTIC}:9200
-    networks:
-      - api
-
 volumes:
-  es-data: {}
   db-data: {}
   files-data: {}
   images-data: {}

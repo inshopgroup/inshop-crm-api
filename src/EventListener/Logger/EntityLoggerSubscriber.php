@@ -277,57 +277,59 @@ class EntityLoggerSubscriber implements EventSubscriber
                 $type = $this->getColumnTypeFromAnnotations($annotations);
             }
 
-            [
-                $oldValueRaw,
-                $newValueRaw
-            ] = [...$change];
+            if ($type) {
+                [
+                    $oldValueRaw,
+                    $newValueRaw
+                ] = [...$change];
 
-            switch ($type) {
-                case 'boolean':
-                    $oldValue = $oldValueRaw ? 'yes' : 'no';
-                    $newValue = $newValueRaw ? 'yes' : 'no';
-                    break;
+                switch ($type) {
+                    case 'boolean':
+                        $oldValue = $oldValueRaw ? 'yes' : 'no';
+                        $newValue = $newValueRaw ? 'yes' : 'no';
+                        break;
 
-                case 'date':
-                    $oldValue = $change[0] ? $change[0]->format('d-m-Y') : '';
-                    $newValue = $change[1] ? $change[1]->format('d-m-Y') : '';
-                    break;
+                    case 'date':
+                        $oldValue = $change[0] ? $change[0]->format('d-m-Y') : '';
+                        $newValue = $change[1] ? $change[1]->format('d-m-Y') : '';
+                        break;
 
-                case 'time':
-                    $oldValue = $change[0] ? $change[0]->format('H:i:s') : '';
-                    $newValue = $change[1] ? $change[1]->format('H:i:s') : '';
-                    break;
+                    case 'time':
+                        $oldValue = $change[0] ? $change[0]->format('H:i:s') : '';
+                        $newValue = $change[1] ? $change[1]->format('H:i:s') : '';
+                        break;
 
-                case 'datetime':
-                    $oldValue = $change[0] ? $change[0]->format('d-m-Y H:i:s') : '';
-                    $newValue = $change[1] ? $change[1]->format('d-m-Y H:i:s') : '';
-                    break;
+                    case 'datetime':
+                        $oldValue = $change[0] ? $change[0]->format('d-m-Y H:i:s') : '';
+                        $newValue = $change[1] ? $change[1]->format('d-m-Y H:i:s') : '';
+                        break;
 
-                case 'string':
-                case 'text':
-                case 'integer':
-                    $oldValue = $oldValueRaw;
-                    $newValue = $newValueRaw;
-                    break;
+                    case 'string':
+                    case 'text':
+                    case 'integer':
+                        $oldValue = $oldValueRaw;
+                        $newValue = $newValueRaw;
+                        break;
 
-                case 'json':
-                    $oldValue = json_encode($oldValueRaw, JSON_THROW_ON_ERROR, 512);
-                    $newValue = json_encode($newValueRaw, JSON_THROW_ON_ERROR, 512);
-                    break;
+                    case 'json':
+                        $oldValue = json_encode($oldValueRaw, JSON_THROW_ON_ERROR, 512);
+                        $newValue = json_encode($newValueRaw, JSON_THROW_ON_ERROR, 512);
+                        break;
 
-                case OneToOne::class:
-                case ManyToOne::class:
-                    $oldValue = $this->guessObjectName($oldValueRaw);
-                    $newValue = $this->guessObjectName($newValueRaw);
-                    break;
+                    case OneToOne::class:
+                    case ManyToOne::class:
+                        $oldValue = $this->guessObjectName($oldValueRaw);
+                        $newValue = $this->guessObjectName($newValueRaw);
+                        break;
 
-                default:
-                    $oldValue = $oldValueRaw;
-                    $newValue = $newValueRaw;
-            }
+                    default:
+                        $oldValue = $oldValueRaw;
+                        $newValue = $newValueRaw;
+                }
 
-            if ($oldValue !== $newValue) {
-                $entityLogger->addChange($attributeName, $newValue);
+                if ($oldValue !== $newValue) {
+                    $entityLogger->addChange($attributeName, $newValue);
+                }
             }
         }
 

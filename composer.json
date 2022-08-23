@@ -1,68 +1,54 @@
 {
     "type": "project",
     "license": "proprietary",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "require": {
-        "php": "^8.1",
+        "php": ">=8.1",
+        "ext-ctype": "*",
         "ext-iconv": "*",
-        "ext-json": "*",
-        "ext-zend-opcache": "*",
         "api-platform/core": "^2.6",
-        "doctrine/annotations": "^1.0",
+        "doctrine/annotations": "^1.13",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.13",
-        "fakerphp/faker": "^v1.20",
-        "gesdinet/jwt-refresh-token-bundle": "^v1.1",
-        "google/apiclient": "^2.8",
-        "jms/serializer-bundle": "^4.0",
-        "league/flysystem-aws-s3-v3": "3.2",
-        "lexik/jwt-authentication-bundle": "v2.16",
+        "fakerphp/faker": "^1.20",
+        "gesdinet/jwt-refresh-token-bundle": "^1.1",
+        "league/flysystem-aws-s3-v3": "^3.2",
+        "lexik/jwt-authentication-bundle": "^2.16",
         "liip/imagine-bundle": "^2.8",
         "nelmio/cors-bundle": "^2.2",
         "oneup/flysystem-bundle": "^4.4",
-        "phpdocumentor/reflection-docblock": "^5.3",
-        "phpstan/phpdoc-parser": "^1.7",
-        "ruflin/elastica": "^7.2",
-        "sentry/sentry-symfony": "^4.3.0",
-        "stof/doctrine-extensions-bundle": "^v1.6",
-        "symfony/asset": "^6.1",
-        "symfony/expression-language": "^6.1",
-        "symfony/flex": "^1.19",
-        "symfony/framework-bundle": "^6.1",
-        "symfony/mailer": "^6.1",
+        "sensio/framework-extra-bundle": "^6.2",
+        "stof/doctrine-extensions-bundle": "^1.7",
+        "symfony/asset": "6.1.*",
+        "symfony/console": "6.1.*",
+        "symfony/dotenv": "6.1.*",
+        "symfony/expression-language": "6.1.*",
+        "symfony/flex": "^2",
+        "symfony/framework-bundle": "6.1.*",
+        "symfony/mailer": "6.1.*",
         "symfony/monolog-bundle": "^3.8",
-        "symfony/property-access": "^6.1",
-        "symfony/property-info": "^6.1",
-        "symfony/proxy-manager-bridge": "^6.1",
-        "symfony/security-bundle": "^v6.1",
-        "symfony/serializer": "^6.1",
-        "symfony/templating": "^6.1",
-        "symfony/translation": "^6.1",
-        "symfony/twig-bundle": "^6.1",
-        "symfony/validator": "^6.1",
-        "symfony/yaml": "^6.1",
+        "symfony/runtime": "6.1.*",
+        "symfony/security-bundle": "6.1.*",
+        "symfony/translation": "6.1.*",
+        "symfony/twig-bundle": "6.1.*",
+        "symfony/validator": "6.1.*",
+        "symfony/yaml": "6.1.*",
         "vich/uploader-bundle": "^1.21"
     },
-    "require-dev": {
-        "symfony/browser-kit": "^6.1",
-        "symfony/css-selector": "^6.1",
-        "symfony/dotenv": "^6.1",
-        "symfony/http-client": "^6.1",
-        "symfony/maker-bundle": "^v1.45",
-        "symfony/phpunit-bridge": "^6.1",
-        "symfony/stopwatch": "^6.1",
-        "symfony/var-dumper": "^6.1",
-        "symfony/web-profiler-bundle": "^6.1"
-    },
     "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        },
+        "optimize-autoloader": true,
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true,
-        "allow-plugins": {
-            "symfony/flex": true
-        }
+        "sort-packages": true
     },
     "autoload": {
         "psr-4": {
@@ -74,10 +60,18 @@
             "App\\Tests\\": "tests/"
         }
     },
+    "replace": {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php81": "*"
+    },
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
@@ -92,7 +86,13 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false
+            "allow-contrib": false,
+            "require": "6.1.*"
         }
+    },
+    "require-dev": {
+        "symfony/maker-bundle": "^1.45",
+        "symfony/var-dumper": "6.1.*",
+        "symfony/web-profiler-bundle": "6.1.*"
     }
 }

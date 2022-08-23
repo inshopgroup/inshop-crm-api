@@ -33,7 +33,7 @@ class CountryFixtures extends Fixture
     {
         for ($i = 0; $i < 5; $i++) {
             $country = new Country();
-            $country->setName($this->faker->country);
+            $country->setName($this->faker->country());
 
             $manager->persist($country);
         }

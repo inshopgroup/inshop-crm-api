@@ -74,9 +74,6 @@ class Label
      * @Groups({
      *     "label_read",
      *     "product_read",
-     *     "company_read",
-     *     "company_write",
-     *     "company_read_collection",
      *     "client_read",
      *     "client_read_collection",
      *     "client_write",
@@ -90,8 +87,6 @@ class Label
      *     "label_read",
      *     "label_write",
      *     "product_read",
-     *     "company_read",
-     *     "company_read_collection",
      *     "client_read",
      *     "client_read_collection",
      * })

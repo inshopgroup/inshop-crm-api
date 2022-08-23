@@ -3,7 +3,7 @@
 namespace App\Controller\User;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -13,15 +13,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 abstract class BaseUserController extends AbstractController
 {
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    protected UserPasswordEncoderInterface $encoder;
+    protected UserPasswordHasherInterface $encoder;
 
     /**
      * BaseController constructor.
-     * @param UserPasswordEncoderInterface $encoder
+     * @param UserPasswordHasherInterface $encoder
      */
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    public function __construct(UserPasswordHasherInterface $encoder)
     {
         $this->encoder = $encoder;
     }
@@ -33,7 +33,7 @@ abstract class BaseUserController extends AbstractController
     protected function encodePassword(UserInterface $data): UserInterface
     {
         if (!empty($data->getPlainPassword())) {
-            $encoded = $this->encoder->encodePassword($data, $data->getPlainPassword());
+            $encoded = $this->encoder->hashPassword($data, $data->getPlainPassword());
             $data->setPassword($encoded);
         }
 

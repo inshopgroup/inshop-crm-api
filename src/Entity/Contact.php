@@ -5,7 +5,6 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use App\Interfaces\SearchInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -64,7 +63,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
-class Contact implements SearchInterface
+class Contact
 {
     use Timestampable;
     use Blameable;
@@ -81,9 +80,6 @@ class Contact implements SearchInterface
      *     "client_read",
      *     "client_read_collection",
      *     "client_write",
-     *     "company_write",
-     *     "company_read_collection",
-     *     "company_read",
      * })
      */
     private ?int $id = null;
@@ -96,8 +92,6 @@ class Contact implements SearchInterface
      *     "client_read",
      *     "client_read_collection",
      *     "client_write",
-     *     "company_read_collection",
-     *     "company_read",
      * })
      * @Assert\NotBlank()
      */
@@ -111,8 +105,6 @@ class Contact implements SearchInterface
      *     "client_read",
      *     "client_read_collection",
      *     "client_write",
-     *     "company_read_collection",
-     *     "company_read",
      * })
      * @Assert\NotNull()
      */
@@ -128,17 +120,9 @@ class Contact implements SearchInterface
      */
     private Collection $clients;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Company", mappedBy="contacts")
-     * @Groups({"contact_read", "contact_write"})
-     * @Assert\NotBlank()
-     */
-    private Collection $companies;
-
     public function __construct()
     {
         $this->clients = new ArrayCollection();
-        $this->companies = new ArrayCollection();
     }
 
     /**
@@ -235,34 +219,6 @@ class Contact implements SearchInterface
         if ($this->clients->contains($client)) {
             $this->clients->removeElement($client);
             $client->removeContact($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Company[]
-     */
-    public function getCompanies(): Collection
-    {
-        return $this->companies;
-    }
-
-    public function addCompany(Company $company): self
-    {
-        if (!$this->companies->contains($company)) {
-            $this->companies[] = $company;
-            $company->addContact($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompany(Company $company): self
-    {
-        if ($this->companies->contains($company)) {
-            $this->companies->removeElement($company);
-            $company->removeContact($this);
         }
 
         return $this;

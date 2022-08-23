@@ -33,7 +33,7 @@ class FileFixtures extends Fixture
     {
         for ($i = 0; $i < 20; $i++) {
             $file = new File();
-            $file->setOriginalName($this->faker->name);
+            $file->setOriginalName($this->faker->name());
             $file->setMimeType('plain/text');
             $file->setContentUrl('testfile.txt');
             $file->setSize($this->faker->numberBetween(111, 123123123123));
