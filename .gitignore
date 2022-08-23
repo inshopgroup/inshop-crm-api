@@ -1,4 +1,6 @@
 ###> symfony/framework-bundle ###
+/.rnd
+/.bash_history
 /.composer
 /.env.local
 /.env.local.php
