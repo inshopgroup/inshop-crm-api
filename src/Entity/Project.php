@@ -85,9 +85,9 @@ class Project implements ClientInterface
 
     /**
      * @Groups({"project_read", "project_write", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private string $name;
 
     /**
@@ -98,31 +98,31 @@ class Project implements ClientInterface
 
     /**
      * @Groups({"project_read", "project_write", "task_read"})
-     * @Assert\NotBlank()
      */
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'projects')]
+    #[Assert\NotBlank]
     private ?Client $client = null;
 
     /**
      * @Groups({"project_read", "project_write", "document_read", "client_read", "client_write"})
-     * @Assert\NotBlank()
      */
     #[ORM\ManyToOne(targetEntity: ProjectStatus::class)]
+    #[Assert\NotBlank]
     private ?ProjectStatus $status = null;
 
     /**
      * @Groups({"project_read", "project_write", "client_read", "client_write"})
-     * @Assert\NotBlank()
      */
     #[ORM\ManyToOne(targetEntity: ProjectType::class)]
+    #[Assert\NotBlank]
     private ?ProjectType $type = null;
 
     /**
      * @Groups({"project_read", "project_write"})
      * @ORM\OrderBy({"id" = "ASC"})
-     * @Assert\Valid()
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Task::class, cascade: ['persist'], orphanRemoval: true)]
+    #[Assert\Valid]
     private Collection $tasks;
 
     /**

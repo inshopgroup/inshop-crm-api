@@ -99,9 +99,9 @@ class Language
      *     "product_read",
      *     "text_read",
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private ?string $name;
 
     /**
@@ -113,9 +113,9 @@ class Language
      *     "category_read_frontend",
      *     "text_read",
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private string $code;
 
     public function getId(): ?int

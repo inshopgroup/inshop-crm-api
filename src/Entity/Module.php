@@ -83,9 +83,9 @@ class Module
      *     "module_write",
      *     "group_read"
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank]
     private string $name;
 
     /**
@@ -93,9 +93,9 @@ class Module
      * @Groups({
      *     "module_read"
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\OneToMany(mappedBy: 'module', targetEntity: Role::class)]
+    #[Assert\NotBlank]
     private Collection $roles;
 
     public function __construct()

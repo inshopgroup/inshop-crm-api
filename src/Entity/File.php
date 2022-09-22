@@ -62,8 +62,6 @@ class File
     private ?int $id = null;
 
     /**
-     * @var HttpFile|null
-     * @Assert\NotNull()
      * @Vich\UploadableField(
      *     mapping="file",
      *     fileNameProperty="contentUrl",
@@ -72,6 +70,7 @@ class File
      *     originalName="originalName"
      * )
      */
+    #[Assert\NotNull]
     public ?HttpFile $file = null;
 
     /**

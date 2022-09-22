@@ -177,9 +177,15 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      *     "signup_collection",
      *     "address_read",
      * })
-     * @Assert\NotBlank(groups={"Default", "client_signup_frontend", "client_put_frontend"})
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(
+        groups: [
+            'Default',
+            'client_signup_frontend',
+            'client_put_frontend'
+        ]
+    )]
     private string $name;
 
     /**
@@ -189,9 +195,9 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      *     "client_write"
      * })
      * @ApiSubresource()
-     * @Assert\Valid()
      */
     #[ORM\ManyToMany(targetEntity: Address::class, inversedBy: 'clients')]
+    #[Assert\Valid]
     private Collection $addresses;
 
     /**
@@ -223,9 +229,9 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      *     "client_write"
      * })
      * @ApiSubresource()
-     * @Assert\Valid()
      */
     #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'clients', cascade: ['persist'], orphanRemoval: true)]
+    #[Assert\Valid]
     private Collection $contacts;
 
     /**
@@ -236,9 +242,9 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      * })
      * @ORM\OrderBy({"id" = "ASC"})
      * @ApiSubresource()
-     * @Assert\Valid()
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Project::class, cascade: ['persist'], orphanRemoval: true)]
+    #[Assert\Valid]
     private Collection $projects;
 
     /**
@@ -256,10 +262,22 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      *     "client_put_item",
      *     "signup_collection",
      * })
-     * @Assert\NotBlank(groups={"Default", "client_signup_frontend", "client_put_frontend"})
-     * @Assert\Email(groups={"Default", "client_signup_frontend", "client_put_frontend"})
      */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank(
+        groups: [
+            'Default',
+            'client_signup_frontend',
+            'client_put_frontend'
+        ]
+    )]
+    #[Assert\Email(
+        groups: [
+            'Default',
+            'client_signup_frontend',
+            'client_put_frontend'
+        ]
+    )]
     private string $username;
 
     #[ORM\Column(type: 'string', length: 64)]
@@ -270,8 +288,12 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      *     "client_write",
      *     "signup_collection",
      * })
-     * @Assert\NotBlank(groups={"client_signup_frontend"})
      */
+    #[Assert\NotBlank(
+        groups: [
+            'client_signup_frontend'
+        ]
+    )]
     private ?string $plainPassword = null;
 
     #[ORM\Column(type: 'text', nullable: true)]

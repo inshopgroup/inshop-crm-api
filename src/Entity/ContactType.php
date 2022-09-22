@@ -96,9 +96,9 @@ class ContactType
      *     "client_read",
      *     "client_read_collection",
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private string $name;
 
     public function getId(): ?int

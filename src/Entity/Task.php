@@ -109,9 +109,9 @@ class Task implements ClientInterface
      *     "project_read",
      *     "project_write"
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private string $name;
 
     /**
@@ -145,9 +145,9 @@ class Task implements ClientInterface
      *     "project_read",
      *     "project_write"
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'date')]
+    #[Assert\NotBlank]
     private DateTime $deadline;
 
     /**

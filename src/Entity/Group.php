@@ -77,9 +77,9 @@ class Group
 
     /**
      * @Groups({"group_read", "group_write", "user_read"})
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank]
     private string $name;
 
     /**

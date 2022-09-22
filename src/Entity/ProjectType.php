@@ -77,9 +77,9 @@ class ProjectType
 
     /**
      * @Groups({"project_type_read", "project_type_write", "project_read", "client_read"})
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private string $name;
 
     public function getId(): ?int

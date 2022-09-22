@@ -89,9 +89,9 @@ class Contact
      *     "client_read_collection",
      *     "client_write",
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private string $value;
 
     /**
@@ -102,9 +102,9 @@ class Contact
      *     "client_read_collection",
      *     "client_write",
      * })
-     * @Assert\NotNull()
      */
     #[ORM\ManyToOne(targetEntity: ContactType::class)]
+    #[Assert\NotNull]
     private ?ContactType $contactType = null;
 
     /**
@@ -112,9 +112,9 @@ class Contact
      *     "contact_read",
      *     "contact_write"
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\ManyToMany(targetEntity: Client::class, mappedBy: 'contacts')]
+    #[Assert\NotBlank]
     private Collection $clients;
 
     public function __construct()

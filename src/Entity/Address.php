@@ -112,9 +112,9 @@ class Address
      *     "address_read",
      *     "address_write",
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\NotBlank]
     private ?string $city = null;
 
     /**
@@ -153,9 +153,9 @@ class Address
      *     "address_write",
      *     "client_read",
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\NotBlank]
     private ?string $street = null;
 
     /**
@@ -164,9 +164,9 @@ class Address
      *     "address_write",
      *     "client_read",
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\NotBlank]
     private ?string $building = null;
 
     /**

@@ -111,16 +111,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     "task_read",
      *     "client_read"
      * })
-     * @Assert\NotBlank()
-     * @Assert\Email()
      */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private string $username;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'string', length: 64)]
+    #[Assert\NotBlank]
     private string $password;
 
     /**
@@ -138,9 +136,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     "client_read",
      *     "project_read"
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private string $name;
 
     /**
@@ -150,9 +148,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     "task_read",
      *     "client_read"
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank]
     private string $email;
 
     /**
@@ -178,9 +176,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     "user_read",
      *     "user_write"
      * })
-     * @Assert\NotNull()
      */
     #[ORM\ManyToOne(targetEntity: Language::class)]
+    #[Assert\NotNull]
     private ?Language $language = null;
 
     #[ORM\Column(type: 'boolean', nullable: true)]

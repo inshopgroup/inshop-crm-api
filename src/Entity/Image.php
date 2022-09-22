@@ -71,13 +71,6 @@ class Image
     private ?int $id = null;
 
     /**
-     * @var HttpFile|null
-     * @Assert\NotNull()
-     * @Assert\File(
-     *     mimeTypes = {"image/jpeg", "image/gif", "image/png"},
-     *     maxSize="5Mi",
-     *     mimeTypesMessage = "Wrong file type"
-     * )
      * @Vich\UploadableField(
      *     mapping="image",
      *     fileNameProperty="contentUrl",
@@ -86,6 +79,12 @@ class Image
      *     originalName="originalName"
      * )
      */
+    #[Assert\NotNull]
+    #[Assert\File(
+        maxSize: '5Mi',
+        mimeTypes: ['image/jpeg', 'image/gif', 'image/png'],
+        mimeTypesMessage: 'Wrong file type'
+    )]
     public ?HttpFile $image = null;
 
     /**

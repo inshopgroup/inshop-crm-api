@@ -84,9 +84,9 @@ class Document
 
     /**
      * @Groups({"document_read", "document_write", "project_read", "invoice_header_read"})
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private string $name;
 
     /**

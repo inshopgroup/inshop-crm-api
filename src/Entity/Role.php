@@ -80,9 +80,9 @@ class Role
      *     "group_read",
      *     "module_read"
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private string $name;
 
     /**
@@ -92,9 +92,9 @@ class Role
      *     "group_read",
      *     "module_read"
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank]
     private string $role;
 
     /**
@@ -103,9 +103,9 @@ class Role
      *     "role_write",
      *     "group_read"
      * })
-     * @Assert\NotBlank()
      */
     #[ORM\ManyToOne(targetEntity: Module::class, inversedBy: 'roles')]
+    #[Assert\NotBlank]
     private ?Module $module = null;
 
     public function getId(): ?int
