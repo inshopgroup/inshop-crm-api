@@ -17,10 +17,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * Language
- *
- * @ORM\Table(name="language")
- * @ORM\Entity(repositoryClass="App\Repository\LanguageRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"language_read", "read", "is_active_read"}},

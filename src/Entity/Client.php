@@ -189,7 +189,6 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
     private string $name;
 
     /**
-     * @ORM\OrderBy({"id" = "DESC"})
      * @Groups({
      *     "client_read",
      *     "client_write"
@@ -197,6 +196,7 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      * @ApiSubresource()
      */
     #[ORM\ManyToMany(targetEntity: Address::class, inversedBy: 'clients')]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
     private Collection $addresses;
 
@@ -211,7 +211,6 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
     private ?string $description = null;
 
     /**
-     * @ORM\OrderBy({"id" = "ASC"})
      * @Groups({
      *     "client_read",
      *     "client_read_collection",
@@ -219,10 +218,10 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      * })
      */
     #[ORM\ManyToMany(targetEntity: Label::class)]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     private Collection $labels;
 
     /**
-     * @ORM\OrderBy({"id" = "ASC"})
      * @Groups({
      *     "client_read",
      *     "client_read_collection",
@@ -231,6 +230,7 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      * @ApiSubresource()
      */
     #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'clients', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
     private Collection $contacts;
 
@@ -240,18 +240,18 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      *     "client_read",
      *     "client_write"
      * })
-     * @ORM\OrderBy({"id" = "ASC"})
      * @ApiSubresource()
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Project::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
     private Collection $projects;
 
     /**
-     * @ORM\OrderBy({"id" = "DESC"})
      * @ApiSubresource()
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Document::class, orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     private Collection $documents;
 
     /**

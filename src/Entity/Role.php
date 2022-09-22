@@ -15,10 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * Role
- *
- * @ORM\Table(name="role")
- * @ORM\Entity(repositoryClass="App\Repository\RoleRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"role_read", "read", "is_active_read"}},

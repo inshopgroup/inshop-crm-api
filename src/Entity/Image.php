@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity
  * @ApiResource(
  *     iri="http://schema.org/MediaObject",
  *     attributes={

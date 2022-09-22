@@ -17,9 +17,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * ContactType
- *
- * @ORM\Entity(repositoryClass="App\Repository\ContactTypeRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"contact_type_read", "read", "is_active_read"}},

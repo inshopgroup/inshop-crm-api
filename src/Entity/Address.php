@@ -194,9 +194,9 @@ class Address
      *     "address_read",
      *     "address_write"
      * })
-     * @ORM\OrderBy({"id" = "DESC"})
      */
     #[ORM\ManyToMany(targetEntity: Client::class, mappedBy: 'addresses')]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     private Collection $clients;
 
     public function __construct()

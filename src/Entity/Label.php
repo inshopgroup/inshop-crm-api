@@ -16,10 +16,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * Contact
- *
- * @ORM\Table(name="label")
- * @ORM\Entity(repositoryClass="App\Repository\LabelRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"label_read", "read", "is_active_read"}},

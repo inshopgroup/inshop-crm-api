@@ -17,9 +17,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * ProjectType
- *
- * @ORM\Entity(repositoryClass="App\Repository\ProjectTypeRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"project_type_read", "read", "is_active_read"}},

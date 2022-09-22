@@ -157,9 +157,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({
      *     "user_read"
      * })
-     * @ORM\OrderBy({"id" = "DESC"})
      */
     #[ORM\OneToMany(mappedBy: 'assignee', targetEntity: Task::class)]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     private Collection $tasks;
 
     /**

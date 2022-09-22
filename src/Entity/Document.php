@@ -21,10 +21,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Document
- *
- * @ORM\Table(name="document")
- * @ORM\Entity(repositoryClass="App\Repository\DocumentRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"document_read", "read", "is_active_read"}},
@@ -97,18 +93,18 @@ class Document
 
     /**
      * @Groups({"document_read", "document_write"})
-     * @ORM\OrderBy({"id" = "DESC"})
      */
     #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'documents')]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     private Collection $projects;
 
     /**
      * @ApiProperty(iri="http://schema.org/image")
      * @ApiSubresource()
      * @Groups({"document_read", "document_write", "project_read"})
-     * @ORM\OrderBy({"id" = "DESC"})
      */
     #[ORM\ManyToMany(targetEntity: File::class)]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     public Collection $files;
 
     public function __construct()

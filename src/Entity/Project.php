@@ -19,9 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * Project
- *
- * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"project_read", "read", "is_active_read"}},
@@ -119,17 +116,17 @@ class Project implements ClientInterface
 
     /**
      * @Groups({"project_read", "project_write"})
-     * @ORM\OrderBy({"id" = "ASC"})
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Task::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
     private Collection $tasks;
 
     /**
      * @Groups({"project_read"})
-     * @ORM\OrderBy({"id" = "DESC"})
      */
     #[ORM\ManyToMany(targetEntity: Document::class, inversedBy: 'projects')]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     private Collection $documents;
 
     public function __construct()

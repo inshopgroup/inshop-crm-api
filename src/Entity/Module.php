@@ -17,10 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * Module
- *
- * @ORM\Table(name="module")
- * @ORM\Entity(repositoryClass="App\Repository\ModuleRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"module_read", "read", "is_active_read"}},
@@ -75,9 +71,6 @@ class Module
     private ?int $id = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, unique=true)
      * @Groups({
      *     "module_read",
      *     "module_write",
@@ -89,12 +82,12 @@ class Module
     private string $name;
 
     /**
-     * @ORM\OrderBy({"id" = "DESC"})
      * @Groups({
      *     "module_read"
      * })
      */
     #[ORM\OneToMany(mappedBy: 'module', targetEntity: Role::class)]
+    #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\NotBlank]
     private Collection $roles;
 

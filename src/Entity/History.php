@@ -16,8 +16,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * @ORM\Table(name="history")
- * @ORM\Entity(repositoryClass="App\Repository\HistoryRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={
