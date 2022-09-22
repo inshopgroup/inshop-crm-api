@@ -8,6 +8,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\User\UserPutItemController;
 use App\Controller\User\UserPostCollectionController;
 use App\Controller\DashboardAction;
+use App\Repository\GroupRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -25,10 +27,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * User
- *
- * @ORM\Table(name="`user`")
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity({"username"})
  * @ApiResource(
  *     attributes={
@@ -84,6 +82,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use Timestampable;
@@ -91,11 +91,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     use IsActive;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({
      *     "user_read",
      *     "task_read",
@@ -104,12 +99,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     "task_write"
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, unique=true)
      * @Groups({
      *     "user_read",
      *     "user_write",
@@ -119,19 +114,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\NotBlank()
      * @Assert\Email()
      */
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $username;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=64)
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 64)]
     private string $password;
 
     /**
-     * @var string|null
-     *
      * @Groups({
      *     "user_write"
      * })
@@ -139,9 +131,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "user_read",
      *     "user_write",
@@ -151,12 +140,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, unique=true)
      * @Groups({
      *     "user_read",
      *     "user_write",
@@ -165,59 +152,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $email;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="assignee")
      * @Groups({
      *     "user_read"
      * })
      * @ORM\OrderBy({"id" = "DESC"})
      */
+    #[ORM\OneToMany(mappedBy: 'assignee', targetEntity: Task::class)]
     private Collection $tasks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group")
      * @Groups({
      *     "user_read",
      *     "user_write"
      * })
      */
+    #[ORM\ManyToMany(targetEntity: Group::class)]
     private Collection $groups;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
      * @Groups({
      *     "user_read",
      *     "user_write"
      * })
      * @Assert\NotNull()
      */
+    #[ORM\ManyToOne(targetEntity: Language::class)]
     private ?Language $language = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $isGoogleSyncEnabled = false;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $googleAccessToken = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $googleCalendars = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $googleCalendarId = null;
 
-    /**
-     * User constructor.
-     */
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -239,9 +216,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    /**
-     * @return array
-     */
     public function getRoles(): array
     {
         $roles[] = ['ROLE_USER'];
@@ -275,18 +249,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         ] = unserialize($serialized, ['allowed_classes' => false]);
     }
 
-    /**
-     * @return int
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     * @return User
-     */
     public function setId(int $id): self
     {
         $this->id = $id;
@@ -299,11 +266,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return User
-     * @return User
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -316,10 +278,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     * @return User
-     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -342,9 +300,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Task[]
-     */
     public function getTasks(): Collection
     {
         return $this->tasks;
@@ -373,18 +328,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
-    /**
-     * @param string|null $plainPassword
-     * @return User
-     */
     public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
@@ -392,9 +340,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Group[]
-     */
     public function getGroups(): Collection
     {
         return $this->groups;

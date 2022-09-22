@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Repository\AddressRepository;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
@@ -17,10 +18,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Address
- *
- * @ORM\Table(name="address")
- * @ORM\Entity(repositoryClass="App\Repository\AddressRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"address_read", "read", "is_active_read"}},
@@ -77,6 +74,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: AddressRepository::class)]
 class Address
 {
     use Timestampable;
@@ -86,30 +84,29 @@ class Address
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({
      *     "address_read",
      *     "client_read",
      *     "client_write",
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Country")
      * @Groups({
      *     "address_read",
      *     "address_write",
      *     "client_read",
      * })
-     * @Assert\NotBlank()
      */
+    #[ORM\ManyToOne(targetEntity: Country::class)]
+    #[Assert\NotBlank]
     private ?Country $country = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
      *     "client_read",
      *     "address_read",
@@ -117,48 +114,40 @@ class Address
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $city = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
      *     "address_read",
      *     "address_write",
      *     "client_read",
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $region = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
      *     "address_read",
      *     "address_write",
      *     "client_read",
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $district = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
      *     "address_read",
      *     "address_write",
      *     "client_read",
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $postCode = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
      *     "address_read",
      *     "address_write",
@@ -166,12 +155,10 @@ class Address
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $street = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
      *     "address_read",
      *     "address_write",
@@ -179,40 +166,37 @@ class Address
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $building = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
      *     "address_read",
      *     "address_write",
      *     "client_read",
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $apartment = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
      *     "address_read",
      *     "address_write",
      *     "client_read",
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $comment = null;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Client", mappedBy="addresses")
      * @Groups({
      *     "address_read",
      *     "address_write"
      * })
      * @ORM\OrderBy({"id" = "DESC"})
      */
+    #[ORM\ManyToMany(targetEntity: Client::class, mappedBy: 'addresses')]
     private Collection $clients;
 
     public function __construct()
@@ -220,19 +204,11 @@ class Address
         $this->clients = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     * @return Address
-     * @return Address
-     */
     public function setId(int $id): self
     {
         $this->id = $id;
@@ -240,50 +216,31 @@ class Address
         return $this;
     }
 
-    /**
-     * @return Country
-     */
     public function getCountry(): ?Country
     {
         return $this->country;
     }
 
-    /**
-     * @param Country|null $country
-     */
     public function setCountry(Country $country): void
     {
         $this->country = $country;
     }
 
-    /**
-     * @return string
-     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
-    /**
-     * @param string|null $city
-     */
     public function setCity(string $city): void
     {
         $this->city = $city;
     }
 
-    /**
-     * @return string
-     */
     public function getRegion(): ?string
     {
         return $this->region;
     }
 
-    /**
-     * @param string|null $region
-     * @return Address
-     */
     public function setRegion(?string $region): self
     {
         $this->region = $region;
@@ -291,18 +248,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDistrict(): ?string
     {
         return $this->district;
     }
 
-    /**
-     * @param string|null $district
-     * @return Address
-     */
     public function setDistrict(?string $district): self
     {
         $this->district = $district;
@@ -310,18 +260,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getStreet(): ?string
     {
         return $this->street;
     }
 
-    /**
-     * @param string|null $street
-     * @return Address
-     */
     public function setStreet(?string $street): self
     {
         $this->street = $street;
@@ -329,18 +272,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getBuilding(): ?string
     {
         return $this->building;
     }
 
-    /**
-     * @param string|null $building
-     * @return Address
-     */
     public function setBuilding(?string $building): self
     {
         $this->building = $building;
@@ -348,19 +284,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getApartment(): ?string
     {
         return $this->apartment;
     }
 
-    /**
-     * @param string $apartment
-     * @return Address
-     * @return Address
-     */
     public function setApartment(string $apartment): self
     {
         $this->apartment = $apartment;
@@ -368,19 +296,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getComment(): ?string
     {
         return $this->comment;
     }
 
-    /**
-     * @param string $comment
-     * @return Address
-     * @return Address
-     */
     public function setComment(string $comment): self
     {
         $this->comment = $comment;
@@ -388,11 +308,6 @@ class Address
         return $this;
     }
 
-    /**
-     * Search text
-     *
-     * @return string
-     */
     public function getSearchText(): string
     {
         return implode(
@@ -410,9 +325,6 @@ class Address
         );
     }
 
-    /**
-     * @return Collection|Client[]
-     */
     public function getClients(): Collection
     {
         return $this->clients;

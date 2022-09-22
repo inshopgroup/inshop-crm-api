@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Interfaces\ClientInterface;
+use App\Repository\ClientRepository;
+use App\Repository\TaskStatusRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -35,8 +37,6 @@ use function random_bytes;
 /**
  * Client
  *
- * @ORM\Table(name="client")
- * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
  * @UniqueEntity(fields={"username"}, errorPath="username", message="User already exists")
  * @ApiResource(
  *     attributes={
@@ -129,6 +129,7 @@ use function random_bytes;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
     use Timestampable;
@@ -136,11 +137,6 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
     use IsActive;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({
      *     "client_read",
      *     "client_read_collection",
@@ -159,12 +155,12 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      *     "client_get_item"
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "client_read",
      *     "client_read_collection",
@@ -183,10 +179,10 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      * })
      * @Assert\NotBlank(groups={"Default", "client_signup_frontend", "client_put_frontend"})
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Address", inversedBy="clients")
      * @ORM\OrderBy({"id" = "DESC"})
      * @Groups({
      *     "client_read",
@@ -195,22 +191,20 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      * @ApiSubresource()
      * @Assert\Valid()
      */
+    #[ORM\ManyToMany(targetEntity: Address::class, inversedBy: 'clients')]
     private Collection $addresses;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      * @Groups({
      *     "client_read",
      *     "client_read_collection",
      *     "client_write",
      * })
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Label")
      * @ORM\OrderBy({"id" = "ASC"})
      * @Groups({
      *     "client_read",
@@ -218,10 +212,10 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      *     "client_write"
      * })
      */
+    #[ORM\ManyToMany(targetEntity: Label::class)]
     private Collection $labels;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Contact", inversedBy="clients", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"id" = "ASC"})
      * @Groups({
      *     "client_read",
@@ -231,10 +225,10 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      * @ApiSubresource()
      * @Assert\Valid()
      */
+    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'clients', cascade: ['persist'], orphanRemoval: true)]
     private Collection $contacts;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="client", cascade={"persist"}, orphanRemoval=true)
      * @Groups({
      *     "document_read",
      *     "client_read",
@@ -244,17 +238,17 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      * @ApiSubresource()
      * @Assert\Valid()
      */
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Project::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $projects;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="client", orphanRemoval=true)
      * @ORM\OrderBy({"id" = "DESC"})
      * @ApiSubresource()
      */
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Document::class, orphanRemoval: true)]
     private Collection $documents;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
      * @Groups({
      *     "client_read",
      *     "client_write",
@@ -265,11 +259,10 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      * @Assert\NotBlank(groups={"Default", "client_signup_frontend", "client_put_frontend"})
      * @Assert\Email(groups={"Default", "client_signup_frontend", "client_put_frontend"})
      */
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $username;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
+    #[ORM\Column(type: 'string', length: 64)]
     private string $password;
 
     /**
@@ -281,23 +274,12 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
      */
     private ?string $plainPassword = null;
 
-    /**
-     * @var string|null
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $token = null;
 
-    /**
-     * @var DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected ?DateTime $tokenCreatedAt = null;
 
-    /**
-     * Client constructor.
-     * @throws Exception
-     */
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
@@ -308,19 +290,11 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
         $this->labels = new ArrayCollection();
     }
 
-    /**
-     * @return Client
-     */
     public function getClient(): self
     {
         return $this;
     }
 
-    /**
-     * Search text
-     *
-     * @return string
-     */
     public function getSearchText(): string
     {
         return implode(
@@ -361,9 +335,6 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
         return $this;
     }
 
-    /**
-     * @return Collection|Address[]
-     */
     public function getAddresses(): Collection
     {
         return $this->addresses;
@@ -387,9 +358,6 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
         return $this;
     }
 
-    /**
-     * @return Collection|Contact[]
-     */
     public function getContacts(): Collection
     {
         return $this->contacts;
@@ -413,9 +381,6 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
         return $this;
     }
 
-    /**
-     * @return Collection|Project[]
-     */
     public function getProjects(): Collection
     {
         return $this->projects;
@@ -444,9 +409,6 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
         return $this;
     }
 
-    /**
-     * @return Collection|Document[]
-     */
     public function getDocuments(): Collection
     {
         return $this->documents;
@@ -472,35 +434,21 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     */
     public function setUsername(string $username): void
     {
         $this->username = $username;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * @param mixed $password
-     * @return Client
-     * @return Client
-     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -508,19 +456,11 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
-    /**
-     * @param mixed $plainPassword
-     * @return Client
-     * @return Client
-     */
     public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
@@ -533,9 +473,6 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
         return null;
     }
 
-    /**
-     * @return array
-     */
     public function getRoles(): array
     {
         return ['ROLE_CLIENT'];
@@ -557,25 +494,16 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
         return $this;
     }
 
-    /**
-     * @return DateTime
-     */
     public function getTokenCreatedAt(): ?DateTime
     {
         return $this->tokenCreatedAt;
     }
 
-    /**
-     * @param DateTime|null $tokenCreatedAt
-     */
     public function setTokenCreatedAt(?DateTime $tokenCreatedAt): void
     {
         $this->tokenCreatedAt = $tokenCreatedAt;
     }
 
-    /**
-     * @return Collection|Label[]
-     */
     public function getLabels(): Collection
     {
         return $this->labels;

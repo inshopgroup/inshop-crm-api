@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Repository\GroupRepository;
+use App\Repository\LanguageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -61,6 +63,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: LanguageRepository::class)]
 class Language
 {
     use Timestampable;
@@ -68,9 +71,6 @@ class Language
     use IsActive;
 
     /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({
      *     "language_read",
      *     "invoice_header_read",
@@ -84,10 +84,12 @@ class Language
      *     "text_read",
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "language_read",
      *     "language_write",
@@ -99,10 +101,10 @@ class Language
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "language_read",
      *     "language_write",
@@ -113,6 +115,7 @@ class Language
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $code;
 
     public function getId(): ?int

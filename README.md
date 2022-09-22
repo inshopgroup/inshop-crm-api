@@ -40,8 +40,8 @@ https://demo.inshopcrm.com/signin
 ## Technologies
 
 ### Backend
- - PHP 7.2
- - Symfony 5
+ - PHP 8.1
+ - Symfony 6
  - API Platform
  - Postgres
  - Elasticsearch

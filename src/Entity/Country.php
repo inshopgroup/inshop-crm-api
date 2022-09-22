@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Repository\CountryRepository;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
@@ -15,10 +16,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Country
- *
- * @ORM\Table(name="country")
- * @ORM\Entity(repositoryClass="App\Repository\CountryRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"country_read", "read", "is_active_read"}},
@@ -59,6 +56,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: CountryRepository::class)]
 class Country
 {
     use Timestampable;
@@ -66,9 +64,6 @@ class Country
     use IsActive;
 
     /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({
      *     "country_read",
      *     "city_read",
@@ -78,10 +73,12 @@ class Country
      *     "client_read",
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "country_read",
      *     "country_write",
@@ -89,8 +86,9 @@ class Country
      *     "address_read",
      *     "client_read",
      * })
-     * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private string $name;
 
     public function getId(): ?int
@@ -110,11 +108,6 @@ class Country
         return $this;
     }
 
-    /**
-     * Search text
-     *
-     * @return string
-     */
     public function getSearchText(): string
     {
         return implode(

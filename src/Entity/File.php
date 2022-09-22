@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateFileAction;
+use App\Repository\ClientRepository;
 use App\Traits\IsActive;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File as HttpFile;
@@ -15,7 +16,6 @@ use App\Traits\Timestampable;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity
  * @ApiResource(iri="http://schema.org/MediaObject",
  *     collectionOperations={
  *          "get"={
@@ -42,6 +42,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     })
  * @Vich\Uploadable
  */
+#[ORM\Entity]
 class File
 {
     use Timestampable;
@@ -49,17 +50,15 @@ class File
     use IsActive;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({
      *     "document_write",
      *     "document_read",
      *     "project_read"
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
@@ -76,8 +75,6 @@ class File
     public ?HttpFile $file = null;
 
     /**
-     * @var string|null
-     * @ORM\Column(nullable=true)
      * @ApiProperty(iri="http://schema.org/contentUrl")
      * @Groups({
      *     "document_write",
@@ -85,51 +82,41 @@ class File
      *     "project_read"
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     public ?string $contentUrl = null;
 
     /**
-     * @var string|null
-     * @ORM\Column(nullable=true)
      * @Groups({
      *     "document_read",
      *     "project_read"
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected ?string $size = null;
 
     /**
-     * @var string|null
-     * @ORM\Column(nullable=true)
      * @Groups({
      *     "document_read",
      *     "project_read"
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected ?string $mimeType = null;
 
     /**
-     * @var string|null
-     * @ORM\Column(nullable=true)
      * @Groups({
      *     "document_read",
      *     "project_read"
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected ?string $originalName = null;
 
-    /**
-     * @return int
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     * @return File
-     * @return File
-     */
     public function setId(int $id): self
     {
         $this->id = $id;
@@ -137,19 +124,11 @@ class File
         return $this;
     }
 
-    /**
-     * @return null|HttpFile
-     */
     public function getFile(): ?HttpFile
     {
         return $this->file;
     }
 
-    /**
-     * @param null|HttpFile $file
-     * @return File
-     * @return File
-     */
     public function setFile(?HttpFile $file): self
     {
         $this->file = $file;
@@ -157,17 +136,11 @@ class File
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getContentUrl(): ?string
     {
         return $this->contentUrl;
     }
 
-    /**
-     * @param null|string $contentUrl
-     */
     public function setContentUrl(?string $contentUrl): void
     {
         $this->contentUrl = $contentUrl;
@@ -209,9 +182,6 @@ class File
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->getOriginalName() ?? '';

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use App\Repository\LabelRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -61,6 +62,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: LabelRepository::class)]
 class Label
 {
     use Timestampable;
@@ -68,9 +70,6 @@ class Label
     use IsActive;
 
     /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({
      *     "label_read",
      *     "product_read",
@@ -79,10 +78,12 @@ class Label
      *     "client_write",
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "label_read",
      *     "label_write",
@@ -92,6 +93,7 @@ class Label
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
     public function getId(): ?int

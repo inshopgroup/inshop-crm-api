@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Interfaces\ClientInterface;
+use App\Repository\TaskRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,9 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Controller\TaskDeadlineAction;
 
 /**
- * Task
- *
- * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"task_read", "read", "is_active_read"}},
@@ -83,6 +81,7 @@ use App\Controller\TaskDeadlineAction;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task implements ClientInterface
 {
     use Timestampable;
@@ -90,11 +89,6 @@ class Task implements ClientInterface
     use IsActive;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({
      *     "task_read",
      *     "user_read",
@@ -102,10 +96,12 @@ class Task implements ClientInterface
      *     "project_write"
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -115,10 +111,10 @@ class Task implements ClientInterface
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -126,22 +122,22 @@ class Task implements ClientInterface
      *     "project_read"
      * })
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="tasks")
-     * @ORM\JoinColumn(nullable=false)
      * @Groups({
      *     "task_read",
      *     "task_write",
      *     "user_read"
      * })
-     * @Assert\NotBlank()
      */
+    #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'tasks')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private Project $project;
 
     /**
-     * @ORM\Column(type="date")
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -151,20 +147,20 @@ class Task implements ClientInterface
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'date')]
     private DateTime $deadline;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
      * @Groups({
      *     "task_read",
      *     "task_write",
      *     "project_read"
      * })
      */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tasks')]
     private ?User $assignee = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TaskStatus")
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -172,14 +168,13 @@ class Task implements ClientInterface
      *     "project_read",
      *     "project_write"
      * })
-     * @Assert\NotBlank()
      */
+    #[ORM\ManyToOne(targetEntity: TaskStatus::class)]
+    #[Assert\NotBlank]
     private ?TaskStatus $status = null;
 
     /**
      * Estimated time in minutes
-     *
-     * @ORM\Column(type="float", options={"default":0})
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -187,12 +182,11 @@ class Task implements ClientInterface
      *     "project_write"
      * })
      */
+    #[ORM\Column(type: 'float', options: ['default' => 0])]
     private float $timeEstimated = 0;
 
     /**
      * Spent time in minutes
-     *
-     * @ORM\Column(type="float", options={"default":0})
      * @Groups({
      *     "task_read",
      *     "task_write",
@@ -200,16 +194,12 @@ class Task implements ClientInterface
      *     "project_write"
      * })
      */
+    #[ORM\Column(type: 'float', options: ['default' => 0])]
     private float $timeSpent = 0;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $googleEventId = null;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
@@ -251,34 +241,21 @@ class Task implements ClientInterface
         return $this;
     }
 
-    /**
-     * @return DateTime
-     */
     public function getDeadline(): DateTime
     {
         return $this->deadline;
     }
 
-    /**
-     * @param DateTime $deadline
-     */
     public function setDeadline(DateTime $deadline): void
     {
         $this->deadline = $deadline;
     }
 
-    /**
-     * @return User
-     */
     public function getAssignee(): ?User
     {
         return $this->assignee;
     }
 
-    /**
-     * @param User|null $assignee
-     * @return Task
-     */
     public function setAssignee(?User $assignee): self
     {
         $this->assignee = $assignee;
@@ -286,18 +263,11 @@ class Task implements ClientInterface
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getStatus(): ?TaskStatus
     {
         return $this->status;
     }
 
-    /**
-     * @param mixed $status
-     * @return Task
-     */
     public function setStatus(?TaskStatus $status): self
     {
         $this->status = $status;
@@ -305,19 +275,11 @@ class Task implements ClientInterface
         return $this;
     }
 
-    /**
-     * @return Client
-     */
     public function getClient(): Client
     {
         return $this->getProject()->getClient();
     }
 
-    /**
-     * Search text
-     *
-     * @return string
-     */
     public function getSearchText(): string
     {
         return implode(

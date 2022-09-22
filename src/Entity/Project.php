@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Interfaces\ClientInterface;
+use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -67,6 +68,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project implements ClientInterface
 {
     use Timestampable;
@@ -74,67 +76,62 @@ class Project implements ClientInterface
     use IsActive;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({"project_read", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
      * @Groups({"project_read", "project_write", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Groups({"project_read", "project_write", "document_read"})
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="projects")
      * @Groups({"project_read", "project_write", "task_read"})
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'projects')]
     private ?Client $client = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProjectStatus")
      * @Groups({"project_read", "project_write", "document_read", "client_read", "client_write"})
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToOne(targetEntity: ProjectStatus::class)]
     private ?ProjectStatus $status = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProjectType")
      * @Groups({"project_read", "project_write", "client_read", "client_write"})
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToOne(targetEntity: ProjectType::class)]
     private ?ProjectType $type = null;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="project", cascade={"persist"}, orphanRemoval=true)
      * @Groups({"project_read", "project_write"})
      * @ORM\OrderBy({"id" = "ASC"})
      * @Assert\Valid()
      */
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Task::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $tasks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Document", inversedBy="projects")
      * @Groups({"project_read"})
      * @ORM\OrderBy({"id" = "DESC"})
      */
+    #[ORM\ManyToMany(targetEntity: Document::class, inversedBy: 'projects')]
     private Collection $documents;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -182,18 +179,11 @@ class Project implements ClientInterface
         return $this;
     }
 
-    /**
-     * @return ProjectStatus
-     */
     public function getStatus(): ?ProjectStatus
     {
         return $this->status;
     }
 
-    /**
-     * @param ProjectStatus|null $status
-     * @return Project
-     */
     public function setStatus(?ProjectStatus $status): self
     {
         $this->status = $status;
@@ -201,9 +191,6 @@ class Project implements ClientInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Task[]
-     */
     public function getTasks(): Collection
     {
         return $this->tasks;
@@ -232,9 +219,6 @@ class Project implements ClientInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Document[]
-     */
     public function getDocuments(): Collection
     {
         return $this->documents;
@@ -270,11 +254,6 @@ class Project implements ClientInterface
         return $this;
     }
 
-    /**
-     * Search text
-     *
-     * @return string
-     */
     public function getSearchText(): string
     {
         return implode(

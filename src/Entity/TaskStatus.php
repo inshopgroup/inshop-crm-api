@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\TaskStatusRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -15,9 +16,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * TaskStatus
- *
- * @ORM\Entity(repositoryClass="App\Repository\TaskStatusRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"task_status_read", "read", "is_active_read"}},
@@ -58,19 +56,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: TaskStatusRepository::class)]
 class TaskStatus
 {
-    /**
-     * @var int
-     */
     public const STATUS_TODO = 1;
-    /**
-     * @var int
-     */
     public const STATUS_IN_PROGRESS = 2;
-    /**
-     * @var int
-     */
     public const STATUS_DONE = 3;
 
     use Timestampable;
@@ -78,39 +68,25 @@ class TaskStatus
     use IsActive;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({"task_status_read", "project_read", "task_read", "task_write", "project_write"})
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
      * @Groups({"task_status_read", "task_status_write", "user_read", "project_read", "task_read"})
-     * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private string $name;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return TaskStatus
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -118,9 +94,6 @@ class TaskStatus
         return $this;
     }
 
-    /**
-     * Get name
-     */
     public function getName(): string
     {
         return $this->name;

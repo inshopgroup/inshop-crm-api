@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateImageAction;
+use App\Repository\GroupRepository;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
@@ -48,6 +49,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *     })
  * @Vich\Uploadable
  */
+#[ORM\Entity]
 class Image
 {
     use Timestampable;
@@ -55,11 +57,6 @@ class Image
     use IsActive;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({
      *     "image_write",
      *     "image_read",
@@ -68,6 +65,9 @@ class Image
      *     "product_read_frontend_item"
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
@@ -89,8 +89,6 @@ class Image
     public ?HttpFile $image = null;
 
     /**
-     * @var string|null
-     * @ORM\Column(nullable=true)
      * @ApiProperty(iri="http://schema.org/contentUrl")
      * @Groups({
      *     "image_write",
@@ -99,11 +97,10 @@ class Image
      *     "product_read_frontend_item"
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     public ?string $contentUrl = null;
 
     /**
-     * @var string|null
-     * @ORM\Column(nullable=true)
      * @Groups({
      *     "image_write",
      *     "image_read",
@@ -111,11 +108,10 @@ class Image
      *     "product_read_frontend_item"
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected ?string $size = null;
 
     /**
-     * @var string|null
-     * @ORM\Column(nullable=true)
      * @Groups({
      *     "image_write",
      *     "image_read",
@@ -123,11 +119,10 @@ class Image
      *     "product_read_frontend_item"
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected ?string $mimeType = null;
 
     /**
-     * @var string|null
-     * @ORM\Column(nullable=true)
      * @Groups({
      *     "image_write",
      *     "image_read",
@@ -135,21 +130,14 @@ class Image
      *     "product_read_frontend_item"
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected ?string $originalName = null;
 
-    /**
-     * @return int
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     * @return Image
-     * @return Image
-     */
     public function setId(int $id): self
     {
         $this->id = $id;
@@ -157,35 +145,21 @@ class Image
         return $this;
     }
 
-    /**
-     * @return null|HttpFile
-     */
     public function getImage(): ?HttpFile
     {
         return $this->image;
     }
 
-    /**
-     * @param null|HttpFile $image
-     */
     public function setImage(?HttpFile $image): void
     {
         $this->image = $image;
     }
 
-    /**
-     * @return null|string
-     */
     public function getContentUrl(): ?string
     {
         return $this->contentUrl;
     }
 
-    /**
-     * @param null|string $contentUrl
-     * @return Image
-     * @return Image
-     */
     public function setContentUrl(?string $contentUrl): self
     {
         $this->contentUrl = $contentUrl;

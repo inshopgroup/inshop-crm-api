@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use App\Repository\GroupRepository;
+use App\Repository\HistoryRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -68,82 +70,81 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: HistoryRepository::class)]
 class History
 {
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      * @Groups({
      *     "history_read",
      *     "history_get_entity_collection",
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     protected ?int $id = null;
 
     /**
-     * @var string $action
-     *
-     * @ORM\Column(type="string", length=8)
      * @Groups({
      *     "history_read",
      *     "history_get_entity_collection",
      * })
      */
+    #[ORM\Column(type: 'string', length: 8)]
     protected string $action;
 
     /**
-     * @ORM\Column(name="logged_at", type="datetime")
      * @Groups({
      *     "history_read",
      *     "history_get_entity_collection",
      * })
      */
+    #[ORM\Column(type: 'datetime')]
     protected DateTimeInterface $loggedAt;
 
     /**
-     * @ORM\Column(name="object_id", length=64, nullable=true)
      * @Groups({
      *     "history_read",
      *     "history_get_entity_collection",
      * })
      */
+    #[ORM\Column(type: 'string', length: 64, nullable: true)]
     protected ?string $objectId = null;
 
     /**
-     * @ORM\Column(name="object_class", type="string", length=255)
      * @Groups({
      *     "history_read",
      *     "history_get_entity_collection",
      * })
      */
+    #[ORM\Column(type: 'string', length: 255)]
     protected string $objectClass;
 
     /**
-     * @ORM\Column(type="integer")
      * @Groups({
      *     "history_read",
      *     "history_get_entity_collection",
      * })
      */
+    #[ORM\Column(type: 'integer')]
     protected int $version;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
      * @Groups({
      *     "history_read",
      *     "history_get_entity_collection",
      * })
      */
+    #[ORM\Column(type: 'array', nullable: true)]
     protected ?array $data = null;
 
     /**
-     * @ORM\Column(length=255, nullable=true)
      * @Groups({
      *     "history_read",
      *     "history_get_entity_collection",
      * })
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected ?string $username = null;
 
     public function getId(): ?int

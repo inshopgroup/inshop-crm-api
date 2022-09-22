@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Repository\DocumentRepository;
+use App\Repository\GroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,10 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * Group
- *
- * @ORM\Table(name="`group`")
- * @ORM\Entity(repositoryClass="App\Repository\GroupRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"group_read", "read", "is_active_read"}},
@@ -61,6 +59,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: GroupRepository::class)]
+#[ORM\Table(name: '`group`')]
 class Group
 {
     use Timestampable;
@@ -68,28 +68,24 @@ class Group
     use IsActive;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({"group_read", "user_read", "user_write"})
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, unique=true)
      * @Groups({"group_read", "group_write", "user_read"})
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Role")
      * @Groups({"group_read", "group_write"})
      */
+    #[ORM\ManyToMany(targetEntity: Role::class)]
     private Collection $roles;
 
     public function __construct()
@@ -114,9 +110,6 @@ class Group
         return $this;
     }
 
-    /**
-     * @return Collection|Role[]
-     */
     public function getRoles(): Collection
     {
         return $this->roles;
@@ -140,9 +133,6 @@ class Group
         return $this;
     }
 
-    /**
-     * @return string[]|null[]
-     */
     public function getRolesArray(): array
     {
         $roles = [];

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Repository\ClientRepository;
+use App\Repository\ContactTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -58,27 +60,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: ContactTypeRepository::class)]
 class ContactType
 {
-    /**
-     * @var int
-     */
     public const TYPE_PHONE = 1;
-    /**
-     * @var int
-     */
     public const TYPE_MOBILE = 2;
-    /**
-     * @var int
-     */
     public const TYPE_FAX = 3;
-    /**
-     * @var int
-     */
     public const TYPE_EMAIL = 4;
-    /**
-     * @var int
-     */
     public const TYPE_WWW = 5;
 
     use Timestampable;
@@ -86,11 +74,6 @@ class ContactType
     use IsActive;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({
      *     "contact_type_read",
      *     "contact_read",
@@ -100,10 +83,12 @@ class ContactType
      *     "client_write",
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "contact_type_read",
      *     "contact_type_write",
@@ -113,25 +98,14 @@ class ContactType
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return ContactType
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -139,17 +113,11 @@ class ContactType
         return $this;
     }
 
-    /**
-     * Get name
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function __toString()
     {
         return $this->getName() ?? '';

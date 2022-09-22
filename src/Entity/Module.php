@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use App\Repository\GroupRepository;
+use App\Repository\ModuleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -54,6 +56,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: ModuleRepository::class)]
 class Module
 {
     use Timestampable;
@@ -61,16 +64,14 @@ class Module
     use IsActive;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({
      *     "module_read",
      *     "group_read"
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
@@ -84,16 +85,17 @@ class Module
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Role", mappedBy="module")
      * @ORM\OrderBy({"id" = "DESC"})
      * @Groups({
      *     "module_read"
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\OneToMany(mappedBy: 'module', targetEntity: Role::class)]
     private Collection $roles;
 
     public function __construct()
@@ -118,9 +120,6 @@ class Module
         return $this;
     }
 
-    /**
-     * @return Collection|Role[]
-     */
     public function getRoles(): Collection
     {
         return $this->roles;

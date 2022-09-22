@@ -9,6 +9,8 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Repository\ClientRepository;
+use App\Repository\DocumentRepository;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
@@ -65,6 +67,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: DocumentRepository::class)]
 class Document
 {
     use Timestampable;
@@ -72,46 +75,40 @@ class Document
     use IsActive;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({"document_read", "project_read", "invoice_header_read", "invoice_header_write", "invoice_header_read"})
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255)
      * @Groups({"document_read", "document_write", "project_read", "invoice_header_read"})
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="documents")
      * @Groups({"document_read", "document_write"})
      */
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'documents')]
     private ?Client $client = null;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="documents")
      * @Groups({"document_read", "document_write"})
      * @ORM\OrderBy({"id" = "DESC"})
      */
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'documents')]
     private Collection $projects;
 
     /**
-     * @var Collection
-     * @ORM\ManyToMany(targetEntity="App\Entity\File")
-     * @ORM\JoinColumn()
      * @ApiProperty(iri="http://schema.org/image")
      * @ApiSubresource()
      * @Groups({"document_read", "document_write", "project_read"})
      * @ORM\OrderBy({"id" = "DESC"})
      */
+    #[ORM\ManyToMany(targetEntity: File::class)]
     public Collection $files;
 
     public function __construct()
@@ -121,11 +118,6 @@ class Document
         $this->files = new ArrayCollection();
     }
 
-    /**
-     * Search text
-     *
-     * @return string
-     */
     public function getSearchText(): string
     {
         return implode(
@@ -153,9 +145,6 @@ class Document
         return $this;
     }
 
-    /**
-     * @return Collection|Project[]
-     */
     public function getProjects(): Collection
     {
         return $this->projects;
@@ -181,9 +170,6 @@ class Document
         return $this;
     }
 
-    /**
-     * @return Collection|File[]
-     */
     public function getFiles(): Collection
     {
         return $this->files;

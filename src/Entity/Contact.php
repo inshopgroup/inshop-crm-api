@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use App\Repository\ClientRepository;
+use App\Repository\ContactRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,10 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * Contact
- *
- * @ORM\Table(name="contact")
- * @ORM\Entity(repositoryClass="App\Repository\ContactRepository")
  * @ApiResource(
  *     attributes={
  *          "normalization_context"={"groups"={"contact_read", "read", "is_active_read"}},
@@ -63,6 +61,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
 {
     use Timestampable;
@@ -70,11 +69,6 @@ class Contact
     use IsActive;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
      * @Groups({
      *     "contact_read",
      *     "client_read",
@@ -82,10 +76,12 @@ class Contact
      *     "client_write",
      * })
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "contact_read",
      *     "contact_write",
@@ -95,10 +91,10 @@ class Contact
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $value;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ContactType")
      * @Groups({
      *     "contact_read",
      *     "contact_write",
@@ -108,16 +104,17 @@ class Contact
      * })
      * @Assert\NotNull()
      */
+    #[ORM\ManyToOne(targetEntity: ContactType::class)]
     private ?ContactType $contactType = null;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Client", mappedBy="contacts")
      * @Groups({
      *     "contact_read",
      *     "contact_write"
      * })
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToMany(targetEntity: Client::class, mappedBy: 'contacts')]
     private Collection $clients;
 
     public function __construct()

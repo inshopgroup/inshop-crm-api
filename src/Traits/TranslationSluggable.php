@@ -7,16 +7,8 @@ use Exception;
 use RuntimeException;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * Trait TranslationSluggable
- * @package App\Traits
- */
 trait TranslationSluggable
 {
-    /**
-     * @return mixed
-     * @throws Exception
-     */
     public function getTranslation()
     {
         if ($this instanceof TranslatableInterface) {
