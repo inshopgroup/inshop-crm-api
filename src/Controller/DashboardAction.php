@@ -11,30 +11,15 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Class DashboardAction
- * @package App\Controller
- */
 final class DashboardAction
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
 
-    /**
-     * EventDeadlineAction constructor.
-     * @param EntityManagerInterface $em
-     */
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
 
-    /**
-     * @param Request $request
-     * @return mixed
-     */
     public function __invoke(Request $request)
     {
         /** @var UserRepository $repository */

@@ -13,39 +13,16 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * Class CreateImageAction
- * @package App\Controller
- */
 final class CreateImageAction
 {
-    /**
-     * @var DataManager
-     */
     private DataManager $dataManager;
 
-    /**
-     * @var FilterManager
-     */
     private FilterManager $filterManager;
 
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
 
-    /**
-     * @var ValidatorInterface
-     */
     private ValidatorInterface $validator;
 
-    /**
-     * CreateImageAction constructor.
-     * @param DataManager $dataManager
-     * @param FilterManager $filterManager
-     * @param EntityManagerInterface $em
-     * @param ValidatorInterface $validator
-     */
     public function __construct(
         DataManager $dataManager,
         FilterManager $filterManager,
@@ -58,11 +35,6 @@ final class CreateImageAction
         $this->validator = $validator;
     }
 
-    /**
-     * @param Request $request
-     * @return Image
-     * @throws Exception
-     */
     public function __invoke(Request $request): Image
     {
         $uploadedFile = $request->files->get('file');
@@ -86,9 +58,6 @@ final class CreateImageAction
         return $image;
     }
 
-    /**
-     * @param UploadedFile $uploadedFile
-     */
     private function prepareImageFile(UploadedFile $uploadedFile): void
     {
         $filters = [

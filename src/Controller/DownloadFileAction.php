@@ -8,15 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class DownloadFileAction
- * @package App\Controller
- */
 class DownloadFileAction extends AbstractController
 {
     /**
-     * @param File $file
-     * @return BinaryFileResponse
      * @IsGranted("ROLE_FILE_DOWNLOAD")
      * @Route("/files/download/{id}")
      */

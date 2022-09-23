@@ -28,30 +28,14 @@ use function in_array;
 use function is_object;
 use function method_exists;
 
-/**
- * Class EntityLoggerSubscriber
- * @package App\EventListener
- */
 class EntityLoggerSubscriber implements EventSubscriber
 {
-    /**
-     * @var TokenStorageInterface
-     */
     protected TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var array
-     */
     protected array $logs = [];
 
-    /**
-     * @var bool
-     */
     private bool $isDisabled = false;
 
-    /**
-     * @return array
-     */
     public function getSubscribedEvents(): array
     {
         return [
@@ -62,18 +46,12 @@ class EntityLoggerSubscriber implements EventSubscriber
         ];
     }
 
-    /**
-     * @var array
-     */
     protected static array $disabledEntities = [
         EntityLogger::class,
         History::class,
         RefreshToken::class,
     ];
 
-    /**
-     * @var array
-     */
     protected static array $disabledAttributes = [
         'createdAt',
         'updatedAt',
@@ -87,20 +65,11 @@ class EntityLoggerSubscriber implements EventSubscriber
         'googleAccessToken',
     ];
 
-    /**
-     * EntityLoggerSubscriber constructor.
-     * @param TokenStorageInterface $tokenStorage
-     */
     public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     * @throws ReflectionException
-     * @throws JsonException
-     */
     public function preUpdate(LifecycleEventArgs $args): void
     {
         if (!$this->isDisabled()) {
@@ -108,11 +77,6 @@ class EntityLoggerSubscriber implements EventSubscriber
         }
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     * @throws ReflectionException
-     * @throws JsonException
-     */
     public function postPersist(LifecycleEventArgs $args): void
     {
         if (!$this->isDisabled()) {
@@ -120,9 +84,6 @@ class EntityLoggerSubscriber implements EventSubscriber
         }
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     */
     public function preRemove(LifecycleEventArgs $args): void
     {
         if (!$this->isDisabled()) {
@@ -142,11 +103,6 @@ class EntityLoggerSubscriber implements EventSubscriber
         }
     }
 
-    /**
-     * @param PostFlushEventArgs $args
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function postFlush(PostFlushEventArgs $args): void
     {
         if (!empty($this->logs) && !$this->isDisabled()) {
@@ -173,9 +129,6 @@ class EntityLoggerSubscriber implements EventSubscriber
         }
     }
 
-    /**
-     * @return string
-     */
     protected function getUsername(): string
     {
         $token = $this->tokenStorage->getToken();
@@ -193,10 +146,6 @@ class EntityLoggerSubscriber implements EventSubscriber
         return 'Unknown';
     }
 
-    /**
-     * @param $object
-     * @return string
-     */
     protected function guessObjectName($object): ?string
     {
         if (is_object($object) && method_exists($object, 'getId')) {
@@ -214,10 +163,6 @@ class EntityLoggerSubscriber implements EventSubscriber
         return (string) $object;
     }
 
-    /**
-     * @param array $collection
-     * @return string
-     */
     protected function getValueForRelations(array $collection): string
     {
         return implode(
@@ -232,13 +177,6 @@ class EntityLoggerSubscriber implements EventSubscriber
         );
     }
 
-    /**
-     * @param EntityManagerInterface $em
-     * @param $entity
-     * @param string $action
-     * @throws ReflectionException
-     * @throws JsonException
-     */
     protected function calculateChanges(EntityManagerInterface $em, $entity, string $action): void
     {
         $entityClassName = get_class($entity);
@@ -355,10 +293,6 @@ class EntityLoggerSubscriber implements EventSubscriber
         $this->logs[] = $entityLogger;
     }
 
-    /**
-     * @param array $annotations
-     * @return null|string
-     */
     protected function getColumnTypeFromAnnotations(array $annotations): ?string
     {
         foreach ($annotations as $annotation) {
@@ -380,17 +314,11 @@ class EntityLoggerSubscriber implements EventSubscriber
         return null;
     }
 
-    /**
-     * @return bool
-     */
     public function isDisabled(): bool
     {
         return $this->isDisabled;
     }
 
-    /**
-     * @param bool $isDisabled
-     */
     public function setIsDisabled(bool $isDisabled): void
     {
         $this->isDisabled = $isDisabled;
