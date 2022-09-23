@@ -57,51 +57,43 @@ class Role
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({
-     *     "role_read",
-     *     "group_read",
-     *     "module_read"
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "role_read",
+        "group_read",
+        "module_read",
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({
-     *     "role_read",
-     *     "role_write",
-     *     "group_read",
-     *     "module_read"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups([
+        "role_read",
+        "role_write",
+        "group_read",
+        "module_read",
+    ])]
     private string $name;
 
-    /**
-     * @Groups({
-     *     "role_read",
-     *     "role_write",
-     *     "group_read",
-     *     "module_read"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
+    #[Groups([
+        "role_read",
+        "role_write",
+        "group_read",
+        "module_read",
+    ])]
     private string $role;
 
-    /**
-     * @Groups({
-     *     "role_read",
-     *     "role_write",
-     *     "group_read"
-     * })
-     */
     #[ORM\ManyToOne(targetEntity: Module::class, inversedBy: 'roles')]
     #[Assert\NotBlank]
+    #[Groups([
+        "role_read",
+        "role_write",
+        "group_read",
+    ])]
     private ?Module $module = null;
 
     public function getId(): ?int

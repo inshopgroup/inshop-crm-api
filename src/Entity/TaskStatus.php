@@ -67,19 +67,27 @@ class TaskStatus
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({"task_status_read", "project_read", "task_read", "task_write", "project_write"})
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "task_status_read",
+        "project_read",
+        "task_read",
+        "task_write",
+        "project_write"
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({"task_status_read", "task_status_write", "user_read", "project_read", "task_read"})
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups([
+        "task_status_read",
+        "task_status_write",
+        "user_read",
+        "project_read",
+        "task_read"
+    ])]
     private string $name;
 
     public function getId(): ?int

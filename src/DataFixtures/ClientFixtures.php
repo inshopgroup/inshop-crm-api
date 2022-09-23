@@ -8,42 +8,27 @@ use App\Entity\Contact;
 use App\Entity\ContactType;
 use App\Entity\Document;
 use App\Entity\File;
-use App\Entity\Task;
-use App\Entity\TaskStatus;
 use App\Entity\Project;
 use App\Entity\ProjectStatus;
 use App\Entity\ProjectType;
+use App\Entity\Task;
+use App\Entity\TaskStatus;
 use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Exception;
 use Faker;
 
-/**
- * Class ClientFixtures
- * @package App\DataFixtures
- */
 class ClientFixtures extends Fixture implements DependentFixtureInterface
 {
-    /**
-     * @var Faker\Generator
-     */
     protected Faker\Generator $faker;
 
-    /**
-     * ClientFixtures constructor.
-     */
     public function __construct()
     {
         $this->faker = Faker\Factory::create();
     }
 
-    /**
-     * @param ObjectManager $manager
-     * @throws Exception
-     */
     public function load(ObjectManager $manager): void
     {
         $addresses = $manager->getRepository(Address::class)->findAll();
@@ -111,9 +96,6 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
         }
     }
 
-    /**
-     * @return array
-     */
     public function getDependencies(): array
     {
         return array(

@@ -65,31 +65,27 @@ class Label
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({
-     *     "label_read",
-     *     "product_read",
-     *     "client_read",
-     *     "client_read_collection",
-     *     "client_write",
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "label_read",
+        "product_read",
+        "client_read",
+        "client_read_collection",
+        "client_write",
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({
-     *     "label_read",
-     *     "label_write",
-     *     "product_read",
-     *     "client_read",
-     *     "client_read_collection",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups([
+        "label_read",
+        "label_write",
+        "product_read",
+        "client_read",
+        "client_read_collection",
+    ])]
     private string $name;
 
     public function getId(): ?int

@@ -11,16 +11,20 @@ trait Timestampable
 {
     /**
      * @Gedmo\Timestampable(on="create")
-     * @Groups({"read"})
      */
     #[ORM\Column(type: 'datetime')]
+    #[Groups([
+        "read",
+    ])]
     protected ?DateTime $createdAt = null;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @Groups({"read"})
      */
     #[ORM\Column(type: 'datetime')]
+    #[Groups([
+        "read",
+    ])]
     protected ?DateTime $updatedAt = null;
 
     public function setCreatedAt(?DateTime $createdAt): self

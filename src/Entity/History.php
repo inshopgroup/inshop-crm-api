@@ -71,78 +71,62 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 #[ORM\Entity(repositoryClass: HistoryRepository::class)]
 class History
 {
-    /**
-     * @Groups({
-     *     "history_read",
-     *     "history_get_entity_collection",
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "history_read",
+        "history_get_entity_collection",
+    ])]
     protected ?int $id = null;
 
-    /**
-     * @Groups({
-     *     "history_read",
-     *     "history_get_entity_collection",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 8)]
+    #[Groups([
+        "history_read",
+        "history_get_entity_collection",
+    ])]
     protected string $action;
 
-    /**
-     * @Groups({
-     *     "history_read",
-     *     "history_get_entity_collection",
-     * })
-     */
     #[ORM\Column(type: 'datetime')]
+    #[Groups([
+        "history_read",
+        "history_get_entity_collection",
+    ])]
     protected DateTimeInterface $loggedAt;
 
-    /**
-     * @Groups({
-     *     "history_read",
-     *     "history_get_entity_collection",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 64, nullable: true)]
+    #[Groups([
+        "history_read",
+        "history_get_entity_collection",
+    ])]
     protected ?string $objectId = null;
 
-    /**
-     * @Groups({
-     *     "history_read",
-     *     "history_get_entity_collection",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups([
+        "history_read",
+        "history_get_entity_collection",
+    ])]
     protected string $objectClass;
 
-    /**
-     * @Groups({
-     *     "history_read",
-     *     "history_get_entity_collection",
-     * })
-     */
     #[ORM\Column(type: 'integer')]
+    #[Groups([
+        "history_read",
+        "history_get_entity_collection",
+    ])]
     protected int $version;
 
-    /**
-     * @Groups({
-     *     "history_read",
-     *     "history_get_entity_collection",
-     * })
-     */
     #[ORM\Column(type: 'array', nullable: true)]
+    #[Groups([
+        "history_read",
+        "history_get_entity_collection",
+    ])]
     protected ?array $data = null;
 
-    /**
-     * @Groups({
-     *     "history_read",
-     *     "history_get_entity_collection",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "history_read",
+        "history_get_entity_collection",
+    ])]
     protected ?string $username = null;
 
     public function getId(): ?int

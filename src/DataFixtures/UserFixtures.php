@@ -9,38 +9,21 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Faker;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-/**
- * Class UserFixtures
- * @package App\DataFixtures
- */
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
-    /**
-     * @var UserPasswordHasherInterface
-     */
     protected UserPasswordHasherInterface $encoder;
 
-    /**
-     * @var Faker\Generator
-     */
     protected Faker\Generator $faker;
 
-    /**
-     * UserFixtures constructor.
-     * @param UserPasswordHasherInterface $encoder
-     */
     public function __construct(UserPasswordHasherInterface $encoder)
     {
         $this->encoder = $encoder;
         $this->faker = Faker\Factory::create();
     }
 
-    /**
-     * @param ObjectManager $manager
-     */
     public function load(ObjectManager $manager): void
     {
         $roles = $manager->getRepository(Role::class)->findAll();
@@ -67,9 +50,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    /**
-     * @return array
-     */
     public function getDependencies(): array
     {
         return array(

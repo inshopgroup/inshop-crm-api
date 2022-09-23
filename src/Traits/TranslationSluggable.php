@@ -24,11 +24,9 @@ trait TranslationSluggable
         throw new RuntimeException('Class should implement TranslatableInterface');
     }
 
-    /**
-     * @return string
-     * @throws Exception
-     * @Groups({"slug"})
-     */
+    #[Groups([
+        "slug",
+    ])]
     public function getSlug(): string
     {
         return $this->getTranslation()->getSlug();

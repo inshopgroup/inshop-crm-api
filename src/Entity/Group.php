@@ -67,25 +67,30 @@ class Group
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({"group_read", "user_read", "user_write"})
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "group_read",
+        "group_write",
+        "user_read",
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({"group_read", "group_write", "user_read"})
-     */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
+    #[Groups([
+        "group_read",
+        "group_write",
+        "user_read",
+    ])]
     private string $name;
 
-    /**
-     * @Groups({"group_read", "group_write"})
-     */
     #[ORM\ManyToMany(targetEntity: Role::class)]
+    #[Groups([
+        "group_read",
+        "group_write",
+    ])]
     private Collection $roles;
 
     public function __construct()

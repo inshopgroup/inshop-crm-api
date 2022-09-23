@@ -63,32 +63,28 @@ class Country
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({
-     *     "country_read",
-     *     "city_read",
-     *     "city_write",
-     *     "address_read",
-     *     "address_write",
-     *     "client_read",
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "country_read",
+        "city_read",
+        "city_write",
+        "address_read",
+        "address_write",
+        "client_read",
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({
-     *     "country_read",
-     *     "country_write",
-     *     "city_read",
-     *     "address_read",
-     *     "client_read",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups([
+        "country_read",
+        "country_write",
+        "city_read",
+        "address_read",
+        "client_read",
+    ])]
     private string $name;
 
     public function getId(): ?int

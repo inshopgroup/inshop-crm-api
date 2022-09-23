@@ -59,36 +59,30 @@ class Module
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({
-     *     "module_read",
-     *     "group_read"
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "module_read",
+        "group_read"
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({
-     *     "module_read",
-     *     "module_write",
-     *     "group_read"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
+    #[Groups([
+        "module_read",
+        "module_write",
+        "group_read"
+    ])]
     private string $name;
 
-    /**
-     * @Groups({
-     *     "module_read"
-     * })
-     */
     #[ORM\OneToMany(mappedBy: 'module', targetEntity: Role::class)]
     #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\NotBlank]
+    #[Groups([
+        "module_read"
+    ])]
     private Collection $roles;
 
     public function __construct()

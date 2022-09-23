@@ -49,16 +49,14 @@ class File
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({
-     *     "document_write",
-     *     "document_read",
-     *     "project_read"
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "document_read",
+        "document_write",
+        "project_read",
+    ])]
     private ?int $id = null;
 
     /**
@@ -75,40 +73,34 @@ class File
 
     /**
      * @ApiProperty(iri="http://schema.org/contentUrl")
-     * @Groups({
-     *     "document_write",
-     *     "document_read",
-     *     "project_read"
-     * })
      */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "document_read",
+        "document_write",
+        "project_read",
+    ])]
     public ?string $contentUrl = null;
 
-    /**
-     * @Groups({
-     *     "document_read",
-     *     "project_read"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "document_read",
+        "project_read",
+    ])]
     protected ?string $size = null;
 
-    /**
-     * @Groups({
-     *     "document_read",
-     *     "project_read"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "document_read",
+        "project_read",
+    ])]
     protected ?string $mimeType = null;
 
-    /**
-     * @Groups({
-     *     "document_read",
-     *     "project_read"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "document_read",
+        "project_read",
+    ])]
     protected ?string $originalName = null;
 
     public function getId(): ?int

@@ -136,48 +136,28 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({
-     *     "client_read",
-     *     "client_read_collection",
-     *     "document_read",
-     *     "project_read",
-     *     "document_write",
-     *     "project_write",
-     *     "task_read",
-     *     "contact_read",
-     *     "contact_write",
-     *     "order_header_read",
-     *     "order_header_read_collection",
-     *     "order_header_write",
-     *     "address_read",
-     *     "address_write",
-     *     "client_get_item"
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "client_read",
+        "client_read_collection",
+        "document_read",
+        "project_read",
+        "document_write",
+        "project_write",
+        "task_read",
+        "contact_read",
+        "contact_write",
+        "order_header_read",
+        "order_header_read_collection",
+        "order_header_write",
+        "address_read",
+        "address_write",
+        "client_get_item"
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({
-     *     "client_read",
-     *     "client_read_collection",
-     *     "client_write",
-     *     "document_read",
-     *     "project_read",
-     *     "document_write",
-     *     "task_read",
-     *     "contact_read",
-     *     "order_header_read",
-     *     "order_header_read_collection",
-     *     "client_get_item",
-     *     "client_put_item",
-     *     "signup_collection",
-     *     "address_read",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(
         groups: [
@@ -186,65 +166,77 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
             'client_put_frontend'
         ]
     )]
+    #[Groups([
+        "client_read",
+        "client_read_collection",
+        "client_write",
+        "document_read",
+        "project_read",
+        "document_write",
+        "task_read",
+        "contact_read",
+        "order_header_read",
+        "order_header_read_collection",
+        "client_get_item",
+        "client_put_item",
+        "signup_collection",
+        "address_read",
+    ])]
     private string $name;
 
     /**
-     * @Groups({
-     *     "client_read",
-     *     "client_write"
-     * })
      * @ApiSubresource()
      */
     #[ORM\ManyToMany(targetEntity: Address::class, inversedBy: 'clients')]
     #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
+    #[Groups([
+        "client_read",
+        "client_write"
+    ])]
     private Collection $addresses;
 
-    /**
-     * @Groups({
-     *     "client_read",
-     *     "client_read_collection",
-     *     "client_write",
-     * })
-     */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups([
+        "client_read",
+        "client_read_collection",
+        "client_write"
+    ])]
     private ?string $description = null;
 
-    /**
-     * @Groups({
-     *     "client_read",
-     *     "client_read_collection",
-     *     "client_write"
-     * })
-     */
     #[ORM\ManyToMany(targetEntity: Label::class)]
     #[ORM\OrderBy(['id' => 'DESC'])]
+    #[Groups([
+        "client_read",
+        "client_read_collection",
+        "client_write"
+    ])]
     private Collection $labels;
 
     /**
-     * @Groups({
-     *     "client_read",
-     *     "client_read_collection",
-     *     "client_write"
-     * })
      * @ApiSubresource()
      */
     #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'clients', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
+    #[Groups([
+        "client_read",
+        "client_read_collection",
+        "client_write"
+    ])]
     private Collection $contacts;
 
     /**
-     * @Groups({
-     *     "document_read",
-     *     "client_read",
-     *     "client_write"
-     * })
      * @ApiSubresource()
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Project::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
+    #[Groups([
+        "document_read",
+        "client_read",
+        "client_write"
+    ])]
     private Collection $projects;
 
     /**
@@ -254,15 +246,6 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
     #[ORM\OrderBy(['id' => 'DESC'])]
     private Collection $documents;
 
-    /**
-     * @Groups({
-     *     "client_read",
-     *     "client_write",
-     *     "client_get_item",
-     *     "client_put_item",
-     *     "signup_collection",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank(
         groups: [
@@ -278,22 +261,27 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
             'client_put_frontend'
         ]
     )]
+    #[Groups([
+        "client_read",
+        "client_write",
+        "client_get_item",
+        "client_put_item",
+        "signup_collection",
+    ])]
     private string $username;
 
     #[ORM\Column(type: 'string', length: 64)]
     private string $password;
 
-    /**
-     * @Groups({
-     *     "client_write",
-     *     "signup_collection",
-     * })
-     */
     #[Assert\NotBlank(
         groups: [
             'client_signup_frontend'
         ]
     )]
+    #[Groups([
+        "client_write",
+        "signup_collection",
+    ])]
     private ?string $plainPassword = null;
 
     #[ORM\Column(type: 'text', nullable: true)]

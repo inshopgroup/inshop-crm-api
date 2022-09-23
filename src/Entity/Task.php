@@ -88,113 +88,95 @@ class Task implements ClientInterface
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({
-     *     "task_read",
-     *     "user_read",
-     *     "project_read",
-     *     "project_write"
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "task_read",
+        "user_read",
+        "project_read",
+        "project_write",
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({
-     *     "task_read",
-     *     "task_write",
-     *     "user_read",
-     *     "project_read",
-     *     "project_write"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups([
+        "task_read",
+        "task_write",
+        "user_read",
+        "project_read",
+        "project_write",
+    ])]
     private string $name;
 
-    /**
-     * @Groups({
-     *     "task_read",
-     *     "task_write",
-     *     "user_read",
-     *     "project_read"
-     * })
-     */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups([
+        "task_read",
+        "task_write",
+        "user_read",
+        "project_read",
+    ])]
     private ?string $description = null;
 
-    /**
-     * @Groups({
-     *     "task_read",
-     *     "task_write",
-     *     "user_read"
-     * })
-     */
     #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
+    #[Groups([
+        "task_read",
+        "task_write",
+        "user_read",
+    ])]
     private Project $project;
 
-    /**
-     * @Groups({
-     *     "task_read",
-     *     "task_write",
-     *     "user_read",
-     *     "project_read",
-     *     "project_write"
-     * })
-     */
     #[ORM\Column(type: 'date')]
     #[Assert\NotBlank]
+    #[Groups([
+        "task_read",
+        "task_write",
+        "user_read",
+        "project_read",
+        "project_write",
+    ])]
     private DateTime $deadline;
 
-    /**
-     * @Groups({
-     *     "task_read",
-     *     "task_write",
-     *     "project_read"
-     * })
-     */
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tasks')]
+    #[Groups([
+        "task_read",
+        "task_write",
+        "project_read",
+    ])]
     private ?User $assignee = null;
 
-    /**
-     * @Groups({
-     *     "task_read",
-     *     "task_write",
-     *     "user_read",
-     *     "project_read",
-     *     "project_write"
-     * })
-     */
     #[ORM\ManyToOne(targetEntity: TaskStatus::class)]
     #[Assert\NotBlank]
+    #[Groups([
+        "task_read",
+        "task_write",
+        "user_read",
+        "project_read",
+        "project_write"
+    ])]
     private ?TaskStatus $status = null;
 
-    /**
-     * Estimated time in minutes
-     * @Groups({
-     *     "task_read",
-     *     "task_write",
-     *     "project_read",
-     *     "project_write"
-     * })
-     */
+    // Estimated time in minutes
     #[ORM\Column(type: 'float', options: ['default' => 0])]
+    #[Groups([
+        "task_read",
+        "task_write",
+        "project_read",
+        "project_write"
+    ])]
     private float $timeEstimated = 0;
 
-    /**
-     * Spent time in minutes
-     * @Groups({
-     *     "task_read",
-     *     "task_write",
-     *     "project_read",
-     *     "project_write"
-     * })
-     */
+    // Spent time in minutes
     #[ORM\Column(type: 'float', options: ['default' => 0])]
+    #[Groups([
+        "task_read",
+        "task_write",
+        "project_read",
+        "project_write"
+    ])]
     private float $timeSpent = 0;
 
     #[ORM\Column(type: 'string', nullable: true)]

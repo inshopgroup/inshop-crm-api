@@ -7,13 +7,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 trait IsActive
 {
-    /**
-     * @Groups({
-     *     "is_active_read",
-     *     "is_active_write"
-     * })
-     */
     #[ORM\Column(type: 'boolean')]
+    #[Groups([
+        "is_active_read",
+        "is_active_write",
+    ])]
     protected bool $isActive = true;
 
     public function getIsActive(): bool

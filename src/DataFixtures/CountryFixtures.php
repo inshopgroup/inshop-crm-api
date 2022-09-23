@@ -7,28 +7,15 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
-/**
- * Class CountryFixtures
- * @package App\DataFixtures
- */
 class CountryFixtures extends Fixture
 {
-    /**
-     * @var Faker\Generator
-     */
     protected Faker\Generator $faker;
 
-    /**
-     * CountryFixtures constructor.
-     */
     public function __construct()
     {
         $this->faker = Faker\Factory::create();
     }
 
-    /**
-     * @param ObjectManager $manager
-     */
     public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < 5; $i++) {

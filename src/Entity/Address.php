@@ -81,122 +81,98 @@ class Address
     use Blameable;
     use IsActive;
 
-    /**
-     * @var int|null
-     *
-     * @Groups({
-     *     "address_read",
-     *     "client_read",
-     *     "client_write",
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "address_read",
+        "client_read",
+        "client_write",
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({
-     *     "address_read",
-     *     "address_write",
-     *     "client_read",
-     * })
-     */
     #[ORM\ManyToOne(targetEntity: Country::class)]
     #[Assert\NotBlank]
+    #[Groups([
+        "address_read",
+        "address_write",
+        "client_read",
+    ])]
     private ?Country $country = null;
 
-    /**
-     * @Groups({
-     *     "client_read",
-     *     "address_read",
-     *     "address_write",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups([
+        "address_read",
+        "address_write",
+        "client_read",
+    ])]
     private ?string $city = null;
 
-    /**
-     * @Groups({
-     *     "address_read",
-     *     "address_write",
-     *     "client_read",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "address_read",
+        "address_write",
+        "client_read",
+    ])]
     private ?string $region = null;
 
-    /**
-     * @Groups({
-     *     "address_read",
-     *     "address_write",
-     *     "client_read",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "address_read",
+        "address_write",
+        "client_read",
+    ])]
     private ?string $district = null;
 
-    /**
-     * @Groups({
-     *     "address_read",
-     *     "address_write",
-     *     "client_read",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "address_read",
+        "address_write",
+        "client_read",
+    ])]
     private ?string $postCode = null;
 
-    /**
-     * @Groups({
-     *     "address_read",
-     *     "address_write",
-     *     "client_read",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups([
+        "address_read",
+        "address_write",
+        "client_read",
+    ])]
     private ?string $street = null;
 
-    /**
-     * @Groups({
-     *     "address_read",
-     *     "address_write",
-     *     "client_read",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups([
+        "address_read",
+        "address_write",
+        "client_read",
+    ])]
     private ?string $building = null;
 
-    /**
-     * @Groups({
-     *     "address_read",
-     *     "address_write",
-     *     "client_read",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "address_read",
+        "address_write",
+        "client_read",
+    ])]
     private ?string $apartment = null;
 
-    /**
-     * @Groups({
-     *     "address_read",
-     *     "address_write",
-     *     "client_read",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "address_read",
+        "address_write",
+        "client_read",
+    ])]
     private ?string $comment = null;
 
-    /**
-     * @Groups({
-     *     "address_read",
-     *     "address_write"
-     * })
-     */
     #[ORM\ManyToMany(targetEntity: Client::class, mappedBy: 'addresses')]
     #[ORM\OrderBy(['id' => 'DESC'])]
+    #[Groups([
+        "address_read",
+        "address_write"
+    ])]
     private Collection $clients;
 
     public function __construct()

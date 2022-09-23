@@ -70,32 +70,28 @@ class ContactType
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({
-     *     "contact_type_read",
-     *     "contact_read",
-     *     "contact_write",
-     *     "client_read",
-     *     "client_read_collection",
-     *     "client_write",
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "contact_type_read",
+        "contact_read",
+        "contact_write",
+        "client_read",
+        "client_read_collection",
+        "client_write",
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({
-     *     "contact_type_read",
-     *     "contact_type_write",
-     *     "contact_read",
-     *     "client_read",
-     *     "client_read_collection",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups([
+        "contact_type_read",
+        "contact_type_write",
+        "contact_read",
+        "client_read",
+        "client_read_collection",
+    ])]
     private string $name;
 
     public function getId(): ?int

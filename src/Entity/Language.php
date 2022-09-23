@@ -66,52 +66,46 @@ class Language
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({
-     *     "language_read",
-     *     "invoice_header_read",
-     *     "invoice_header_write",
-     *     "user_read",
-     *     "user_write",
-     *     "category_read",
-     *     "category_write",
-     *     "product_read",
-     *     "product_write",
-     *     "text_read",
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "language_read",
+        "invoice_header_read",
+        "invoice_header_write",
+        "user_read",
+        "user_write",
+        "category_read",
+        "category_write",
+        "product_read",
+        "product_write",
+        "text_read",
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({
-     *     "language_read",
-     *     "language_write",
-     *     "invoice_header_read",
-     *     "user_read",
-     *     "category_read",
-     *     "product_read",
-     *     "text_read",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups([
+        "language_read",
+        "language_write",
+        "invoice_header_read",
+        "user_read",
+        "category_read",
+        "product_read",
+        "text_read",
+    ])]
     private ?string $name;
 
-    /**
-     * @Groups({
-     *     "language_read",
-     *     "language_write",
-     *     "category_read",
-     *     "product_read",
-     *     "category_read_frontend",
-     *     "text_read",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups([
+         "language_read",
+         "language_write",
+         "category_read",
+         "product_read",
+         "category_read_frontend",
+         "text_read",
+    ])]
     private string $code;
 
     public function getId(): ?int

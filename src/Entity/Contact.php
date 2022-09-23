@@ -68,53 +68,45 @@ class Contact
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({
-     *     "contact_read",
-     *     "client_read",
-     *     "client_read_collection",
-     *     "client_write",
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "contact_read",
+        "client_read",
+        "client_read_collection",
+        "client_write",
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({
-     *     "contact_read",
-     *     "contact_write",
-     *     "client_read",
-     *     "client_read_collection",
-     *     "client_write",
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups([
+        "contact_read",
+        "contact_write",
+        "client_read",
+        "client_read_collection",
+        "client_write",
+    ])]
     private string $value;
 
-    /**
-     * @Groups({
-     *     "contact_read",
-     *     "contact_write",
-     *     "client_read",
-     *     "client_read_collection",
-     *     "client_write",
-     * })
-     */
     #[ORM\ManyToOne(targetEntity: ContactType::class)]
     #[Assert\NotNull]
+    #[Groups([
+        "contact_read",
+        "contact_write",
+        "client_read",
+        "client_read_collection",
+        "client_write",
+    ])]
     private ?ContactType $contactType = null;
 
-    /**
-     * @Groups({
-     *     "contact_read",
-     *     "contact_write"
-     * })
-     */
     #[ORM\ManyToMany(targetEntity: Client::class, mappedBy: 'contacts')]
     #[Assert\NotBlank]
+    #[Groups([
+        "contact_read",
+        "contact_write"
+    ])]
     private Collection $clients;
 
     public function __construct()
@@ -122,23 +114,11 @@ class Contact
         $this->clients = new ArrayCollection();
     }
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set value
-     *
-     * @param string $value
-     *
-     * @return Contact
-     */
     public function setValue(string $value): self
     {
         $this->value = $value;
@@ -146,21 +126,11 @@ class Contact
         return $this;
     }
 
-    /**
-     * Get value
-     */
     public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * Set contactType
-     *
-     * @param ContactType|null $contactType
-     *
-     * @return Contact
-     */
     public function setContactType(?ContactType $contactType): self
     {
         $this->contactType = $contactType;
@@ -168,21 +138,11 @@ class Contact
         return $this;
     }
 
-    /**
-     * Get contactType
-     *
-     * @return ContactType
-     */
     public function getContactType(): ?ContactType
     {
         return $this->contactType;
     }
 
-    /**
-     * Search text
-     *
-     * @return string
-     */
     public function getSearchText(): string
     {
         return implode(
@@ -193,9 +153,6 @@ class Contact
         );
     }
 
-    /**
-     * @return Collection|Client[]
-     */
     public function getClients(): Collection
     {
         return $this->clients;

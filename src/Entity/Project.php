@@ -72,61 +72,88 @@ class Project implements ClientInterface
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({"project_read", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "project_read",
+        "user_read",
+        "document_read",
+        "document_write",
+        "task_read",
+        "task_write",
+        "client_read",
+        "client_write"
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({"project_read", "project_write", "user_read", "document_read", "document_write", "task_read", "task_write", "client_read", "client_write"})
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups([
+        "project_read",
+        "project_write",
+        "user_read",
+        "document_read",
+        "document_write",
+        "task_read",
+        "task_write",
+        "client_read",
+        "client_write"
+    ])]
     private string $name;
 
-    /**
-     * @Groups({"project_read", "project_write", "document_read"})
-     */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups([
+        "project_read",
+        "project_write",
+        "document_read",
+    ])]
     private ?string $description = null;
 
-    /**
-     * @Groups({"project_read", "project_write", "task_read"})
-     */
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'projects')]
     #[Assert\NotBlank]
+    #[Groups([
+        "project_read",
+        "project_write",
+        "task_read",
+    ])]
     private ?Client $client = null;
 
-    /**
-     * @Groups({"project_read", "project_write", "document_read", "client_read", "client_write"})
-     */
     #[ORM\ManyToOne(targetEntity: ProjectStatus::class)]
     #[Assert\NotBlank]
+    #[Groups([
+        "project_read",
+        "project_write",
+        "document_read",
+        "client_read",
+        "client_write",
+    ])]
     private ?ProjectStatus $status = null;
 
-    /**
-     * @Groups({"project_read", "project_write", "client_read", "client_write"})
-     */
     #[ORM\ManyToOne(targetEntity: ProjectType::class)]
     #[Assert\NotBlank]
+    #[Groups([
+        "project_read",
+        "project_write",
+        "client_read",
+        "client_write",
+    ])]
     private ?ProjectType $type = null;
 
-    /**
-     * @Groups({"project_read", "project_write"})
-     */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Task::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
+    #[Groups([
+        "project_read",
+        "project_write",
+    ])]
     private Collection $tasks;
 
-    /**
-     * @Groups({"project_read"})
-     */
     #[ORM\ManyToMany(targetEntity: Document::class, inversedBy: 'projects')]
     #[ORM\OrderBy(['id' => 'DESC'])]
+    #[Groups([
+        "project_read"
+    ])]
     private Collection $documents;
 
     public function __construct()

@@ -10,16 +10,20 @@ trait Blameable
 {
     /**
      * @Gedmo\Blameable(on="create")
-     * @Groups({"read"})
      */
     #[ORM\Column(nullable: true)]
+    #[Groups([
+        "read",
+    ])]
     protected ?string $createdBy = null;
 
     /**
      * @Gedmo\Blameable(on="update")
-     * @Groups({"read"})
      */
     #[ORM\Column(nullable: true)]
+    #[Groups([
+        "read",
+    ])]
     protected ?string $updatedBy = null;
 
     public function setCreatedBy(?string $createdBy): self

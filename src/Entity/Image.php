@@ -55,18 +55,16 @@ class Image
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({
-     *     "image_write",
-     *     "image_read",
-     *     "product_read",
-     *     "product_write",
-     *     "product_read_frontend_item"
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "image_write",
+        "image_read",
+        "product_read",
+        "product_write",
+        "product_read_frontend_item"
+    ])]
     private ?int $id = null;
 
     /**
@@ -88,47 +86,41 @@ class Image
 
     /**
      * @ApiProperty(iri="http://schema.org/contentUrl")
-     * @Groups({
-     *     "image_write",
-     *     "image_read",
-     *     "product_read",
-     *     "product_read_frontend_item"
-     * })
      */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "image_write",
+        "image_read",
+        "product_read",
+        "product_read_frontend_item"
+    ])]
     public ?string $contentUrl = null;
 
-    /**
-     * @Groups({
-     *     "image_write",
-     *     "image_read",
-     *     "product_read",
-     *     "product_read_frontend_item"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "image_write",
+        "image_read",
+        "product_read",
+        "product_read_frontend_item"
+    ])]
     protected ?string $size = null;
 
-    /**
-     * @Groups({
-     *     "image_write",
-     *     "image_read",
-     *     "product_read",
-     *     "product_read_frontend_item"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "image_write",
+        "image_read",
+        "product_read",
+        "product_read_frontend_item"
+    ])]
     protected ?string $mimeType = null;
 
-    /**
-     * @Groups({
-     *     "image_write",
-     *     "image_read",
-     *     "product_read",
-     *     "product_read_frontend_item"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups([
+        "image_write",
+        "image_read",
+        "product_read",
+        "product_read_frontend_item"
+    ])]
     protected ?string $originalName = null;
 
     public function getId(): ?int

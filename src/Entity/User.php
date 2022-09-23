@@ -90,95 +90,79 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({
-     *     "user_read",
-     *     "task_read",
-     *     "client_read",
-     *     "project_read",
-     *     "task_write"
-     * })
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "user_read",
+        "task_read",
+        "client_read",
+        "project_read",
+        "task_write",
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({
-     *     "user_read",
-     *     "user_write",
-     *     "task_read",
-     *     "client_read"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Email]
+    #[Groups([
+        "user_read",
+        "user_write",
+        "task_read",
+        "client_read",
+    ])]
     private string $username;
 
     #[ORM\Column(type: 'string', length: 64)]
     #[Assert\NotBlank]
     private string $password;
 
-    /**
-     * @Groups({
-     *     "user_write"
-     * })
-     */
+    #[Groups([
+        "user_write",
+    ])]
     private ?string $plainPassword = null;
 
-    /**
-     * @Groups({
-     *     "user_read",
-     *     "user_write",
-     *     "task_read",
-     *     "client_read",
-     *     "project_read"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups([
+        "user_read",
+        "user_write",
+        "task_read",
+        "client_read",
+        "project_read",
+    ])]
     private string $name;
 
-    /**
-     * @Groups({
-     *     "user_read",
-     *     "user_write",
-     *     "task_read",
-     *     "client_read"
-     * })
-     */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
+    #[Groups([
+        "user_read",
+        "user_write",
+        "task_read",
+        "client_read",
+    ])]
     private string $email;
 
-    /**
-     * @Groups({
-     *     "user_read"
-     * })
-     */
     #[ORM\OneToMany(mappedBy: 'assignee', targetEntity: Task::class)]
     #[ORM\OrderBy(['id' => 'DESC'])]
+    #[Groups([
+        "user_read",
+    ])]
     private Collection $tasks;
 
-    /**
-     * @Groups({
-     *     "user_read",
-     *     "user_write"
-     * })
-     */
     #[ORM\ManyToMany(targetEntity: Group::class)]
+    #[Groups([
+        "user_read",
+        "user_write",
+    ])]
     private Collection $groups;
 
-    /**
-     * @Groups({
-     *     "user_read",
-     *     "user_write"
-     * })
-     */
     #[ORM\ManyToOne(targetEntity: Language::class)]
     #[Assert\NotNull]
+    #[Groups([
+        "user_read",
+        "user_write",
+    ])]
     private ?Language $language = null;
 
     #[ORM\Column(type: 'boolean', nullable: true)]

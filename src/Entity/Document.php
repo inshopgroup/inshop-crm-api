@@ -70,41 +70,54 @@ class Document
     use Blameable;
     use IsActive;
 
-    /**
-     * @Groups({"document_read", "project_read", "invoice_header_read", "invoice_header_write", "invoice_header_read"})
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "document_read",
+        "project_read",
+        "invoice_header_read",
+        "invoice_header_write",
+        "invoice_header_read",
+    ])]
     private ?int $id = null;
 
-    /**
-     * @Groups({"document_read", "document_write", "project_read", "invoice_header_read"})
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups([
+        "document_read",
+        "document_write",
+        "project_read",
+        "invoice_header_read",
+    ])]
     private string $name;
 
-    /**
-     * @Groups({"document_read", "document_write"})
-     */
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'documents')]
+    #[Groups([
+        "document_read",
+        "document_write",
+    ])]
     private ?Client $client = null;
 
-    /**
-     * @Groups({"document_read", "document_write"})
-     */
     #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'documents')]
     #[ORM\OrderBy(['id' => 'DESC'])]
+    #[Groups([
+        "document_read",
+        "document_write",
+    ])]
     private Collection $projects;
 
     /**
      * @ApiProperty(iri="http://schema.org/image")
      * @ApiSubresource()
-     * @Groups({"document_read", "document_write", "project_read"})
      */
     #[ORM\ManyToMany(targetEntity: File::class)]
     #[ORM\OrderBy(['id' => 'DESC'])]
+    #[Groups([
+        "document_read",
+        "document_write",
+        "project_read"
+    ])]
     public Collection $files;
 
     public function __construct()
