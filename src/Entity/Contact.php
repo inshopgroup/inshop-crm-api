@@ -3,64 +3,61 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use App\Repository\ClientRepository;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\ContactRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
-/**
- * @ApiResource(
- *     attributes={
- *          "normalization_context"={"groups"={"contact_read", "read", "is_active_read"}},
- *          "denormalization_context"={"groups"={"contact_write", "is_active_write"}},
- *          "order"={"id": "DESC"}
- *     },
- *     collectionOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_CONTACT_LIST')"
- *          },
- *          "post"={
- *              "security"="is_granted('ROLE_CONTACT_CREATE')"
- *          }
- *     },
- *     itemOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_CONTACT_SHOW')"
- *          },
- *          "put"={
- *              "security"="is_granted('ROLE_CONTACT_UPDATE')"
- *          },
- *          "delete"={
- *              "security"="is_granted('ROLE_CONTACT_DELETE')"
- *          }
- *     })
- * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
- * @ApiFilter(SearchFilter::class, properties={
- *     "id": "exact",
- *     "value": "ipartial",
- *     "contactType.name": "ipartial",
- * })
- * @ApiFilter(
- *     OrderFilter::class,
- *     properties={
- *          "id",
- *          "value",
- *          "contactType.name",
- *          "createdAt",
- *          "updatedAt"
- *     }
- * )
- */
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['security' => "is_granted('ROLE_CONTACT_LIST')"],
+        'post' => ['security' => "is_granted('ROLE_CONTACT_CREATE')"],
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('ROLE_CONTACT_SHOW')"],
+        'put' => ['security' => "is_granted('ROLE_CONTACT_UPDATE')"],
+        'delete' => ['security' => "is_granted('ROLE_CONTACT_DELETE')"],
+    ],
+    attributes: [
+        'order' => ['id' => "DESC"],
+        'normalization_context' => ['groups' => ["contact_read", "read", "is_active_read"]],
+        'denormalization_context' => ['groups' => ["contact_write", "is_active_write"]],
+    ]
+)]
+#[ApiFilter(
+    DateFilter::class,
+    properties: [
+        "createdAt",
+        "updatedAt",
+    ]
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        "id" => "exact",
+        "value" => "ipartial",
+        "contactType.name" => "ipartial",
+    ]
+)]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        "id",
+        "value",
+        "contactType.name",
+        "createdAt",
+        "updatedAt"
+    ]
+)]
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
 {
