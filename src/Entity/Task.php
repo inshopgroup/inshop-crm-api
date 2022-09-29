@@ -3,84 +3,80 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
-use App\Interfaces\ClientInterface;
-use App\Repository\TaskRepository;
-use DateTime;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
-use App\Traits\Blameable;
-use App\Traits\IsActive;
-use App\Traits\Timestampable;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Controller\TaskDeadlineAction;
+use App\Interfaces\ClientInterface;
+use App\Repository\TaskRepository;
+use App\Traits\Blameable;
+use App\Traits\IsActive;
+use App\Traits\Timestampable;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *          "normalization_context"={"groups"={"task_read", "read", "is_active_read"}},
- *          "denormalization_context"={"groups"={"task_write", "is_active_write"}},
- *          "order"={"id": "DESC"}
- *     },
- *     collectionOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_TASK_LIST')"
- *          },
- *          "post"={
- *              "security"="is_granted('ROLE_TASK_CREATE')"
- *          },
- *          "deadline"={
- *              "security"="is_granted('ROLE_TASK_DEADLINE')",
- *              "method"="GET",
- *              "path"="/tasks/deadline",
- *              "controller"=TaskDeadlineAction::class,
- *              "defaults"={"_api_receive"=false},
- *              "normalization_context"={
- *                  "groups"={"task_read", "read", "is_active_read"}
- *              }
- *          },
- *     },
- *     itemOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_TASK_SHOW')"
- *          },
- *          "put"={
- *              "security"="is_granted('ROLE_TASK_UPDATE')"
- *          },
- *          "delete"={
- *              "security"="is_granted('ROLE_TASK_DELETE')"
- *          }
- *     })
- * @ApiFilter(DateFilter::class, properties={"deadline", "createdAt", "updatedAt"})
- * @ApiFilter(SearchFilter::class, properties={
- *     "id": "exact",
- *     "status.id": "exact",
- *     "project.name": "ipartial",
- *     "project.client.name": "ipartial",
- *     "assignee.name": "ipartial",
- *     "name": "ipartial"
- * })
- * @ApiFilter(
- *     OrderFilter::class,
- *     properties={
- *          "id",
- *          "status.id",
- *          "project.name",
- *          "project.client.name",
- *          "assignee.name",
- *          "name",
- *          "timeEstimated",
- *          "timeSpent",
- *          "deadline",
- *          "createdAt",
- *          "updatedAt"
- *     }
- * )
- */
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['security' => "is_granted('ROLE_TASK_LIST')"],
+        'post' => ['security' => "is_granted('ROLE_TASK_CREATE')"],
+        'deadline' => [
+            'security' => "is_granted('ROLE_TASK_DEADLINE')",
+            'method' => 'GET',
+            'path' => '/tasks/deadline',
+            'controller' => TaskDeadlineAction::class,
+            'defaults' => ['_api_receive' => false],
+            'normalization_context' => ['groups' => ["task_read", "read", "is_active_read"]]
+        ],
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('ROLE_TASK_SHOW')"],
+        'put' => ['security' => "is_granted('ROLE_TASK_UPDATE')"],
+        'delete' => ['security' => "is_granted('ROLE_TASK_DELETE')"],
+    ],
+    attributes: [
+        'order' => ['id' => "DESC"],
+        'normalization_context' => ['groups' => ["task_read", "read", "is_active_read"]],
+        'denormalization_context' => ['groups' => ["task_write", "is_active_write"]],
+    ]
+)]
+#[ApiFilter(
+    DateFilter::class,
+    properties: [
+        "deadline",
+        "createdAt",
+        "updatedAt",
+    ]
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        "id" => "exact",
+        "status.id" => "exact",
+        "project.name" => "ipartial",
+        "project.client.name" => "ipartial",
+        "assignee.name" => "ipartial",
+        "name" => "ipartial"
+    ]
+)]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        "id",
+        "status.id",
+        "project.name",
+        "project.client.name",
+        "assignee.name",
+        "name",
+        "timeEstimated",
+        "timeSpent",
+        "deadline",
+        "createdAt",
+        "updatedAt"
+    ]
+)]
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task implements ClientInterface
 {

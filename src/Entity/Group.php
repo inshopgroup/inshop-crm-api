@@ -18,47 +18,45 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
-/**
- * @ApiResource(
- *     attributes={
- *          "normalization_context"={"groups"={"group_read", "read", "is_active_read"}},
- *          "denormalization_context"={"groups"={"group_write", "is_active_write"}},
- *          "order"={"id": "ASC"}
- *     },
- *     collectionOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_GROUP_LIST')"
- *          },
- *          "post"={
- *              "security"="is_granted('ROLE_GROUP_CREATE')"
- *          }
- *     },
- *     itemOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_GROUP_SHOW')"
- *          },
- *          "put"={
- *              "security"="is_granted('ROLE_GROUP_UPDATE')"
- *          },
- *          "delete"={
- *              "security"="is_granted('ROLE_GROUP_DELETE')"
- *          }
- *     })
- * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
- * @ApiFilter(SearchFilter::class, properties={
- *     "id": "exact",
- *     "name": "ipartial"
- * })
- * @ApiFilter(
- *     OrderFilter::class,
- *     properties={
- *          "id",
- *          "name",
- *          "createdAt",
- *          "updatedAt"
- *     }
- * )
- */
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['security' => "is_granted('ROLE_GROUP_LIST')"],
+        'post' => ['security' => "is_granted('ROLE_GROUP_CREATE')"],
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('ROLE_GROUP_SHOW')"],
+        'put' => ['security' => "is_granted('ROLE_GROUP_UPDATE')"],
+        'delete' => ['security' => "is_granted('ROLE_GROUP_DELETE')"],
+    ],
+    attributes: [
+        'order' => ['id' => "DESC"],
+        'normalization_context' => ['groups' => ["group_read", "read", "is_active_read"]],
+        'denormalization_context' => ['groups' => ["group_write", "is_active_write"]],
+    ]
+)]
+#[ApiFilter(
+    DateFilter::class,
+    properties: [
+        "createdAt",
+        "updatedAt",
+    ]
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        "id" => "exact",
+        "name" => "ipartial",
+    ]
+)]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        "id",
+        "name",
+        "createdAt",
+        "updatedAt"
+    ]
+)]
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Table(name: '`group`')]
 class Group

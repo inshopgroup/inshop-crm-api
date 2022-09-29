@@ -3,68 +3,66 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Interfaces\ClientInterface;
 use App\Repository\ProjectRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
-/**
- * @ApiResource(
- *     attributes={
- *          "normalization_context"={"groups"={"project_read", "read", "is_active_read"}},
- *          "denormalization_context"={"groups"={"project_write", "is_active_write"}},
- *          "order"={"id": "DESC"}
- *     },
- *     collectionOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_PROJECT_LIST')"
- *          },
- *          "post"={
- *              "security"="is_granted('ROLE_PROJECT_CREATE')"
- *          }
- *     },
- *     itemOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_PROJECT_SHOW')"
- *          },
- *          "put"={
- *              "security"="is_granted('ROLE_PROJECT_UPDATE')"
- *          },
- *          "delete"={
- *              "security"="is_granted('ROLE_PROJECT_DELETE')"
- *          }
- *     })
- * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
- * @ApiFilter(SearchFilter::class, properties={
- *     "id": "exact",
- *     "name": "ipartial",
- *     "status.id": "exact",
- *     "type.id": "exact",
- *     "client.name": "ipartial"
- * })
- * @ApiFilter(
- *     OrderFilter::class,
- *     properties={
- *          "id",
- *          "name",
- *          "status.id",
- *          "type.id",
- *          "clientname",
- *          "createdAt",
- *          "updatedAt"
- *     }
- * )
- */
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['security' => "is_granted('ROLE_PROJECT_LIST')"],
+        'post' => ['security' => "is_granted('ROLE_PROJECT_CREATE')"],
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('ROLE_PROJECT_SHOW')"],
+        'put' => ['security' => "is_granted('ROLE_PROJECT_UPDATE')"],
+        'delete' => ['security' => "is_granted('ROLE_PROJECT_DELETE')"],
+    ],
+    attributes: [
+        'order' => ['id' => "DESC"],
+        'normalization_context' => ['groups' => ["project_read", "read", "is_active_read"]],
+        'denormalization_context' => ['groups' => ["project_write", "is_active_write"]],
+    ]
+)]
+#[ApiFilter(
+    DateFilter::class,
+    properties: [
+        "createdAt",
+        "updatedAt",
+    ]
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        "id" => "exact",
+        "name" => "ipartial",
+        "status.id" => "exact",
+        "type.id" => "exact",
+        "client.name" => "ipartial"
+    ]
+)]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        "id",
+        "name",
+        "status.id",
+        "type.id",
+        "client.name",
+        "createdAt",
+        "updatedAt"
+    ]
+)]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project implements ClientInterface
 {
