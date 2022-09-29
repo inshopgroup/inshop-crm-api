@@ -16,49 +16,47 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
-/**
- * @ApiResource(
- *     attributes={
- *          "normalization_context"={"groups"={"language_read", "read", "is_active_read"}},
- *          "denormalization_context"={"groups"={"language_write", "is_active_write"}},
- *          "order"={"id": "ASC"}
- *     },
- *     collectionOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_LANGUAGE_LIST')"
- *          },
- *          "post"={
- *              "security"="is_granted('ROLE_LANGUAGE_CREATE')"
- *          }
- *     },
- *     itemOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_LANGUAGE_SHOW')"
- *          },
- *          "put"={
- *              "security"="is_granted('ROLE_LANGUAGE_UPDATE')"
- *          },
- *          "delete"={
- *              "security"="is_granted('ROLE_LANGUAGE_DELETE')"
- *          }
- *     })
- * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
- * @ApiFilter(SearchFilter::class, properties={
- *     "id": "exact",
- *     "name": "ipartial",
- *     "code": "ipartial",
- * })
- * @ApiFilter(
- *     OrderFilter::class,
- *     properties={
- *          "id",
- *          "name",
- *          "code",
- *          "createdAt",
- *          "updatedAt"
- *     }
- * )
- */
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['security' => "is_granted('ROLE_LANGUAGE_LIST')"],
+        'post' => ['security' => "is_granted('ROLE_LANGUAGE_CREATE')"],
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('ROLE_LANGUAGE_SHOW')"],
+        'put' => ['security' => "is_granted('ROLE_LANGUAGE_UPDATE')"],
+        'delete' => ['security' => "is_granted('ROLE_LANGUAGE_DELETE')"],
+    ],
+    attributes: [
+        'order' => ['id' => "DESC"],
+        'normalization_context' => ['groups' => ["language_read", "read", "is_active_read"]],
+        'denormalization_context' => ['groups' => ["language_write", "is_active_write"]],
+    ]
+)]
+#[ApiFilter(
+    DateFilter::class,
+    properties: [
+        "createdAt",
+        "updatedAt",
+    ]
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        "id" => "exact",
+        "name" => "ipartial",
+        "code" => "ipartial",
+    ]
+)]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        "id",
+        "name",
+        "code",
+        "createdAt",
+        "updatedAt"
+    ]
+)]
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
 class Language
 {
