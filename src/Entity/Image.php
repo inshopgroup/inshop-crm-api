@@ -5,7 +5,6 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateImageAction;
-use App\Repository\GroupRepository;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
@@ -16,38 +15,31 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ApiResource(
- *     iri="http://schema.org/MediaObject",
- *     attributes={
- *          "normalization_context"={"groups"={"image_read", "read", "is_active_read"}},
- *          "denormalization_context"={"groups"={"image_write", "is_active_write"}},
- *          "order"={"id": "DESC"}
- *     },
- *     collectionOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_IMAGE_LIST')"
- *          },
- *          "post"={
- *              "security"="is_granted('ROLE_USER')",
- *              "method"="POST",
- *              "path"="/images",
- *              "controller"=CreateImageAction::class,
- *              "defaults"={"_api_receive"=false},
- *          }
- *     },
- *     itemOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_IMAGE_SHOW')"
- *          },
- *          "put"={
- *              "security"="is_granted('ROLE_IMAGE_UPDATE')"
- *          },
- *          "delete"={
- *              "security"="is_granted('ROLE_IMAGE_DELETE')"
- *          }
- *     })
  * @Vich\Uploadable
  */
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['security' => "is_granted('ROLE_IMAGE_LIST')"],
+        'post' => [
+            'security' => "is_granted('ROLE_IMAGE_CREATE')",
+            'method' => 'POST',
+            'path' => '/images',
+            'controller' => CreateImageAction::class,
+            'defaults' => ['_api_receive' => false]
+        ],
+    ],
+    iri: 'https://schema.org/MediaObject',
+    itemOperations: [
+        'get' => ['security' => "is_granted('ROLE_IMAGE_SHOW')"],
+        'put' => ['security' => "is_granted('ROLE_IMAGE_UPDATE')"],
+        'delete' => ['security' => "is_granted('ROLE_IMAGE_DELETE')"],
+    ],
+    attributes: [
+        'order' => ['id' => "DESC"],
+        'normalization_context' => ['groups' => ["image_read", "read", "is_active_read"]],
+        'denormalization_context' => ['groups' => ["image_write", "is_active_write"]],
+    ]
+)]
 #[ORM\Entity]
 class Image
 {

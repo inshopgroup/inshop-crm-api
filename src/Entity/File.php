@@ -34,6 +34,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
         'put' => ['security' => "is_granted('ROLE_FILE_UPDATE')"],
         'delete' => ['security' => "is_granted('ROLE_FILE_DELETE')"],
     ],
+    attributes: [
+        'order' => ['id' => "DESC"],
+        'normalization_context' => ['groups' => ["file_read", "read", "is_active_read"]],
+        'denormalization_context' => ['groups' => ["file_write", "is_active_write"]],
+    ]
 )]
 #[ORM\Entity]
 class File

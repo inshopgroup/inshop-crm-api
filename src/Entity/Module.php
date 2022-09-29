@@ -3,55 +3,59 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
-use App\Repository\GroupRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\ModuleRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
-/**
- * @ApiResource(
- *     attributes={
- *          "normalization_context"={"groups"={"module_read", "read", "is_active_read"}},
- *          "denormalization_context"={"groups"={"module_write", "is_active_write"}},
- *          "order"={"id": "ASC"}
- *     },
- *     collectionOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_MODULE_LIST')"
- *          },
- *          "post"={
- *              "security"="is_granted('ROLE_MODULE_CREATE')"
- *          }
- *     },
- *     itemOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_MODULE_SHOW')"
- *          },
- *          "put"={
- *              "security"="is_granted('ROLE_MODULE_UPDATE')"
- *          },
- *          "delete"={
- *              "security"="is_granted('ROLE_MODULE_DELETE')"
- *          }
- *     })
- * @ApiFilter(
- *     OrderFilter::class,
- *     properties={
- *          "id",
- *          "name",
- *          "createdAt",
- *          "updatedAt"
- *     }
- * )
- */
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['security' => "is_granted('ROLE_MODULE_LIST')"],
+        'post' => ['security' => "is_granted('ROLE_MODULE_CREATE')"],
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('ROLE_MODULE_SHOW')"],
+        'put' => ['security' => "is_granted('ROLE_MODULE_UPDATE')"],
+        'delete' => ['security' => "is_granted('ROLE_MODULE_DELETE')"],
+    ],
+    attributes: [
+        'order' => ['id' => "DESC"],
+        'normalization_context' => ['groups' => ["module_read", "read", "is_active_read"]],
+        'denormalization_context' => ['groups' => ["module_write", "is_active_write"]],
+    ]
+)]
+#[ApiFilter(
+    DateFilter::class,
+    properties: [
+        "createdAt",
+        "updatedAt",
+    ]
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        "id" => "exact",
+        "name" => "ipartial",
+    ]
+)]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        "id",
+        "name",
+        "createdAt",
+        "updatedAt"
+    ]
+)]
 #[ORM\Entity(repositoryClass: ModuleRepository::class)]
 class Module
 {
