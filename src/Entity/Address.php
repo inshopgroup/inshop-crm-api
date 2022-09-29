@@ -17,63 +17,61 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *          "normalization_context"={"groups"={"address_read", "read", "is_active_read"}},
- *          "denormalization_context"={"groups"={"address_write", "is_active_write"}},
- *          "order"={"id": "DESC"}
- *     },
- *     collectionOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_ADDRESS_LIST')"
- *          },
- *          "post"={
- *              "security"="is_granted('ROLE_ADDRESS_CREATE')"
- *          }
- *     },
- *     itemOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_ADDRESS_SHOW')"
- *          },
- *          "put"={
- *              "security"="is_granted('ROLE_ADDRESS_UPDATE')"
- *          },
- *          "delete"={
- *              "security"="is_granted('ROLE_ADDRESS_DELETE')"
- *          }
- *     })
- * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
- * @ApiFilter(SearchFilter::class, properties={
- *     "id": "exact",
- *     "postCode": "ipartial",
- *     "country.name": "ipartial",
- *     "city.name": "ipartial",
- *     "region": "ipartial",
- *     "district": "ipartial",
- *     "street": "ipartial",
- *     "building": "ipartial",
- *     "apartment": "ipartial",
- *     "comment": "ipartial",
- * })
- * @ApiFilter(
- *     OrderFilter::class,
- *     properties={
- *          "id",
- *          "postCode",
- *          "country.name",
- *          "city.name",
- *          "region",
- *          "district",
- *          "street",
- *          "building",
- *          "apartment",
- *          "comment",
- *          "createdAt",
- *          "updatedAt"
- *     }
- * )
- */
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['security' => "is_granted('ROLE_ADDRESS_LIST')"],
+        'post' => ['security' => "is_granted('ROLE_ADDRESS_CREATE')"],
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('ROLE_ADDRESS_SHOW')"],
+        'put' => ['security' => "is_granted('ROLE_ADDRESS_UPDATE')"],
+        'delete' => ['security' => "is_granted('ROLE_ADDRESS_DELETE')"],
+    ],
+    attributes: [
+        'order' => ['id' => "DESC"],
+        'normalization_context' => ['groups' => ["address_read", "read", "is_active_read"]],
+        'denormalization_context' => ['groups' => ["address_write", "is_active_write"]],
+    ]
+)]
+#[ApiFilter(
+    DateFilter::class,
+    properties: [
+        "createdAt",
+        "updatedAt",
+    ]
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        "id" => "exact",
+        "postCode" => "ipartial",
+        "country.name" => "ipartial",
+        "city.name" => "ipartial",
+        "region" => "ipartial",
+        "district" => "ipartial",
+        "street" => "ipartial",
+        "building" => "ipartial",
+        "apartment" => "ipartial",
+        "comment" => "ipartial",
+    ]
+)]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        "id",
+        "postCode",
+        "country.name",
+        "city.name",
+        "region",
+        "district",
+        "street",
+        "building",
+        "apartment",
+        "comment",
+        "createdAt",
+        "updatedAt"
+    ]
+)]
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 class Address
 {

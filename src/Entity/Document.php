@@ -9,7 +9,6 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Repository\ClientRepository;
 use App\Repository\DocumentRepository;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
@@ -20,49 +19,47 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *          "normalization_context"={"groups"={"document_read", "read", "is_active_read"}},
- *          "denormalization_context"={"groups"={"document_write", "is_active_write"}},
- *          "order"={"id": "DESC"}
- *     },
- *     collectionOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_DOCUMENT_LIST')"
- *          },
- *          "post"={
- *              "security"="is_granted('ROLE_DOCUMENT_CREATE')"
- *          }
- *     },
- *     itemOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_DOCUMENT_SHOW')"
- *          },
- *          "put"={
- *              "security"="is_granted('ROLE_DOCUMENT_UPDATE')"
- *          },
- *          "delete"={
- *              "security"="is_granted('ROLE_DOCUMENT_DELETE')"
- *          }
- *     })
- * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
- * @ApiFilter(SearchFilter::class, properties={
- *     "id": "exact",
- *     "name": "partial",
- *     "client": "partial"
- * })
- * @ApiFilter(
- *     OrderFilter::class,
- *     properties={
- *          "id",
- *          "name",
- *          "client",
- *          "createdAt",
- *          "updatedAt"
- *     }
- * )
- */
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['security' => "is_granted('ROLE_DOCUMENT_LIST')"],
+        'post' => ['security' => "is_granted('ROLE_DOCUMENT_CREATE')"],
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('ROLE_DOCUMENT_SHOW')"],
+        'put' => ['security' => "is_granted('ROLE_DOCUMENT_UPDATE')"],
+        'delete' => ['security' => "is_granted('ROLE_DOCUMENT_DELETE')"],
+    ],
+    attributes: [
+        'order' => ['id' => "DESC"],
+        'normalization_context' => ['groups' => ["document_read", "read", "is_active_read"]],
+        'denormalization_context' => ['groups' => ["document_write", "is_active_write"]],
+    ]
+)]
+#[ApiFilter(
+    DateFilter::class,
+    properties: [
+        "createdAt",
+        "updatedAt",
+    ]
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        "id" => "exact",
+        "name" => "partial",
+        "client" => "partial"
+    ]
+)]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        "id",
+        "name",
+        "client",
+        "createdAt",
+        "updatedAt"
+    ]
+)]
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
 class Document
 {

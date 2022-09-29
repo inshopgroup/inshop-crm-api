@@ -5,43 +5,36 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateFileAction;
-use App\Repository\ClientRepository;
+use App\Traits\Blameable;
 use App\Traits\IsActive;
+use App\Traits\Timestampable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File as HttpFile;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use App\Traits\Blameable;
-use App\Traits\Timestampable;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(iri="http://schema.org/MediaObject",
- *     collectionOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_FILE_LIST')"
- *          },
- *          "post"={
- *              "security"="is_granted('ROLE_FILE_CREATE')",
- *              "method"="POST",
- *              "path"="/files",
- *              "controller"=CreateFileAction::class,
- *              "defaults"={"_api_receive"=false},
- *          }
- *     },
- *     itemOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_FILE_SHOW')"
- *          },
- *          "put"={
- *              "security"="is_granted('ROLE_FILE_UPDATE')"
- *          },
- *          "delete"={
- *              "security"="is_granted('ROLE_FILE_DELETE')"
- *          }
- *     })
  * @Vich\Uploadable
  */
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['security' => "is_granted('ROLE_FILE_LIST')"],
+        'post' => [
+            'security' => "is_granted('ROLE_FILE_CREATE')",
+            'method' => 'POST',
+            'path' => '/files',
+            'controller' => CreateFileAction::class,
+            'defaults' => ['_api_receive' => false]
+        ],
+    ],
+    iri: 'https://schema.org/MediaObject',
+    itemOperations: [
+        'get' => ['security' => "is_granted('ROLE_FILE_SHOW')"],
+        'put' => ['security' => "is_granted('ROLE_FILE_UPDATE')"],
+        'delete' => ['security' => "is_granted('ROLE_FILE_DELETE')"],
+    ],
+)]
 #[ORM\Entity]
 class File
 {
