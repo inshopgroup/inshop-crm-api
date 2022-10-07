@@ -3,132 +3,116 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Controller\Client\ClientGetItemAction;
+use App\Controller\Client\ClientLoginByTokenCollectionAction;
+use App\Controller\Client\ClientPutItemController;
+use App\Controller\Client\ClientRemindPasswordCollectionController;
+use App\Controller\Client\ClientSignupPostCollectionController;
 use App\Interfaces\ClientInterface;
 use App\Repository\ClientRepository;
-use App\Repository\TaskStatusRepository;
-use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use ApiPlatform\Core\Annotation\ApiResource;
-use Exception;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
-use App\Controller\Client\ClientLoginByTokenCollectionAction;
-use App\Controller\Client\ClientGetItemAction;
-use App\Controller\Client\ClientPutItemController;
-use App\Controller\Client\ClientSignupPostCollectionController;
-use App\Controller\Client\ClientRemindPasswordCollectionController;
-
 use function bin2hex;
 use function random_bytes;
 
-/**
- * Client
- *
- * @UniqueEntity(fields={"username"}, errorPath="username", message="User already exists")
- * @ApiResource(
- *     attributes={
- *          "normalization_context"={"groups"={"client_read", "read", "is_active_read"}},
- *          "denormalization_context"={"groups"={"client_write", "is_active_write"}},
- *          "order"={"id": "DESC"}
- *     },
- *     collectionOperations={
- *          "get"={
- *              "normalization_context"={
- *                  "groups"={"client_read_collection", "read", "is_active_read"}
- *              },
- *              "security"="is_granted('ROLE_CLIENT_LIST')"
- *          },
- *          "post"={
- *              "security"="is_granted('ROLE_CLIENT_CREATE')"
- *          },
- *          "signup"={
- *              "method"="POST",
- *              "path"="/frontend/signup",
- *              "denormalization_context"={
- *                  "groups"={"signup_collection"}
- *              },
- *              "controller"=ClientSignupPostCollectionController::class,
- *              "validation_groups"={"client_signup_frontend"},
- *              "defaults"={"_api_receive"=true},
- *          }
- *     },
- *     itemOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_CLIENT_SHOW')"
- *          },
- *          "put"={
- *              "security"="is_granted('ROLE_CLIENT_UPDATE')"
- *          },
- *          "delete"={
- *              "security"="is_granted('ROLE_CLIENT_DELETE')"
- *          },
- *          "clientGet"={
- *              "security"="is_granted('ROLE_CLIENT')",
- *              "method"="GET",
- *              "path"="/frontend/profile/me",
- *              "normalization_context"={
- *                  "groups"={"client_get_item"}
- *              },
- *              "controller"=ClientGetItemAction::class,
- *              "defaults"={"_api_receive"=false},
- *          },
- *          "clientPut"={
- *              "security"="is_granted('ROLE_CLIENT')",
- *              "method"="PUT",
- *              "path"="/frontend/profile/me",
- *              "normalization_context"={
- *                  "groups"={"client_put_item"}
- *              },
- *              "controller"=ClientPutItemController::class,
- *              "validation_groups"={"client_put_frontend"},
- *              "defaults"={"_api_receive"=true},
- *          },
- *          "loginByToken"={
- *              "method"="GET",
- *              "path"="/frontend/login/{token}",
- *              "controller"=ClientLoginByTokenCollectionAction::class,
- *              "defaults"={"_api_receive"=false},
- *          },
- *          "remindPassword"={
- *              "method"="POST",
- *              "path"="/frontend/remind/password",
- *              "controller"=ClientRemindPasswordCollectionController::class,
- *              "defaults"={"_api_receive"=false},
- *          }
- *     }
- * )
- * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
- * @ApiFilter(SearchFilter::class, properties={
- *     "id": "exact",
- *     "name": "ipartial",
- *     "labels.id": "exact",
- *     "contacts.value": "ipartial",
- *     "description": "ipartial"
- * })
- * @ApiFilter(
- *     OrderFilter::class,
- *     properties={
- *          "id",
- *          "name",
- *          "description",
- *          "createdAt",
- *          "updatedAt"
- *     }
- * )
- */
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'normalization_context' => ['groups' => ["client_read_collection", "read", "is_active_read"]],
+            'security' => "is_granted('ROLE_CLIENT_LIST')"
+        ],
+        'post' => ['security' => "is_granted('ROLE_CLIENT_CREATE')"],
+        'signup' => [
+            'method' => 'POST',
+            'path' => '/frontend/signup',
+            'denormalization_context' => ['groups' => ["signup_collection"]],
+            'controller' => ClientSignupPostCollectionController::class,
+            'validation_groups' => ['client_signup_frontend'],
+            'defaults' => ['_api_receive' => true]
+        ],
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('ROLE_CLIENT_SHOW')"],
+        'put' => ['security' => "is_granted('ROLE_CLIENT_UPDATE')"],
+        'delete' => ['security' => "is_granted('ROLE_CLIENT_DELETE')"],
+        'clientGet' => [
+            'security' => "is_granted('ROLE_CLIENT')",
+            'method' => 'GET',
+            'path' => '/frontend/profile/me',
+            'normalization_context' => ['groups' => ["client_get_item"]],
+            'controller' => ClientGetItemAction::class,
+            'defaults' => ['_api_receive' => false]
+        ],
+        'clientPut' => [
+            'security' => "is_granted('ROLE_CLIENT')",
+            'method' => 'PUT',
+            'path' => '/frontend/profile/me',
+            'normalization_context' => ['groups' => ["client_put_item"]],
+            'controller' => ClientPutItemController::class,
+            'validation_groups' => ['client_put_frontend'],
+            'defaults' => ['_api_receive' => true]
+        ],
+        'loginByToken' => [
+            'method' => 'GET',
+            'path' => '/frontend/login/{token}',
+            'controller' => ClientLoginByTokenCollectionAction::class,
+            'defaults' => ['_api_receive' => false]
+        ],
+        'remindPassword' => [
+            'method' => 'POST',
+            'path' => '/frontend/remind/password',
+            'controller' => ClientRemindPasswordCollectionController::class,
+            'defaults' => ['_api_receive' => false]
+        ],
+    ],
+    attributes: [
+        'order' => ['id' => "DESC"],
+        'normalization_context' => ['groups' => ["client_read", "read", "is_active_read"]],
+        'denormalization_context' => ['groups' => ["client_write", "is_active_write"]],
+    ]
+)]
+#[ApiFilter(
+    DateFilter::class,
+    properties: [
+        "createdAt",
+        "updatedAt",
+    ]
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        "id" => "exact",
+        "name" => "ipartial",
+        "labels.id" => "exact",
+        "contacts.value" => "ipartial",
+        "description" => "ipartial"
+    ]
+)]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        "id",
+        "name",
+        "description",
+        "createdAt",
+        "updatedAt"
+    ]
+)]
+#[UniqueEntity(fields: ['username'], message: 'User already exists', errorPath: 'username')]
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
