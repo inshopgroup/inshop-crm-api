@@ -3,85 +3,85 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Controller\User\UserPutItemController;
-use App\Controller\User\UserPostCollectionController;
 use App\Controller\DashboardAction;
-use App\Repository\GroupRepository;
+use App\Controller\User\UserPostCollectionController;
+use App\Controller\User\UserPutItemController;
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
-use ApiPlatform\Core\Annotation\ApiResource;
-use Serializable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
-/**
- * @UniqueEntity({"username"})
- * @ApiResource(
- *     attributes={
- *         "normalization_context"={"groups"={"user_read", "read", "is_active_read"}},
- *         "denormalization_context"={"groups"={"user_write", "is_active_write"}},
- *         "order"={"id": "DESC"},
- *     },
- *     collectionOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_USER_LIST')"
- *          },
- *          "post"={
- *              "controller"=UserPostCollectionController::class,
- *              "security"="is_granted('ROLE_USER_CREATE')"
- *          },
- *          "dashboard"={
- *              "security"="is_granted('ROLE_USER_DASHBOARD')",
- *              "method"="GET",
- *              "path"="/users/dashboard",
- *              "controller"=DashboardAction::class,
- *              "defaults"={"_api_receive"=false},
- *          }
- *     },
- *     itemOperations={
- *          "get"={
- *              "security"="is_granted('ROLE_USER_SHOW')"
- *          },
- *          "put"={
- *              "controller"=UserPutItemController::class,
- *              "security"="is_granted('ROLE_USER_UPDATE')"
- *          },
- *          "delete"={
- *              "security"="is_granted('ROLE_USER_DELETE')"
- *          }
- *     },
- * )
- * @ApiFilter(DateFilter::class, properties={"createdAt", "updatedAt"})
- * @ApiFilter(SearchFilter::class, properties={
- *     "id": "exact",
- *     "name": "ipartial",
- *     "email": "ipartial",
- *     "groups.name": "ipartial"
- * })
- * @ApiFilter(
- *     OrderFilter::class,
- *     properties={
- *          "id",
- *          "name",
- *          "email",
- *          "groups.name",
- *          "createdAt",
- *          "updatedAt"
- *     }
- * )
- */
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'security' => "is_granted('ROLE_USER_LIST')"
+        ],
+        'post' => [
+            'controller' => UserPostCollectionController::class,
+            'security' => "is_granted('ROLE_USER_CREATE')"
+        ],
+        'dashboard' => [
+            'security' => "is_granted('ROLE_USER_DASHBOARD')",
+            'method' => 'GET',
+            'path' => '/users/dashboard',
+            'controller' => DashboardAction::class,
+            'defaults' => ['_api_receive' => false]
+        ],
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('ROLE_USER_SHOW')"],
+        'put' => [
+            'controller' => UserPutItemController::class,
+            'security' => "is_granted('ROLE_USER_UPDATE')"
+        ],
+        'delete' => ['security' => "is_granted('ROLE_USER_DELETE')"],
+    ],
+    attributes: [
+        'order' => ['id' => "DESC"],
+        'normalization_context' => ['groups' => ["user_read", "read", "is_active_read"]],
+        'denormalization_context' => ['groups' => ["user_write", "is_active_write"]],
+    ]
+)]
+#[ApiFilter(
+    DateFilter::class,
+    properties: [
+        "createdAt",
+        "updatedAt",
+    ]
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        "id" => "exact",
+        "name" => "ipartial",
+        "email" => "ipartial",
+        "groups.name" => "ipartial"
+    ]
+)]
+#[ApiFilter(
+    OrderFilter::class,
+    properties: [
+        "id",
+        "name",
+        "email",
+        "groups.name",
+        "createdAt",
+        "updatedAt"
+    ]
+)]
+#[UniqueEntity(fields: ['username'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
