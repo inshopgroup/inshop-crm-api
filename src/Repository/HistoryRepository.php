@@ -21,13 +21,6 @@ class HistoryRepository extends ServiceEntityRepository
         parent::__construct($registry, History::class);
     }
 
-    /**
-     * Loads all log entries for the given entity
-     *
-     * @param object $entity
-     *
-     * @return History[]
-     */
     public function getLogEntries(object $entity): array
     {
         $q = $this->getLogEntriesQuery($entity);
@@ -35,13 +28,6 @@ class HistoryRepository extends ServiceEntityRepository
         return $q->getResult();
     }
 
-    /**
-     * Get the query for loading of log entries
-     *
-     * @param object $entity
-     *
-     * @return Query
-     */
     public function getLogEntriesQuery(object $entity): Query
     {
         $wrapped = new EntityWrapper($entity, $this->_em);

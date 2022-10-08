@@ -104,10 +104,8 @@ class Document
     ])]
     private Collection $projects;
 
-    /**
-     * @ApiProperty(iri="http://schema.org/image")
-     * @ApiSubresource()
-     */
+    #[ApiProperty(iri: 'http://schema.org/image')]
+    #[ApiSubresource]
     #[ORM\ManyToMany(targetEntity: File::class)]
     #[ORM\OrderBy(['id' => 'DESC'])]
     #[Groups([

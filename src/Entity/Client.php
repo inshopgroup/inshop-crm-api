@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -168,9 +169,7 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
     ])]
     private string $name;
 
-    /**
-     * @ApiSubresource()
-     */
+    #[ApiSubresource]
     #[ORM\ManyToMany(targetEntity: Address::class, inversedBy: 'clients')]
     #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
@@ -197,9 +196,7 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
     ])]
     private Collection $labels;
 
-    /**
-     * @ApiSubresource()
-     */
+    #[ApiSubresource]
     #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'clients', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
@@ -210,9 +207,7 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
     ])]
     private Collection $contacts;
 
-    /**
-     * @ApiSubresource()
-     */
+    #[ApiSubresource]
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Project::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
@@ -223,9 +218,7 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
     ])]
     private Collection $projects;
 
-    /**
-     * @ApiSubresource()
-     */
+    #[ApiSubresource]
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Document::class, orphanRemoval: true)]
     #[ORM\OrderBy(['id' => 'DESC'])]
     private Collection $documents;

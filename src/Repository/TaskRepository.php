@@ -24,9 +24,6 @@ class TaskRepository extends ServiceEntityRepository
         parent::__construct($registry, Task::class);
     }
 
-    /**
-     * @return mixed
-     */
     public function getDeadlines()
     {
         return $this
@@ -41,10 +38,6 @@ class TaskRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * @param $days
-     * @return mixed
-     */
     public function getSummary($days)
     {
         $rsm = new ResultSetMapping();

@@ -23,11 +23,6 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    /**
-     * @param $days
-     * @return mixed
-     * @throws Exception
-     */
     public function getSummary($days)
     {
         return $this
@@ -46,11 +41,6 @@ class UserRepository extends ServiceEntityRepository
             ->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
 
-    /**
-     * @param $days
-     * @return mixed
-     * @throws Exception
-     */
     public function getTimeSummary($days)
     {
         return $this

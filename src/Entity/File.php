@@ -69,9 +69,7 @@ class File
     #[Assert\NotNull]
     public ?HttpFile $file = null;
 
-    /**
-     * @ApiProperty(iri="http://schema.org/contentUrl")
-     */
+    #[ApiProperty(iri: 'http://schema.org/contentUrl')]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Groups([
         "document_read",

@@ -24,10 +24,6 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
-    /**
-     * @param $days
-     * @return mixed
-     */
     public function getSummaryNew($days)
     {
         $rsm = new ResultSetMapping();
@@ -74,11 +70,6 @@ SQL
         return $query->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
 
-    /**
-     * @param string $token
-     * @return Client|null
-     * @throws NonUniqueResultException
-     */
     public function findByToken(string $token): ?Client
     {
         return $this->createQueryBuilder('c')
@@ -89,11 +80,6 @@ SQL
             ->getOneOrNullResult();
     }
 
-    /**
-     * @param string $email
-     * @return Client|null
-     * @throws NonUniqueResultException
-     */
     public function getClientByEmail(string $email): ?Client
     {
         return $this->createQueryBuilder('u')
