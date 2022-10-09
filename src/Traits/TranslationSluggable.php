@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Interfaces\TranslatableInterface;
-use Exception;
 use RuntimeException;
 use Symfony\Component\Serializer\Annotation\Groups;
 

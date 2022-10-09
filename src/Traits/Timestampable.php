@@ -9,18 +9,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 trait Timestampable
 {
-    /**
-     * @Gedmo\Timestampable(on="create")
-     */
+    #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(type: 'datetime')]
     #[Groups([
         "read",
     ])]
     protected ?DateTime $createdAt = null;
 
-    /**
-     * @Gedmo\Timestampable(on="update")
-     */
+    #[Gedmo\Timestampable(on: 'update')]
     #[ORM\Column(type: 'datetime')]
     #[Groups([
         "read",

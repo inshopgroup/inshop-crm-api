@@ -28,9 +28,7 @@ final class CreateFileAction
         $file->setFile($uploadedFile);
 
         $this->validator->validate($file);
-
         $this->em->persist($file);
-
         $this->em->flush();
 
         $file->file = null;

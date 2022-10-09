@@ -8,18 +8,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 trait Blameable
 {
-    /**
-     * @Gedmo\Blameable(on="create")
-     */
+    #[Gedmo\Blameable(on: 'create')]
     #[ORM\Column(nullable: true)]
     #[Groups([
         "read",
     ])]
     protected ?string $createdBy = null;
 
-    /**
-     * @Gedmo\Blameable(on="update")
-     */
+    #[Gedmo\Blameable(on: 'update')]
     #[ORM\Column(nullable: true)]
     #[Groups([
         "read",

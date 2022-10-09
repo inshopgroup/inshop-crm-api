@@ -14,9 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @Vich\Uploadable
- */
+#[Vich\Uploadable]
 #[ApiResource(
     collectionOperations: [
         'get' => ['security' => "is_granted('ROLE_IMAGE_LIST')"],
@@ -59,15 +57,13 @@ class Image
     ])]
     private ?int $id = null;
 
-    /**
-     * @Vich\UploadableField(
-     *     mapping="image",
-     *     fileNameProperty="contentUrl",
-     *     size="size",
-     *     mimeType="mimeType",
-     *     originalName="originalName"
-     * )
-     */
+    #[Vich\UploadableField(
+        mapping: 'image',
+        fileNameProperty: 'contentUrl',
+        size: 'size',
+        mimeType: 'mimeType',
+        originalName: 'originalName',
+    )]
     #[Assert\NotNull]
     #[Assert\File(
         maxSize: '5Mi',
