@@ -93,7 +93,6 @@ security:
         - { path: ^/frontend, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: [ ROLE_USER ] }
 
-
 when@test:
     security:
         password_hashers:

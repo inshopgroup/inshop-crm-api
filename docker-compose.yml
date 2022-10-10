@@ -40,7 +40,6 @@ services:
 volumes:
   db-data: {}
   files-data: {}
-  images-data: {}
 
 networks:
     api:

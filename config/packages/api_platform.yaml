@@ -1,6 +1,6 @@
 api_platform:
     title: Inshop CRM
-    version: v2.0.1
+    version: v3.0.1
     collection:
         pagination:
             client_items_per_page: true
