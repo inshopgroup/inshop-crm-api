@@ -4,22 +4,18 @@ namespace App\EventListener\Logger;
 
 use App\Entity\History;
 use DateTime;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Proxy;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\ORM\PersistentCollection;
 use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
-use JsonException;
 use ReflectionClass;
-use ReflectionException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -34,20 +30,17 @@ class EntityLoggerSubscriber implements EventSubscriber
 
     protected array $logs = [];
 
-    private bool $isDisabled = false;
-
     public function getSubscribedEvents(): array
     {
         return [
-            'preUpdate',
-            'postPersist',
-            'preRemove',
-            'postFlush',
+            Events::preUpdate,
+            Events::postPersist,
+            Events::preRemove,
+            Events::postFlush,
         ];
     }
 
     protected static array $disabledEntities = [
-        EntityLogger::class,
         History::class,
         RefreshToken::class,
     ];
@@ -72,41 +65,35 @@ class EntityLoggerSubscriber implements EventSubscriber
 
     public function preUpdate(LifecycleEventArgs $args): void
     {
-        if (!$this->isDisabled()) {
-            $this->calculateChanges($args->getEntityManager(), $args->getEntity(), 'update');
-        }
+        $this->calculateChanges($args->getObjectManager(), $args->getObject(), 'update');
     }
 
     public function postPersist(LifecycleEventArgs $args): void
     {
-        if (!$this->isDisabled()) {
-            $this->calculateChanges($args->getEntityManager(), $args->getEntity(), 'create');
-        }
+        $this->calculateChanges($args->getObjectManager(), $args->getObject(), 'create');
     }
 
     public function preRemove(LifecycleEventArgs $args): void
     {
-        if (!$this->isDisabled()) {
-            $entity = $args->getEntity();
-            $entityClassName = get_class($entity);
+        $entity = $args->getObject();
+        $entityClassName = get_class($entity);
 
-            if (in_array($entityClassName, self::$disabledEntities, true)) {
-                return;
-            }
-
-            $entityLogger = new EntityLogger();
-            $entityLogger->setEntity($entity);
-            $entityLogger->setAction('remove');
-            $entityLogger->addChange('name', $this->guessObjectName($entity));
-
-            $this->logs[] = $entityLogger;
+        if (in_array($entityClassName, self::$disabledEntities, true)) {
+            return;
         }
+
+        $entityLogger = new EntityLogger();
+        $entityLogger->setEntity($entity);
+        $entityLogger->setAction('remove');
+        $entityLogger->addChange('name', $this->guessObjectName($entity));
+
+        $this->logs[] = $entityLogger;
     }
 
     public function postFlush(PostFlushEventArgs $args): void
     {
-        if (!empty($this->logs) && !$this->isDisabled()) {
-            $em = $args->getEntityManager();
+        if (!empty($this->logs)) {
+            $em = $args->getObjectManager();
 
             /** @var EntityLogger $entityLogger */
             foreach ($this->logs as $entityLogger) {
@@ -185,13 +172,12 @@ class EntityLoggerSubscriber implements EventSubscriber
             return;
         }
 
-        $uow = $em->getUnitOfWork();
+        $metadata = $em->getClassMetadata(get_class($entity));
 
-        $uow->recomputeSingleEntityChangeSet($em->getClassMetadata(get_class($entity)), $entity);
+        $uow = $em->getUnitOfWork();
+        $uow->recomputeSingleEntityChangeSet($metadata, $entity);
 
         $changes = $uow->getEntityChangeSet($entity);
-
-        $annotationReader = new AnnotationReader();
 
         $reflectionClass = new ReflectionClass($entity);
 
@@ -211,15 +197,11 @@ class EntityLoggerSubscriber implements EventSubscriber
             $type = null;
 
             if ($reflectionClass->hasProperty($attributeName)) {
-                $annotations = $annotationReader->getPropertyAnnotations($reflectionClass->getProperty($attributeName));
-                $type = $this->getColumnTypeFromAnnotations($annotations);
+                $type = $metadata->getTypeOfField($attributeName);
             }
 
             if ($type) {
-                [
-                    $oldValueRaw,
-                    $newValueRaw
-                ] = [...$change];
+                [$oldValueRaw, $newValueRaw] = [...$change];
 
                 switch ($type) {
                     case 'boolean':
@@ -312,15 +294,5 @@ class EntityLoggerSubscriber implements EventSubscriber
         }
 
         return null;
-    }
-
-    public function isDisabled(): bool
-    {
-        return $this->isDisabled;
-    }
-
-    public function setIsDisabled(bool $isDisabled): void
-    {
-        $this->isDisabled = $isDisabled;
     }
 }

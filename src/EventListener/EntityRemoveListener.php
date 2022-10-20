@@ -11,7 +11,7 @@ class EntityRemoveListener
 {
     public function preRemove(LifecycleEventArgs $args): void
     {
-        $em = $args->getEntityManager();
+        $em = $args->getObjectManager();
         $entity = $args->getObject();
 
         $associationNames = $em->getClassMetadata(get_class($entity))->getAssociationNames();
