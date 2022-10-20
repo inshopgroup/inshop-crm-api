@@ -21,20 +21,20 @@
         "oneup/flysystem-bundle": "^4.4",
         "sensio/framework-extra-bundle": "^6.2",
         "stof/doctrine-extensions-bundle": "^1.7",
-        "symfony/asset": "6.1.*",
-        "symfony/console": "6.1.*",
-        "symfony/dotenv": "6.1.*",
-        "symfony/expression-language": "6.1.*",
+        "symfony/asset": "6.2.*",
+        "symfony/console": "6.2.*",
+        "symfony/dotenv": "6.2.*",
+        "symfony/expression-language": "6.2.*",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.1.*",
-        "symfony/mailer": "6.1.*",
+        "symfony/framework-bundle": "6.2.*",
+        "symfony/mailer": "6.2.*",
         "symfony/monolog-bundle": "^3.8",
-        "symfony/runtime": "6.1.*",
-        "symfony/security-bundle": "6.1.*",
-        "symfony/translation": "6.1.*",
-        "symfony/twig-bundle": "6.1.*",
-        "symfony/validator": "6.1.*",
-        "symfony/yaml": "6.1.*",
+        "symfony/runtime": "6.2.*",
+        "symfony/security-bundle": "6.2.*",
+        "symfony/translation": "6.2.*",
+        "symfony/twig-bundle": "6.2.*",
+        "symfony/validator": "6.2.*",
+        "symfony/yaml": "6.2.*",
         "vich/uploader-bundle": "^1.21"
     },
     "config": {
@@ -86,12 +86,12 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.1.*"
+            "require": "6.2.*"
         }
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.45",
-        "symfony/var-dumper": "6.1.*",
-        "symfony/web-profiler-bundle": "6.1.*"
+        "symfony/var-dumper": "6.2.*",
+        "symfony/web-profiler-bundle": "6.2.*"
     }
 }
