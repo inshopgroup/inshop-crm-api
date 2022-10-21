@@ -7,3 +7,4 @@ oneup_flysystem:
     filesystems:
         default:
             adapter: default
+            alias: default.flysystem

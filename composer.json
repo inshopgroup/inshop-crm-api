@@ -15,7 +15,6 @@
         "doctrine/orm": "^2.13",
         "fakerphp/faker": "^1.20",
         "gesdinet/jwt-refresh-token-bundle": "^1.1",
-        "league/flysystem-aws-s3-v3": "^3.2",
         "lexik/jwt-authentication-bundle": "^2.16",
         "nelmio/cors-bundle": "^2.2",
         "oneup/flysystem-bundle": "^4.4",
