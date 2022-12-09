@@ -4,7 +4,7 @@ vich_uploader:
     metadata:
         type: attribute
     mappings:
-        file:
+        files:
             uri_prefix: /media
-            upload_destination: oneup_flysystem.default_filesystem
+            upload_destination: oneup_flysystem.default_fylesystem
             namer: Vich\UploaderBundle\Naming\UniqidNamer
