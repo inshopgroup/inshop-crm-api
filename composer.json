@@ -16,6 +16,7 @@
         "fakerphp/faker": "^1.20",
         "gesdinet/jwt-refresh-token-bundle": "^1.1",
         "lexik/jwt-authentication-bundle": "^2.16",
+        "liip/imagine-bundle": "^2.10",
         "nelmio/cors-bundle": "^2.2",
         "oneup/flysystem-bundle": "^4.4",
         "sensio/framework-extra-bundle": "^6.2",
