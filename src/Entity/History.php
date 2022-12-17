@@ -41,6 +41,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     properties: [
         "createdAt",
         "updatedAt",
+        "loggedAt",
     ]
 )]
 #[ApiFilter(
