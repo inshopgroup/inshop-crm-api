@@ -41,6 +41,8 @@ class AuthenticationSuccessListener
 
         $data['roles'] = $user->getRoles();
         $data['language'] = $user->getLanguage()->getCode();
+        $data['name'] = $user->getName();
+        $data['email'] = $user->getEmail();
 
         $event->setData($data);
     }
