@@ -29,10 +29,10 @@ class RoleFixtures extends Fixture
             ],
             'Group' => [
                 'LIST',
-//                'CREATE',
+                'CREATE',
                 'SHOW',
-//                'UPDATE',
-//                'DELETE',
+                'UPDATE',
+                'DELETE',
             ],
             'History' => [
                 'LIST',
