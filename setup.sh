@@ -2,7 +2,7 @@
 
 composer install
 
-php bin/console lexik:jwt:generate-keypair
+#php bin/console lexik:jwt:generate-keypair
 php bin/console make:entity App --regenerate -n
 php bin/console doctrine:database:drop --if-exists --force
 php bin/console doctrine:database:create

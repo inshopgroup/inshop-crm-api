@@ -1,0 +1,5 @@
+version: "2"
+syncs:
+  api-data:
+    src: '.'
+    sync_excludes: ['var/cache/*', 'var/log/*', '.git/*', '.idea/*']

@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Address;
+use App\Entity\Client;
 use App\Entity\Country;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -21,12 +22,17 @@ class AddressFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $countries = $manager->getRepository(Country::class)->findAll();
+        $clients = $manager->getRepository(Client::class)->findAll();
 
         for ($j = 0; $j < 50; $j++) {
             /** @var Country $country */
             $country = $this->faker->randomElement($countries);
 
+            /** @var Client $client */
+            $client = $this->faker->randomElement($clients);
+
             $address = new Address();
+            $address->setClient($client);
             $address->setCountry($country);
             $address->setCity($this->faker->city());
             $address->setRegion($this->faker->address());
@@ -46,6 +52,7 @@ class AddressFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return array(
+            ClientFixtures::class,
             CountryFixtures::class,
         );
     }

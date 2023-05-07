@@ -14,6 +14,7 @@ use App\Traits\Blameable;
 use App\Traits\IsActive;
 use App\Traits\Timestampable;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -256,17 +257,6 @@ class Task implements ClientInterface
     public function getClient(): Client
     {
         return $this->getProject()->getClient();
-    }
-
-    public function getSearchText(): string
-    {
-        return implode(
-            ' ',
-            [
-                $this->getName(),
-                $this->getDescription(),
-            ]
-        );
     }
 
     public function getTimeEstimated(): float

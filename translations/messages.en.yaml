@@ -1,44 +1,5 @@
-lesson_reminder: Lesson reminder
-meeting_reminder: Meeting reminder
-password_changed: Password changed
-client_menu: Go to customer panel
-hello: Hello
-client_absence: The student reported the absence
-client_name: Name and surname of student
 hi: Hi
-you_have_been_added_to_group: You have been added to new group
-your_teacher_is: Your teacher is
-your_schedule_is: Your schedule is
-contact_notification: Contact notification from client
-phone: Phone
-email: Email
-topic: Topic
-name: Name
-description: Description
-time: Time
-day: Day
-your_meeting_is: Your meeting is
-you_have_been_added_to_the_group: You have been added to the group
-you_have_a_new_meeting: You have a new meeting
-your_meeting_has_been_change: Your meeting has been change
-you_have_upcoming_lesson_soon: You have upcoming lesson soon
-you_have_upcoming_meeting_soon: Your meeting starts in
-your_schedule_for_group: Your schedule for group
-new_group_schedule: Group has a new schedule
-update_group_schedule: Schedule for group has been change
-lesson_number: Lesson number
-group_name: Group name
-teacher: Teacher
-date: Date
-welcome: Welcome!
-remind_password: Remind password
-thanks: Thanks!
-reset_password: Reset password
 to_set_up_new_password_follow_the_link: To set up new password follow the link
-forgot_your_password: Forgot your password?
-didnt_make_this_request_forgot: If you didn't make this request, please ignore this email.
-to_set_up_new_password_click_the_button: To set up new password click the button below
+thanks: Thanks!
 you_are_successfully_registered: You're successfully registered.
-you_are_successfully_changed_password: You're successfully changed password.
 to_confirm_your_email_follow_the_link: To confirm your email follow the link
-confirm_registration: Confirm registration

@@ -117,19 +117,8 @@ class Document
 
     public function __construct()
     {
-        $this->companies = new ArrayCollection();
         $this->projects = new ArrayCollection();
         $this->files = new ArrayCollection();
-    }
-
-    public function getSearchText(): string
-    {
-        return implode(
-            ' ',
-            [
-                $this->getName(),
-            ]
-        );
     }
 
     public function getId(): ?int

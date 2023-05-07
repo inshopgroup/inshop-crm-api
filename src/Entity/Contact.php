@@ -98,18 +98,13 @@ class Contact
     ])]
     private ?ContactType $contactType = null;
 
-    #[ORM\ManyToMany(targetEntity: Client::class, mappedBy: 'contacts')]
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'contacts')]
     #[Assert\NotBlank]
     #[Groups([
         "contact_read",
         "contact_write"
     ])]
-    private Collection $clients;
-
-    public function __construct()
-    {
-        $this->clients = new ArrayCollection();
-    }
+    private Client $client;
 
     public function getId(): ?int
     {
@@ -140,37 +135,14 @@ class Contact
         return $this->contactType;
     }
 
-    public function getSearchText(): string
+    public function getClient(): ?Client
     {
-        return implode(
-            ' ',
-            [
-                $this->getValue(),
-            ]
-        );
+        return $this->client;
     }
 
-    public function getClients(): Collection
+    public function setClient(?Client $client): self
     {
-        return $this->clients;
-    }
-
-    public function addClient(Client $client): self
-    {
-        if (!$this->clients->contains($client)) {
-            $this->clients[] = $client;
-            $client->addContact($this);
-        }
-
-        return $this;
-    }
-
-    public function removeClient(Client $client): self
-    {
-        if ($this->clients->contains($client)) {
-            $this->clients->removeElement($client);
-            $client->removeContact($this);
-        }
+        $this->client = $client;
 
         return $this;
     }

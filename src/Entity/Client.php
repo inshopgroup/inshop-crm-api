@@ -170,7 +170,7 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
     private string $name;
 
     #[ApiSubresource]
-    #[ORM\ManyToMany(targetEntity: Address::class, inversedBy: 'clients')]
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Address::class)]
     #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
     #[Groups([
@@ -197,7 +197,7 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
     private Collection $labels;
 
     #[ApiSubresource]
-    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'clients', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Contact::class)]
     #[ORM\OrderBy(['id' => 'DESC'])]
     #[Assert\Valid]
     #[Groups([
@@ -280,17 +280,6 @@ class Client implements ClientInterface, UserInterface, PasswordAuthenticatedUse
     public function getClient(): self
     {
         return $this;
-    }
-
-    public function getSearchText(): string
-    {
-        return implode(
-            ' ',
-            [
-                $this->getName(),
-                $this->getDescription(),
-            ]
-        );
     }
 
     public function getId(): ?int

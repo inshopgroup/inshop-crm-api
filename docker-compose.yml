@@ -8,8 +8,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - .:/var/www:rw,cached
-      - files-data:/var/www/var/files:rw
+      - api-data:/var/www
     networks:
       - api
 
@@ -18,7 +17,7 @@ services:
     depends_on:
       - php
     volumes:
-      - ./public:/var/www/public:ro
+      - api-data:/var/www
     ports:
       - ${PORT_API}:80
     networks:
@@ -39,7 +38,8 @@ services:
 
 volumes:
   db-data: {}
-  files-data: {}
+  api-data:
+    external: true
 
 networks:
     api:

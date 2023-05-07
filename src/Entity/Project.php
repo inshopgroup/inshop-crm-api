@@ -14,6 +14,7 @@ use App\Traits\IsActive;
 use App\Traits\Timestampable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -274,16 +275,5 @@ class Project implements ClientInterface
         $this->type = $type;
 
         return $this;
-    }
-
-    public function getSearchText(): string
-    {
-        return implode(
-            ' ',
-            [
-                $this->getName(),
-                $this->getDescription(),
-            ]
-        );
     }
 }

@@ -165,18 +165,13 @@ class Address
     ])]
     private ?string $comment = null;
 
-    #[ORM\ManyToMany(targetEntity: Client::class, mappedBy: 'addresses')]
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'addresses')]
     #[ORM\OrderBy(['id' => 'DESC'])]
     #[Groups([
         "address_read",
         "address_write"
     ])]
-    private Collection $clients;
-
-    public function __construct()
-    {
-        $this->clients = new ArrayCollection();
-    }
+    private Client $client;
 
     public function getId(): ?int
     {
@@ -282,49 +277,6 @@ class Address
         return $this;
     }
 
-    public function getSearchText(): string
-    {
-        return implode(
-            ' ',
-            [
-                $this->getCountry() ? $this->getCountry()->getName() : null,
-                $this->getCity(),
-                $this->getRegion(),
-                $this->getDistrict(),
-                $this->getStreet(),
-                $this->getPostCode(),
-                $this->getBuilding(),
-                $this->getApartment(),
-            ]
-        );
-    }
-
-    public function getClients(): Collection
-    {
-        return $this->clients;
-    }
-
-    public function addClient(Client $client): self
-    {
-        if (!$this->clients->contains($client)) {
-            $this->clients[] = $client;
-            $client->addAddress($this);
-        }
-
-        return $this;
-    }
-
-    public function removeClient(Client $client): self
-    {
-        if ($this->clients->contains($client)) {
-            $this->clients->removeElement($client);
-            $client->removeAddress($this);
-        }
-
-        return $this;
-    }
-
-
     public function getPostCode(): ?string
     {
         return $this->postCode;
@@ -333,6 +285,18 @@ class Address
     public function setPostCode(?string $postCode): self
     {
         $this->postCode = $postCode;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }

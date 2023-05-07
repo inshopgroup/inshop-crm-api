@@ -1,4 +1,4 @@
-FROM inshopgroup/docker-inshop-crm-api-php-fpm-prod:php7.4
+FROM inshopgroup/docker-inshop-crm-api-php-fpm-prod:php8.1
 
 WORKDIR /var/www
 ADD ./ /var/www

@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Address;
 use App\Entity\Client;
 use App\Entity\Contact;
 use App\Entity\ContactType;
@@ -31,7 +30,6 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $addresses = $manager->getRepository(Address::class)->findAll();
         $users = $manager->getRepository(User::class)->findAll();
         $projectTypes = $manager->getRepository(ProjectType::class)->findAll();
         $projectStatuses = $manager->getRepository(ProjectStatus::class)->findAll();
@@ -46,7 +44,6 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
             $client->setTokenCreatedAt(new DateTime());
             $client->setName(sprintf('%s %s', $this->faker->firstName(), $this->faker->lastName()));
             $client->setDescription($this->faker->text());
-            $client->addAddress($this->faker->randomElement($addresses));
             $client->setCreatedAt($this->faker->dateTimeBetween('-30 days', '+0 days'));
 
             $manager->persist($client);
@@ -54,13 +51,13 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
             $phone = new Contact();
             $phone->setContactType($manager->getRepository(ContactType::class)->find(ContactType::TYPE_PHONE));
             $phone->setValue($this->faker->phoneNumber());
-            $client->addContact($phone);
+            $phone->setClient($client);
             $manager->persist($phone);
 
             $email = new Contact();
             $email->setContactType($manager->getRepository(ContactType::class)->find(ContactType::TYPE_EMAIL));
             $email->setValue($this->faker->email());
-            $client->addContact($email);
+            $email->setClient($client);
             $manager->persist($email);
 
             for ($k = 0; $k < 3; $k++) {
@@ -100,7 +97,6 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
     {
         return array(
             FileFixtures::class,
-            AddressFixtures::class,
             UserFixtures::class,
         );
     }
