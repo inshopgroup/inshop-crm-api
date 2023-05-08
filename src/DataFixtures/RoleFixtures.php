@@ -53,10 +53,10 @@ class RoleFixtures extends Fixture
             'Task status' => [],
             'User' => [
                 'LIST',
-//                'CREATE',
+                'CREATE',
                 'SHOW',
-//                'UPDATE',
-//                'DELETE',
+                'UPDATE',
+                'DELETE',
                 'DASHBOARD',
             ],
             'Other' => [
