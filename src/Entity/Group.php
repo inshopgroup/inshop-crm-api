@@ -20,7 +20,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 #[ApiResource(
     collectionOperations: [
-        'get' => ['security' => "is_granted('ROLE_GROUP_LIST')"],
+        'get' => [
+            'security' => "is_granted('ROLE_GROUP_LIST')",
+            'normalization_context' => ['groups' => ["group_read_collection", "read", "is_active_read"]],
+        ],
         'post' => ['security' => "is_granted('ROLE_GROUP_CREATE')"],
     ],
     itemOperations: [
@@ -70,6 +73,7 @@ class Group
     #[ORM\Column]
     #[Groups([
         "group_read",
+        "group_read_collection",
         "group_write",
         "user_read",
         "user_read_collection",
@@ -81,6 +85,7 @@ class Group
     #[Assert\NotBlank]
     #[Groups([
         "group_read",
+        "group_read_collection",
         "group_write",
         "user_read",
         "user_read_collection",
