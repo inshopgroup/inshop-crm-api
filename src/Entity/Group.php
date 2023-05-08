@@ -72,6 +72,8 @@ class Group
         "group_read",
         "group_write",
         "user_read",
+        "user_read_collection",
+        "user_write",
     ])]
     private ?int $id = null;
 
@@ -81,6 +83,7 @@ class Group
         "group_read",
         "group_write",
         "user_read",
+        "user_read_collection",
     ])]
     private string $name;
 

@@ -27,7 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     collectionOperations: [
         'get' => [
-            'security' => "is_granted('ROLE_USER_LIST')"
+            'security' => "is_granted('ROLE_USER_LIST')",
+            'normalization_context' => ['groups' => ["user_read_collection", "read", "is_active_read"]],
         ],
         'post' => [
             'controller' => UserPostCollectionController::class,
@@ -96,6 +97,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Groups([
         "user_read",
+        "user_read_collection",
         "task_read",
         "client_read",
         "project_read",
@@ -127,6 +129,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     #[Groups([
         "user_read",
+        "user_read_collection",
         "user_write",
         "task_read",
         "client_read",
@@ -138,6 +141,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     #[Groups([
         "user_read",
+        "user_read_collection",
         "user_write",
         "task_read",
         "client_read",
@@ -146,14 +150,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'assignee', targetEntity: Task::class)]
     #[ORM\OrderBy(['id' => 'DESC'])]
-    #[Groups([
-        "user_read",
-    ])]
     private Collection $tasks;
 
     #[ORM\ManyToMany(targetEntity: Group::class)]
     #[Groups([
         "user_read",
+        "user_read_collection",
         "user_write",
     ])]
     private Collection $groups;
@@ -162,6 +164,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotNull]
     #[Groups([
         "user_read",
+        "user_read_collection",
         "user_write",
     ])]
     private ?Language $language = null;
